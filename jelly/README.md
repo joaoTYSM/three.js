@@ -9,7 +9,7 @@
 Extracted directly from the *Soft Matter* material studies[span_0](start_span)[span_0](end_span), `jelly.js` acts as an interactive, drag-and-drop web companion or "bubble" widget you can inject directly into any page. Built on top of Three.js.
 
 ## 🔗 Live Demo
-* **Preview:** [https://ilove-treejs.vercel.app/jelly](#) *(Mock URL)*
+* **Preview:** [demo/jelly](https://ilove-treejs.vercel.app/jelly) *(Mock URL)*
 
 ## 📦 Installation
 
