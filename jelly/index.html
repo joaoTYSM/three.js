@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>show-case</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f6f3fb;--card:#fff;--fg:#1b1530;--mut:#6b6485;--line:#e3ddf0;--acc:#e00072}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e0b1a;--card:#171228;--fg:#f1edfb;--mut:#a39bbd;--line:#2a2342}}
+:root[data-theme="dark"]{--bg:#0e0b1a;--card:#171228;--fg:#f1edfb;--mut:#a39bbd;--line:#2a2342}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*:before,*:after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:0 18px}
+header{padding:44px 0 20px}
+h1{font-size:clamp(2rem,6vw,3.4rem);line-height:1.05;margin:0 0 10px;letter-spacing:-.02em}
+h1 span{color:var(--acc)}
+h2{font-size:clamp(1.3rem,3.5vw,1.8rem);margin:44px 0 6px}
+p.lead{color:var(--mut);max-width:640px;margin:0}
+.tag{display:inline-block;font-size:.75rem;padding:3px 10px;border:1px solid var(--line);border-radius:99px;color:var(--mut);margin:0 6px 12px 0}
+.stage{display:grid;gap:16px;margin-top:18px}
+@media(min-width:900px){.stage{grid-template-columns:1.4fr 1fr}}
+.cv{position:relative;border-radius:20px;overflow:hidden;background:#0e0b1a;border:1px solid var(--line);touch-action:none}
+.cv canvas{display:block;width:100%;height:100%}
+#hero{height:min(78vw,520px)}
+#gal{height:min(110vw,560px)}
+@media(min-width:900px){#gal{height:520px}#hero{height:600px}}
+.hint{position:absolute;left:12px;bottom:10px;font-size:.78rem;color:#b9b0d6;pointer-events:none}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px}
+.panel h3{margin:14px 0 8px;font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--mut)}
+.panel h3:first-child{margin-top:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+button,select{font:inherit;font-size:.86rem;color:var(--fg);background:transparent;border:1px solid var(--line);border-radius:10px;padding:7px 11px;cursor:pointer}
+button:hover{border-color:var(--acc)}
+button.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.sw{width:30px;height:30px;padding:0;border-radius:50%}
+.sw.on{outline:2px solid var(--fg);outline-offset:2px}
+.row{display:grid;grid-template-columns:96px 1fr 44px;gap:8px;align-items:center;font-size:.85rem;margin:6px 0}
+.row output{color:var(--mut);text-align:right;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--acc)}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));margin-top:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.card b{display:block;margin-bottom:4px}
+.card p{margin:0;color:var(--mut);font-size:.9rem}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.codebox{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:14px}
+pre{margin:0;font-size:.82rem;line-height:1.55}
+code.i{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:.82em}
+footer{padding:36px 0 50px;color:var(--mut);font-size:.88rem}
+footer a{color:var(--acc)}
+#err{display:none;padding:14px;border:1px solid var(--acc);border-radius:12px;margin-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <span class="tag">three.js</span><span class="tag">spring-mass physics</span><span class="tag">v2.5</span>
+  <h1>Jelly<span>.js</span></h1>
+  <p class="lead">A standalone soft-body jelly for three.js. No scene, lights or floor required — drop it anywhere, grab it, squash it, kick it.</p>
+  <div id="err">WebGL could not start in this browser.</div>
+</header>
+
+<section>
+  <h2>Live playground</h2>
+  <p class="lead">Drag the jelly to stretch it. Tap without dragging for a wobble. Every control below maps to a live <code class="i">jelly.set({...})</code> option.</p>
+  <div class="stage">
+    <div class="cv" id="hero"><canvas></canvas><div class="hint">Drag to pull · tap to wobble</div></div>
+    <div class="panel" id="panel">
+      <h3>Preset</h3><div class="chips" id="presets"></div>
+      <h3>Color</h3><div class="chips" id="colors"></div>
+      <h3>Physics</h3><div id="sliders"></div>
+      <h3>Options</h3><div class="chips" id="toggles"></div>
+      <h3>Actions</h3><div class="chips" id="actions"></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Preset gallery</h2>
+  <p class="lead">Eight jellies in a single scene — each one is its own independent physics body. Grab any of them.</p>
+  <div class="cv" id="gal" style="margin-top:18px"><canvas></canvas><div class="hint">Every jelly is draggable</div></div>
+</section>
+
+<section>
+  <h2>Power moves</h2>
+  <div class="grid">
+    <div class="card"><b>crush(axis, amount)</b><p>Squash or stretch on one axis with volume preserved.</p></div>
+    <div class="card"><b>applyForce(dir, opts)</b><p>Inject velocity globally or in a falloff region.</p></div>
+    <div class="card"><b>setGravity(v)</b><p>Turn gravity off, on, or use a multiplier for heavier sag.</p></div>
+    <div class="card"><b>setFloating(bool)</b><p>Cut the floor loose and let the jelly bob freely.</p></div>
+    <div class="card"><b>sculpt(fn)</b><p>Reshape the rest pose vertex by vertex.</p></div>
+    <div class="card"><b>attach(obj, opts)</b><p>Glue any Object3D to the jelly surface — that's how the eyes work.</p></div>
+    <div class="card"><b>setEyes(config)</b><p>Button eyes by default, or supply your own factory.</p></div>
+    <div class="card"><b>impulse(strength)</b><p>One-shot wobble you can trigger from anywhere.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>Quick start</h2>
+  <div class="codebox"><pre>import { Jelly } from './jelly.js';
+
+const jelly = new Jelly({
+  camera,
+  domElement: renderer.domElement,  // pointer drag
+  preset: 'petStar',
+  floating: true,
+  color: 0xe00072,
+});
+
+scene.add(jelly.mesh);
+
+// every frame
+jelly.update(delta);
+
+jelly.crush('y', 0.45);                         // squash flat
+jelly.applyForce([1, 0.4, 0], { strength: 2 }); // kick it
+jelly.setGravity(2.5);                          // heavier sag</pre></div>
+</section>
+
+<section>
+  <h2>Presets &amp; options</h2>
+  <div class="grid">
+    <div class="card"><b>Shapes</b><p>cube · box · sphere · ball · circle · star · heart · capsule · pill · torus · donut · blob</p></div>
+    <div class="card"><b>Pets (with eyes)</b><p>pet · petCube · petBox · petSphere · petBall · petCircle · petStar · petHeart · petBlob · petCapsule</p></div>
+    <div class="card"><b>Physics</b><p>firmness · damping · wobble · speed · release · gravity · gravityStrength · squash</p></div>
+    <div class="card"><b>Material</b><p>color · saturation · transmission · roughness · thickness · ior · attenuationDistance · reflections · wireframe</p></div>
+  </div>
+</section>
+
+<footer>
+  This page runs a condensed port of Jelly.js v2.5 by joao. Full library:
+  <a href="https://github.com/joaoTYSM/three.js/tree/main/jelly" target="_blank" rel="noopener">joaoTYSM/three.js/jelly</a>
+  · <a href="https://discord.gg/AUddtuAGUf" target="_blank" rel="noopener">Discord</a>
+</footer>
+</div>
+
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
+
+/* ---------- geometry builders ---------- */
+const _p = new THREE.Vector3(), _i = new THREE.Vector3(), _n = new THREE.Vector3();
+function roundedBox(){
+  const W=2.4,H=2.1,D=2.2,R=.45,g=new THREE.BoxGeometry(W,H,D,22,22,22),pos=g.attributes.position;
+  const core=new THREE.Vector3(W/2-R,H/2-R,D/2-R),lim=core.clone().negate();
+  for(let k=0;k<pos.count;k++){_p.fromBufferAttribute(pos,k);_i.copy(_p).clamp(lim,core);_n.copy(_p).sub(_i).normalize();_p.copy(_i).addScaledVector(_n,R);pos.setXYZ(k,_p.x,_p.y,_p.z)}
+  return g;
+}
+const ball=()=>new THREE.SphereGeometry(1.25,40,26);
+function ext(shape,depth,curve){const g=new THREE.ExtrudeGeometry(shape,{depth,bevelEnabled:true,bevelThickness:.14,bevelSize:.14,bevelSegments:3,curveSegments:curve});g.center();return g}
+function star(){const s=new THREE.Shape();for(let k=0;k<10;k++){const r=k%2?.62:1.4,a=k/10*Math.PI*2-Math.PI/2;k?s.lineTo(Math.cos(a)*r,Math.sin(a)*r):s.moveTo(Math.cos(a)*r,Math.sin(a)*r)}s.closePath();return ext(s,.7,6)}
+function heart(){const s=new THREE.Shape();s.moveTo(.5,.5);s.bezierCurveTo(.5,.5,.4,0,0,0);s.bezierCurveTo(-.6,0,-.6,.7,-.6,.7);s.bezierCurveTo(-.6,1.1,-.3,1.54,.5,1.9);s.bezierCurveTo(1.2,1.54,1.6,1.1,1.6,.7);s.bezierCurveTo(1.6,.7,1.6,0,1,0);s.bezierCurveTo(.7,0,.5,.5,.5,.5);const g=ext(s,.8,12);g.scale(.8,.8,.8);return g}
+const capsule=()=>new THREE.CapsuleGeometry(.85,1,12,24);
+const torus=()=>new THREE.TorusGeometry(.9,.42,20,44);
+function blob(){const g=new THREE.SphereGeometry(1.2,40,26),pos=g.attributes.position;for(let k=0;k<pos.count;k++){_p.fromBufferAttribute(pos,k);_p.multiplyScalar(1+Math.sin(_p.x*2.1+1.7)*Math.cos(_p.y*2.7-1.7)*Math.sin(_p.z*1.9+1.7)*.14);pos.setXYZ(k,_p.x,_p.y,_p.z)}return g}
+const BUILD={cube:roundedBox,box:roundedBox,sphere:ball,ball,circle:ball,star,heart,capsule,pill:capsule,torus,donut:torus,blob};
+const PRESETS=Object.keys(BUILD);
+
+function makeEye(color=0x453a33,thread=0xf2e6cf){
+  const g=new THREE.Group(),m=new THREE.MeshStandardMaterial({color,roughness:.3,metalness:.1}),t=new THREE.MeshStandardMaterial({color:thread,roughness:.85});
+  const disk=new THREE.CylinderGeometry(.22,.22,.06,32).rotateX(Math.PI/2),rim=new THREE.TorusGeometry(.19,.014,6,32),bar=new THREE.BoxGeometry(.2,.018,.012);
+  g.add(new THREE.Mesh(disk,m));const r=new THREE.Mesh(rim,m);r.position.z=.032;g.add(r);
+  for(const a of[Math.PI/4,-Math.PI/4]){const b=new THREE.Mesh(bar,t);b.rotation.z=a;b.position.z=.038;g.add(b)}
+  return g;
+}
+
+/* ---------- Jelly (condensed port) ---------- */
+const DEF={preset:'cube',size:1,rotation:0,autoRotate:false,floating:true,firmness:38,damping:28,wobble:70,speed:100,gravity:true,gravityStrength:1,reach:1,squash:{x:1,y:1,z:1},color:0xe00072,roughness:.065,transmission:1,thickness:2.3,ior:1.42,wireframe:false,eyes:false,eyeHeight:.62,eyeBlink:true};
+class Jelly{
+  constructor(o={}){
+    this.o={...DEF,...o};this.o.squash={...DEF.squash,...(o.squash||{})};
+    if(/^pet/.test(this.o.preset)&&o.eyes===undefined)this.o.eyes=true;
+    this.mat=new THREE.MeshPhysicalMaterial({color:this.o.color,roughness:.065,transmission:1,thickness:2.3,ior:1.42,attenuationColor:new THREE.Color(this.o.color),attenuationDistance:1.8,clearcoat:1,clearcoatRoughness:.045,envMapIntensity:1.7});
+    this.mesh=new THREE.Mesh(new THREE.BufferGeometry(),this.mat);this.mesh.frustumCulled=false;this.mesh.userData.jelly=this;
+    this.bounce=0;this.t=0;this.att=[];this.eyeObjs=[];this.base=new THREE.Vector3();
+    this.drag={on:false,moved:false,point:new THREE.Vector3(),target:new THREE.Vector3(),plane:new THREE.Plane()};
+    this.ray=new THREE.Raycaster();this.ptr=new THREE.Vector2();
+    this.build();
+  }
+  key(){const p=this.o.preset;return p==='pet'?'cube':p.replace(/^pet/,'').replace(/^./,c=>c.toLowerCase())}
+  build(){
+    let g=BUILD[this.key()]();g.deleteAttribute('normal');g.deleteAttribute('uv');
+    const m=mergeVertices(g,1e-4);g.dispose();g=m;g.computeVertexNormals();g.computeBoundingBox();g.computeBoundingSphere();
+    const old=this.mesh.geometry;this.mesh.geometry=g;old.dispose();this.geo=g;
+    const pos=g.attributes.position;pos.setUsage(THREE.DynamicDrawUsage);
+    this.rest=new Float32Array(pos.array);this.vel=new Float32Array(pos.array.length);
+    this.r=g.boundingSphere.radius;this.k=1.3/this.r;this.buildEyes();
+  }
+  nearest(t){const p=this.geo.attributes.position;let b=0,bd=1e9;for(let k=0;k<p.count;k++){const d=(p.getX(k)-t.x)**2+(p.getY(k)-t.y)**2+(p.getZ(k)-t.z)**2;if(d<bd){bd=d;b=k}}return b}
+  buildEyes(){
+    for(const e of this.eyeObjs)e.removeFromParent();this.att=[];this.eyeObjs=[];
+    if(!this.o.eyes)return;
+    const b=this.geo.boundingBox,w=b.max.x-b.min.x,h=b.max.y-b.min.y;
+    for(let k=0;k<2;k++){
+      const idx=this.nearest(new THREE.Vector3((k-.5)*w*.34,b.min.y+h*this.o.eyeHeight,b.max.z));
+      const e=makeEye();const s=this.r/1.3;e.userData.s=s;e.scale.setScalar(s);
+      this.mesh.add(e);this.att.push({e,idx});this.eyeObjs.push(e);
+    }
+  }
+  set(opts){
+    const pp=this.o.preset,pe=this.o.eyes;
+    if(opts.squash)opts.squash={...this.o.squash,...opts.squash};
+    Object.assign(this.o,opts);
+    if(opts.preset!==undefined&&opts.preset!==pp){if(opts.eyes===undefined)this.o.eyes=/^pet/.test(opts.preset)||this.o.eyes;this.build()}
+    else if(opts.eyes!==undefined&&opts.eyes!==pe)this.buildEyes();
+    return this;
+  }
+  crush(axis='y',a=1){a=THREE.MathUtils.clamp(a,.05,4);const l=1/Math.sqrt(a),s=this.o.squash;s.x=s.y=s.z=l;s[axis]=a;return this}
+  applyForce(dir,{strength=1}={}){const d=new THREE.Vector3(...dir).normalize();for(let k=0;k<this.vel.length;k+=3){this.vel[k]+=d.x*strength;this.vel[k+1]+=d.y*strength;this.vel[k+2]+=d.z*strength}return this}
+  impulse(s=.8){this.bounce=Math.max(this.bounce,s);return this}
+  reset(){this.o.squash={x:1,y:1,z:1};this.vel.fill(0);this.bounce=0;this.drag.on=false;return this}
+  bind(dom,cam){
+    this.dom=dom;this.cam=cam;
+    const upd=e=>{const r=dom.getBoundingClientRect();this.ptr.set((e.clientX-r.left)/r.width*2-1,-((e.clientY-r.top)/r.height)*2+1);this.ray.setFromCamera(this.ptr,cam)};
+    const w=new THREE.Vector3();
+    dom.addEventListener('pointerdown',e=>{
+      if(e.button!==0)return;upd(e);const hit=this.ray.intersectObject(this.mesh,false)[0];if(!hit)return;
+      const d=this.drag;d.on=true;d.moved=false;d.point.copy(this.mesh.worldToLocal(hit.point.clone()));d.target.copy(d.point);
+      d.plane.setFromNormalAndCoplanarPoint(cam.getWorldDirection(new THREE.Vector3()),hit.point);d.world=hit.point.clone();
+      dom.setPointerCapture?.(e.pointerId);e.stopImmediatePropagation();
+    },{capture:true});
+    dom.addEventListener('pointermove',e=>{
+      upd(e);const d=this.drag;
+      if(!d.on){if(!dom._grab)dom._grab=new Set();const over=this.ray.intersectObject(this.mesh,false).length>0;over?dom._grab.add(this):dom._grab.delete(this);dom.style.cursor=dom._grab.size?'grab':'';return}
+      if(!this.ray.ray.intersectPlane(d.plane,w))return;d.moved=true;
+      this.mesh.updateWorldMatrix(true,false);
+      const pull=this.mesh.worldToLocal(w.clone()).sub(d.point).clampLength(0,this.r*.95*this.o.reach);
+      d.target.copy(d.point).add(pull);
+    });
+    const up=()=>{const d=this.drag;if(!d.on)return;if(!d.moved)this.bounce=.65;d.on=false;dom.style.cursor=''};
+    dom.addEventListener('pointerup',up);dom.addEventListener('pointercancel',up);
+    return this;
+  }
+  update(dt,now){
+    const o=this.o,pos=this.geo.attributes.position,rest=this.rest,vel=this.vel,sq=o.squash,d=this.drag;
+    dt=Math.min(dt,.05);const step=dt*o.speed/100;this.t+=step;
+    this.mesh.scale.setScalar(o.size*this.k);
+    this.mesh.position.y=o.floating?Math.sin(this.t*1.8)*.12:0;
+    if(o.autoRotate&&!d.on)this.mesh.rotation.y+=step*.5;
+    const m=this.mat;m.color.set(o.color);m.attenuationColor.set(o.color).lerp(new THREE.Color(0xffffff),.25);m.wireframe=o.wireframe;
+    const stiff=35+o.firmness*1.15,fr=2.3+o.damping*.11,damp=Math.exp(-fr*step);
+    this.bounce*=Math.exp(-step*3.3);
+    const idle=Math.sin(this.t*2.3)*.035*o.wobble/100*this.r/1.3,imp=Math.sin(this.t*14)*this.bounce;
+    const dx0=d.target.x-d.point.x,dy0=d.target.y-d.point.y,dz0=d.target.z-d.point.z;
+    const dl=Math.hypot(dx0,dy0,dz0),rad=(.18+22*.018)*this.r*this.r/1.7,fall=rad*rad/(1+dl*.35/this.r)*1.6;
+    const sag=o.gravity?-o.gravityStrength*.22*this.r/1.3:0;
+    for(let k=0;k<pos.count;k++){
+      const j=k*3,x=rest[j]*sq.x,y=rest[j+1]*sq.y,z=rest[j+2]*sq.z;
+      let w=0;if(d.on){const a=x-d.point.x,b=y-d.point.y,c=z-d.point.z;w=Math.exp(-(a*a+b*b+c*c)/fall)}
+      const tx=x*(1+imp*.2)+Math.sin(y*2+this.t*2)*idle+dx0*w,ty=y*(1-imp*.24)+dy0*w+sag,tz=z*(1+imp*.18)+dz0*w;
+      const px=pos.array[j],py=pos.array[j+1],pz=pos.array[j+2];
+      const vx=(vel[j]+(tx-px)*stiff*step)*damp,vy=(vel[j+1]+(ty-py)*stiff*step)*damp,vz=(vel[j+2]+(tz-pz)*stiff*step)*damp;
+      vel[j]=vx;vel[j+1]=vy;vel[j+2]=vz;pos.array[j]=px+vx*step;pos.array[j+1]=py+vy*step;pos.array[j+2]=pz+vz*step;
+    }
+    pos.needsUpdate=true;this.geo.computeVertexNormals();this.geo.computeBoundingSphere();
+    /* eyes glued to surface */
+    const nrm=this.geo.attributes.normal,ph=(now/1000)%4.3,bl=o.eyeBlink&&ph>3.95?Math.max(.06,Math.abs((ph-3.95)/.35*2-1)):1;
+    for(const a of this.att){
+      _n.fromBufferAttribute(nrm,a.idx);
+      a.e.position.set(pos.getX(a.idx)+_n.x*.03,pos.getY(a.idx)+_n.y*.03,pos.getZ(a.idx)+_n.z*.03);
+      a.e.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1),_n);
+      const s=a.e.userData.s;a.e.scale.set(s,s*bl,s);
+    }
+  }
+}
+
+/* ---------- stage helper ---------- */
+function stage(box,{fov=40,z=5.2}={}){
+  const canvas=box.querySelector('canvas');
+  const renderer=new THREE.WebGLRenderer({canvas,antialias:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.toneMapping=THREE.ACESFilmicToneMapping;
+  const scene=new THREE.Scene();scene.background=new THREE.Color(0x120d22);
+  const env=new THREE.Scene();
+  env.add(new THREE.Mesh(new THREE.BoxGeometry(20,20,20),new THREE.MeshBasicMaterial({color:0x2a1f4a,side:THREE.BackSide})));
+  for(const [x,y,zz,c] of[[0,9,0,0xffffff],[8,2,4,0xffd9ee],[-8,3,3,0xcfe0ff],[0,2,9,0xffffff]]){const mm=new THREE.MeshBasicMaterial({color:new THREE.Color(c).multiplyScalar(6),side:THREE.DoubleSide});const p=new THREE.Mesh(new THREE.PlaneGeometry(7,3),mm);p.position.set(x,y,zz);p.lookAt(0,0,0);env.add(p)}
+  scene.environment=new THREE.PMREMGenerator(renderer).fromScene(env,.04).texture;
+  const cam=new THREE.PerspectiveCamera(fov,1,.1,100);cam.position.set(0,0,z);
+  const api={renderer,scene,cam,onResize:null};
+  const fit=()=>{const w=box.clientWidth,h=box.clientHeight;renderer.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();api.onResize&&api.onResize(w/h)};
+  new ResizeObserver(fit).observe(box);fit();return api;
+}
+
+try{
+const clock=new THREE.Clock();
+
+/* ---------- hero ---------- */
+const H=stage(document.getElementById('hero'),{z:5.4});
+const hero=new Jelly({preset:'petBlob',color:0xe00072});
+H.scene.add(hero.mesh);hero.bind(H.renderer.domElement,H.cam);
+
+const $=id=>document.getElementById(id);
+const COLORS=[0xe00072,0x7c3aed,0x06b6d4,0x22c55e,0xfacc15,0xf97316];
+$('presets').innerHTML='';
+for(const p of['cube','sphere','star','heart','capsule','torus','blob','petCube','petSphere','petStar','petHeart','petBlob']){
+  const b=document.createElement('button');b.textContent=p;if(p==='petBlob')b.className='on';
+  b.onclick=()=>{hero.set({preset:p});[...$('presets').children].forEach(c=>c.classList.toggle('on',c===b))};$('presets').append(b);
+}
+for(const c of COLORS){
+  const b=document.createElement('button');b.className='sw'+(c===COLORS[0]?' on':'');b.style.background='#'+c.toString(16).padStart(6,'0');b.setAttribute('aria-label','color');
+  b.onclick=()=>{hero.set({color:c});[...$('colors').children].forEach(x=>x.classList.toggle('on',x===b))};$('colors').append(b);
+}
+for(const [k,l,min,max,st] of[['firmness','Firmness',0,100,1],['damping','Damping',0,100,1],['wobble','Idle wobble',0,300,1],['gravityStrength','Gravity',0,3,.05],['size','Size',.5,1.4,.01],['reach','Pull reach',.3,2,.05]]){
+  const r=document.createElement('label');r.className='row';
+  r.innerHTML=`<span>${l}</span><input type="range" min="${min}" max="${max}" step="${st}" value="${hero.o[k]}"><output>${hero.o[k]}</output>`;
+  const inp=r.querySelector('input'),out=r.querySelector('output');
+  inp.oninput=()=>{out.textContent=inp.value;hero.set({[k]:+inp.value})};$('sliders').append(r);
+}
+for(const [k,l] of[['eyes','Eyes'],['floating','Floating'],['autoRotate','Auto-rotate'],['wireframe','Wireframe']]){
+  const b=document.createElement('button');b.textContent=l;b.className=hero.o[k]?'on':'';
+  b.onclick=()=>{hero.set({[k]:!hero.o[k]});b.classList.toggle('on',hero.o[k])};$('toggles').append(b);
+}
+$('toggles').children[0].classList.add('on');
+const ACT={'Impulse':()=>hero.impulse(1.2),'Squash':()=>hero.crush('y',.45),'Stretch':()=>hero.crush('y',1.6),'Normal':()=>hero.crush('y',1),'Kick':()=>hero.applyForce([1,.4,0],{strength:2.5}),'Reset':()=>hero.reset()};
+for(const k in ACT){const b=document.createElement('button');b.textContent=k;b.onclick=ACT[k];$('actions').append(b)}
+
+/* ---------- gallery ---------- */
+const G=stage($('gal'),{fov:40,z:9});
+const items=[['petCube',0xe00072],['petSphere',0x7c3aed],['petStar',0xfacc15],['petHeart',0xf43f5e],['petBlob',0x22c55e],['petCapsule',0x06b6d4],['torus',0xf97316],['cube',0x3b82f6]];
+const gj=items.map(([p,c])=>{const j=new Jelly({preset:p,color:c,size:.62});G.scene.add(j.mesh);j.bind(G.renderer.domElement,G.cam);j.holder=j.mesh;return j});
+const GAP=2.6;
+G.onResize=asp=>{
+  const cols=asp>1.25?4:2,rows=Math.ceil(items.length/cols),t=Math.tan(THREE.MathUtils.degToRad(20));
+  G.cam.position.z=Math.max(rows*GAP/2/t,cols*GAP/2/(t*asp))+1;
+  gj.forEach((j,k)=>{j.px=((k%cols)-(cols-1)/2)*GAP;j.py=((rows-1)/2-Math.floor(k/cols))*GAP});
+};
+G.onResize(G.cam.aspect);
+
+/* ---------- loop ---------- */
+renderLoop();
+function renderLoop(){
+  requestAnimationFrame(renderLoop);
+  const dt=clock.getDelta(),now=performance.now();
+  hero.update(dt,now);
+  for(const j of gj){j.update(dt,now);j.mesh.position.x=j.px;j.mesh.position.y=j.py+j.mesh.position.y}
+  H.renderer.render(H.scene,H.cam);G.renderer.render(G.scene,G.cam);
+}
+}catch(e){console.error(e);document.getElementById('err').style.display='block'}
+</script>
+</body>
+</html>
