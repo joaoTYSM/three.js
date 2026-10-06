@@ -1,103 +1,97 @@
-<p align="center">
-  <h1 align="center">🍮 jelly.js</h1>
-</p>
+<div align="center">
 
-<p align="center">
-  A lightweight JavaScript library for creating customizable<br>
-  soft-body jelly objects for the web, powered by Three.js.
-</p>
+<img src="https://api.iconify.design/solar/blob-linear.svg?color=%23ffffff&width=72&height=72" width="72" height="72" alt="jelly.js">
 
-<p align="center">
-  <a href="https://github.com/joaoTYSM/tree.js">
-    <img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white" alt="GitHub">
-  </a>
-  <a href="https://github.com/joaoTYSM/tree.js/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/joaoTYSM/tree.js?style=flat-square&label=License" alt="License">
-  </a>
-  <a href="https://github.com/joaoTYSM/tree.js/commits/main/">
-    <img src="https://img.shields.io/github/last-commit/joaoTYSM/tree.js?style=flat-square&label=Last%20commit" alt="Last commit">
-  </a>
-  <a href="https://github.com/joaoTYSM/tree.js">
-    <img src="https://img.shields.io/github/stars/joaoTYSM/tree.js?style=flat-square&label=Stars&logo=github" alt="GitHub Stars">
-  </a>
-</p>
+# jelly.js
 
-<p align="center">
-  <a href="https://raw.githubusercontent.com/joaoTYSM/tree.js/refs/heads/main/jelly/tree.js">
-    <img src="https://img.shields.io/badge/tree.js-Raw-F7DF1E?style=flat-square&logo=javascript&logoColor=000000" alt="tree.js">
-  </a>
-  <a href="https://discord.gg/RCXKUtYhpp">
-    <img src="https://img.shields.io/badge/Discord-RCXKUtYhpp-5865F2?style=flat-square&logo=discord&logoColor=white" alt="Discord">
-  </a>
-</p>
+### Interactive soft-body jelly physics for Three.js
 
-<p align="center">
-  <a href="https://github.com/joaoTYSM/tree.js">Source</a>
-  &nbsp;•&nbsp;
-  <a href="https://raw.githubusercontent.com/joaoTYSM/tree.js/refs/heads/main/jelly/tree.js">tree.js</a>
-  &nbsp;•&nbsp;
-  <a href="https://discord.gg/RCXKUtYhpp">Discord</a>
-</p>
+A lightweight JavaScript library for creating interactive, deformable and customizable
+3D jelly objects directly in the browser.
+
+<br>
+
+[![GitHub](https://img.shields.io/badge/GitHub-joaoTYSM%2Ftree.js-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/joaoTYSM/tree.js)
+[![Three.js](https://img.shields.io/badge/Three.js-0.160.0-black?style=flat-square&logo=threedotjs&logoColor=white)](https://threejs.org/)
+[![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
+[![Discord](https://img.shields.io/badge/Discord-RCXKUtYhpp-5865F2?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/RCXKUtYhpp)
+
+<br>
+
+<a href="#features">Features</a>
+&nbsp;&nbsp;•&nbsp;&nbsp;
+<a href="#installation">Installation</a>
+&nbsp;&nbsp;•&nbsp;&nbsp;
+<a href="#quick-start">Quick Start</a>
+&nbsp;&nbsp;•&nbsp;&nbsp;
+<a href="#api">API</a>
+&nbsp;&nbsp;•&nbsp;&nbsp;
+<a href="#community">Community</a>
+
+</div>
 
 ---
 
-## 🫧 About
+## <img src="https://api.iconify.design/solar/info-circle-linear.svg?color=%23ffffff&width=20&height=20" width="20" height="20" align="absmiddle"> About
 
-**jelly.js** is a lightweight JavaScript library for creating interactive,
-customizable soft-body jelly objects directly on the web.
+**jelly.js** is an experimental soft-body 3D jelly system built on top of
+[Three.js](https://threejs.org/).
 
-It is designed to work alongside **Three.js** and modern JavaScript ES
-Modules, making it possible to add deformable and interactive objects to
-web projects without requiring a large framework.
+It creates a translucent, deformable 3D object that reacts to pointer interaction,
+movement and configurable physical parameters.
 
-> Inspired by soft-matter physics and designed for interactive web
-> experiences.
-
----
-
-## ✨ Features
-
-- 🫧 Soft-body jelly physics
-- 🖱️ Interactive drag-and-drop behavior
-- 🎨 Highly customizable
-- 🌐 Designed for modern web projects
-- ⚡ Powered by Three.js
-- 📦 Native ES Module support
-- 🪶 Lightweight integration
-- 📱 Compatible with mouse and touch-based interfaces
-- 🔧 Easy to embed into existing projects
+The project is designed to stay simple to integrate while exposing enough controls
+to customize the appearance and behavior of the jelly.
 
 ---
 
-## 🔗 Live Demo
+## <img src="https://api.iconify.design/solar/widget-5-linear.svg?color=%23ffffff&width=20&height=20" width="20" height="20" align="absmiddle"> Features
 
-<p align="center">
-  <a href="https://ilove-treejs.vercel.app/jelly">
-    <img src="https://img.shields.io/badge/▶%20Open%20Demo-5865F2?style=for-the-badge" alt="Open Demo">
-  </a>
-</p>
-
-> 🚧 The demo is currently under development.
+| | |
+|---|---|
+| <img src="https://api.iconify.design/solar/cursor-linear.svg?color=%23ffffff&width=20&height=20" width="20"> **Interactive** | Drag the jelly directly with pointer input. |
+| <img src="https://api.iconify.design/solar:video-frame-play-vertical-broken.svg?color=%23ffffff&width=20&height=20" width="20"> **Soft-body motion** | Deformable geometry with spring-like movement and wobble. |
+| <img src="https://api.iconify.design/solar/tuning-2-linear.svg?color=%23ffffff&width=20&height=20" width="20"> **Customizable** | Adjust firmness, damping, transparency, refraction, reflections and more. |
+| <img src="https://api.iconify.design/solar:pills-3-bold-duotone.svg?color=%23ffffff&width=20&height=20" width="20"> **3D** | Built around the Three.js rendering ecosystem. |
+| <img src="https://api.iconify.design/solar/code-2-linear.svg?color=%23ffffff&width=20&height=20" width="20"> **ES Modules** | Uses modern native JavaScript modules. |
+| <img src="https://api.iconify.design/solar/bolt-linear.svg?color=%23ffffff&width=20&height=20" width="20"> **Browser-based** | Runs directly inside a WebGL-capable browser. |
+| <img src="https://api.iconify.design/solar/refresh-linear.svg?color=%23ffffff&width=20&height=20" width="20"> **Resettable** | Restore the jelly to its original geometry. |
+| <img src="https://api.iconify.design/solar/maximize-linear.svg?color=%23ffffff&width=20&height=20" width="20"> **Responsive** | Automatically adapts the renderer to its container. |
 
 ---
 
-## 📦 Installation
+## <img src="https://api.iconify.design/solar/play-circle-linear.svg?color=%23ffffff&width=20&height=20" width="20" height="20" align="absmiddle"> Live Demo
 
-`jelly.js` uses modern **ES Modules** and **Three.js**.
+<div align="center">
 
-You can load it directly from GitHub without installing a package.
+<a href="https://github.com/joaoTYSM/tree.js">
 
-### Import Map
+<img src="https://img.shields.io/badge/OPEN_LIVE_DEMO-ffffff?style=for-the-badge&logo=googlechrome&logoColor=ffffff&labelColor=000000">
 
-Add the following to your HTML:
+</a>
+
+</div>
+
+> A dedicated online demo is being prepared.
+
+---
+
+## <img src="https://api.iconify.design/solar-download-linear.svg?color=%23ffffff&width=20&height=20" width="20" height="20" align="absmiddle"> Installation
+
+### CDN
+
+You can load `jelly.js` directly from the GitHub repository.
 
 ```html
 <script type="importmap">
 {
   "imports": {
     "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
-    "tree.js": "https://raw.githubusercontent.com/joaoTYSM/tree.js/refs/heads/main/jelly/tree.js"
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
   }
 }
+</script>
+
+<script type="module">
+  import Jelly from "https://raw.githubusercontent.com/joaoTYSM/tree.js/refs/heads/main/jelly/tree.js";
 </script>
