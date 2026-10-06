@@ -4,174 +4,153 @@
         ██║██╔════╝██║     ██║  ╚██╗ ██╔╝
         ██║█████╗  ██║     ██║   ╚████╔╝
    ██   ██║██╔══╝  ██║     ██║    ╚██╔╝
-   ╚█████╔╝███████╗███████╗███████╗██║          Discord: https://discord.gg/AUddtuAGUf (Guaranteed role on the server: "tree.js")
-    ╚════╝ ╚══════╝╚══════╝╚══════╝╚═╝          By joao repo: joaoTYSM/tree.js/jelly.js
+   ╚█████╔╝███████╗███████╗███████╗██║          Discord: https://discord.gg/AUddtuAGUf (Guaranteed role on the server: "tree.js")
+    ╚════╝ ╚══════╝╚══════╝╚══════╝╚═╝          By joao repo: joaoTYSM/three.js/jelly/
  
-                                                   :::::.....::.::::::--..-:.........                                                   
-                                               ....:.. ...:                  ....  ::....                                               
-                                           -:::: ....-:                         ..      :..:                                            
-                                         ..:.: : ....                               ....::.....                                         
-                                      ...::           ....                             --  ::-..:-                                      
-                                      ..:.....        ....-:                               ..:.....                                     
-                                     .: :.:......::..-                             ::..:.....    ...                                    
-                                    .. ....     .........:==-:. -  : -:-.. -:..:::......          ..                                    
-                                    .. ....     :-       ......................   ::::          . ..                                    
-                                    :: ..:          -:+                                ..   .::-. .:                                    
-                                   :. ::.    ...:                             -  =     --   :  -   ..                                   
-                                   .. .   ...:  ..     .....:--               =+--       .....    ...                                   
-                                  ::.......:    ..     ...  :..:..      ...:...-        ... ....... ..                                  
-                                  .:            ..  -- .:       ..     ...    ..:-     ..           ..                                  
-                                 :.::--          ..   ..:       ..    -.       ..      ..    :..:-- ...                                 
-                                 ..   :           :....          .:..-.         ...:    ..   ...  -  ..                                 
-                                 .    - :                                        :-::  ..:   ... :-  ..                                 
-                                ::    : .                                           ....     ....:--  .:                                
-                                .:    :....         :......                 ......            ...: -- ..                                
-                               ..     -...        ::.     ...             ..     ..           .... -=: ..                               
-                               .:    -....       ..   .... =..           -. ..... ..-              -=-                                  
-                               .: -  -....       ..   :... =..           -.   ... ..:           :    - .:                               
-                              ..  :  -:.         ..     .  =..           -.    .  ..-           :   .:  .:                              
-                              ..     ==          ..  ...   -..           -.- ..   ..-           :    :  ...                             
-                             ..   .  -.      .. ...:.....::.              ::.....::   ....      =   --   ..:                            
-                            ..  .:  :-.      .....  ......                  .....    .....      :   :::  :..                            
-                            ...:.:  .:...:                                                    =...  .:-  ...                            
-                           :..:...  . ...=-                                                    ....  -.: . .:                           
-                            ...:.   ....: :                                                :   .....     ...                            
-                             ...:   :...: :     :.  :: :                         .. --     ..   ...     :.:                             
-                               ....:  :.  .     ..:::  .:::  ....   -         -: :  ::   .--:   ..   =.:.                               
-                                  ....+       :::-      -::  :::-  =:::   --  -:        ..   :..  ....                                  
-                                    ...........        :::                 :  :.   :............:..:                                    
-                                             ..........  :-==::::- -:::          ....   ........:                                       
-                                                      ...........................:                                                      
+                                                   :::::.....::.::::::--..-:.........
+                                               ....:.. ...:                  ....  ::....
+                                           -:::: ....-:                         ..      :..:
+                                         ..:.: : ....                               ....::.....
+                                      ...::           ....                             --  ::-..:-
+                                      ..:.....        ....-:                               ..:.....
+                                     .: :.:......::..-                             ::..:.....    ...
+                                    .. ....     .........:==-:. -  : -:-.. -:..:::......          ..
+                                    .. ....     :-       ......................   ::::          . ..
+                                    :: ..:          -:+                                ..   .::-. .:
+                                   :. ::.    ...:                             -  =     --   :  -   ..
+                                   .. .   ...:  ..     .....:--               =+--       .....    ...
+                                  ::.......:    ..     ...  :..:..      ...:...-        ... ....... ..
+                                  .:            ..  -- .:       ..     ...    ..:-     ..           ..
+                                 :.::--          ..   ..:       ..    -.       ..      ..    :..:-- ...
+                                 ..   :           :....          .:..-.         ...:    ..   ...  -  ..
+                                 .    - :                                        :-::  ..:   ... :-  ..
+                                ::    : .                                           ....     ....:--  .:
+                                .:    :....         :......                 ......            ...: -- ..
+                               ..     -...        ::.     ...             ..     ..           .... -=: ..
+                               .:    -....       ..   .... =..           -. ..... ..-              -=-
+                               .: -  -....       ..   :... =..           -.   ... ..:           :    - .:
+                              ..  :  -:.         ..     .  =..           -.    .  ..-           :   .:  .:
+                              ..     ==          ..  ...   -..           -.- ..   ..-           :    :  ...
+                             ..   .  -.      .. ...:.....::.              ::.....::   ....      =   --   ..:
+                            ..  .:  :-.      .....  ......                  .....    .....      :   :::  :..
+                            ...:.:  .:...:                                                    =...  .:-  ...
+                           :..:...  . ...=-                                                    ....  -.: . .:
+                            ...:.   ....: :                                                :   .....     ...
+                             ...:   :...: :     :.  :: :                         .. --     ..   ...     :.:
+                               ....:  :.  .     ..:::  .:::  ....   -         -: :  ::   .--:   ..   =.:.
+                                  ....+       :::-      -::  :::-  =:::   --  -:        ..   :..  ....
+                                    ...........        :::                 :  :.   :............:..:.
+                                             ..........  :-==::::- -:::          ....   ........:.
+                                                      ...........................:.
 
  ──────────────────────────────────────────────────────────────────────────
 */
-/*!
- * ┌──────────────────────────────────────────────────────────────────────────┐
- * │                                                                          │
- * │   J E L L Y  .  J S                                                     │
- * │   soft-body deformation · spring physics · surface anchoring             │
- * │                                                                          │
- * │   v1.0.0 · three.js r150+ · MIT                                          │
- * │                                                                          │
- * ├──────────────────────────────────────────────────────────────────────────┤
- * │                                                                          │
- * │   A self-contained wobbly jelly for any three.js scene.                  │
- * │   No scene, no lights, no renderer, no background — just the mesh        │
- * │   and its physics. Drop it next to a bubble, a logo, a product shot.     │
- * │                                                                          │
- * │   QUICK START                                                            │
- * │                                                                          │
- * │     import { Jelly } from './jelly.js';                                  │
- * │                                                                          │
- * │     const jelly = new Jelly({                                            │
- * │       camera,                          // optional, enables interaction   │
- * │       domElement: renderer.domElement, // optional, enables interaction  │
- * │       preset: 'petStar',                                                 │
- * │       color: 0xe00072,                                                   │
- * │     });                                                                  │
- * │                                                                          │
- * │     scene.add(jelly.mesh);                                               │
- * │                                                                          │
- * │     // inside your render loop                                           │
- * │     jelly.update(delta);                                                 │
- * │                                                                          │
- * ├──────────────────────────────────────────────────────────────────────────┤
- * │                                                                          │
- * │   PRESETS                                                                │
- * │     cube · box · sphere · ball · circle · star · heart · capsule ·       │
- * │     pill · torus · donut · blob                                          │
- * │     pet · petCube · petBox · petSphere · petBall · petCircle ·           │
- * │     petStar · petHeart · petBlob · petCapsule      (presets with eyes)   │
- * │                                                                          │
- * │   OPTIONS   — every field is live-editable through jelly.set({ ... })    │
- * │                                                                          │
- * │     preset            string    geometry preset (see above)              │
- * │     geometry          BufferGeometry   custom geometry, overrides preset │
- * │     segments          number    tessellation of the built-in presets     │
- * │     size              number    uniform scale                            │
- * │     height            number    vertical scale multiplier                │
- * │     rotation          number    yaw in degrees                           │
- * │     autoRotate        boolean   slow idle spin                           │
- * │     autoRotateSpeed   number    degrees per second                       │
- * │                                                                          │
- * │     firmness          0..100    spring stiffness                         │
- * │     damping           0..100    internal friction                        │
- * │     wobble            0..100    idle wobble amplitude                    │
- * │     speed             10..150   simulation speed                         │
- * │     gravity           boolean   sag and rest on the floor                │
- * │     floor             number    world Y the jelly rests on               │
- * │     release           number    bounce given by a plain click            │
- * │     paused            boolean   freeze the simulation                    │
- * │                                                                          │
- * │     interactive       boolean   master switch for pointer input          │
- * │     interaction       'pull' | 'move' | 'camera' | 'none'               │
- * │     pullRadius        0..100    radius of the grab falloff               │
- * │     stretch           0..100    how far a grabbed vertex may travel      │
- * │                                                                          │
- * │     color             hex|int   jelly tint                               │
- * │     clearColor        hex|int   colour the tint fades into               │
- * │     saturation        0..100    colour intensity                         │
- * │     transmission      0..1      see-through amount                       │
- * │     roughness         0..1      surface micro-detail                     │
- * │     thickness         0..10     optical thickness                        │
- * │     ior               1..2.5    index of refraction                      │
- * │     attenuationDistance number  how far light travels inside             │
- * │     reflections       0..100    gloss, clearcoat and env intensity       │
- * │     texture           boolean   procedural speckle map                   │
- * │     wireframe         boolean   render as wire mesh                      │
- * │                                                                          │
- * │     eyes              boolean   button eyes snapped to the surface       │
- * │     eyeColor          hex|int   button colour                            │
- * │     eyeThread         hex|int   thread colour                            │
- * │     eyeSpacing        number    distance between eyes (auto if null)     │
- * │     blink             boolean   idle blinking                            │
- * │                                                                          │
- * ├──────────────────────────────────────────────────────────────────────────┤
- * │                                                                          │
- * │   API                                                                    │
- * │     jelly.mesh                 THREE.Mesh — add it to your scene         │
- * │     jelly.material             THREE.MeshPhysicalMaterial                │
- * │     jelly.basePosition         THREE.Vector3 — resting position          │
- * │     jelly.update(dt)           step the physics, call every frame        │
- * │     jelly.set({ ... })         change any option at runtime              │
- * │     jelly.get(key)             read one option                           │
- * │     jelly.setPreset(name)      rebuild the geometry                      │
- * │     jelly.sculpt(fn)           deform the rest shape with your own fn    │
- * │     jelly.attach(obj, opts)    glue any Object3D to the surface          │
- * │     jelly.detachAll()          release every attachment                  │
- * │     jelly.impulse(strength)    give it a wobble                          │
- * │     jelly.wobble(strength)     alias of impulse                          │
- * │     jelly.reset()              back to rest                              │
- * │     jelly.pause() / resume()   freeze / unfreeze                         │
- * │     jelly.bind(dom, camera)    enable pointer interaction                │
- * │     jelly.unbind()             disable pointer interaction               │
- * │     jelly.dispose()            free every GPU resource                   │
- * │                                                                          │
- * └──────────────────────────────────────────────────────────────────────────┘
+
+/**
+ * ══════════════════════════════════════════════════════════════════════════
+ *   J E L L Y  .  J S   —   soft-body deformation for three.js
+ * ══════════════════════════════════════════════════════════════════════════
+ *
+ *   A standalone spring-mass jelly. No scene, no lights, no renderer, no
+ *   floor, no background required. Drop it anywhere — floating in space,
+ *   pinned to a UI corner, or resting on the ground. Every parameter is
+ *   live-editable from code, and every visual/behavioural aspect can be
+ *   overridden or replaced.
+ *
+ * ── QUICK START ───────────────────────────────────────────────────────────
+ *
+ *     import { Jelly } from './jelly.js';
+ *
+ *     const jelly = new Jelly({
+ *       camera,
+ *       domElement: renderer.domElement,   // both optional — for pointer drag
+ *       preset: 'petStar',
+ *       floating: true,                    // no floor, no gravity pull
+ *       color: 0xe00072,
+ *     });
+ *
+ *     scene.add(jelly.mesh);
+ *
+ *     // every frame
+ *     jelly.update(delta);
+ *
+ * ── POWER MOVES ───────────────────────────────────────────────────────────
+ *
+ *     jelly.crush('y', 0.45);                       // squash flat
+ *     jelly.crush('y', 1.0);                        // back to normal
+ *     jelly.applyForce([1, 0.4, 0], { strength: 2 });  // kick it
+ *     jelly.setGravity(2.5);                        // heavier sag
+ *     jelly.setFloating(true);                      // cut the floor loose
+ *     jelly.impulse(1.2);                           // one-shot wobble
+ *     jelly.sculpt(v => v.multiplyScalar(1.1));     // reshape the rest
+ *     jelly.attach(myLogo, { at: [0, 0.6, 1.2] });  // glue to surface
+ *     jelly.setEyes({ factory: (T) => myEyeMesh }); // custom eyes
+ *
+ * ── PRESETS ───────────────────────────────────────────────────────────────
+ *     cube · box · sphere · ball · circle · star · heart · capsule · pill ·
+ *     torus · donut · blob
+ *     pet · petCube · petBox · petSphere · petBall · petCircle ·
+ *     petStar · petHeart · petBlob · petCapsule      (with button eyes)
+ *
+ * ── OPTIONS (all live-editable via jelly.set({...})) ──────────────────────
+ *     preset  geometry  segments
+ *     size  height  rotation  autoRotate  autoRotateSpeed
+ *     position  floating  grounded  floor
+ *     firmness  damping  wobble  speed  paused  release
+ *     gravity  gravityStrength
+ *     squash: { x, y, z }
+ *     interactive  interaction ('pull'|'move'|'camera'|'none')
+ *     pullRadius  stretch
+ *     color  clearColor  saturation  transmission  roughness  thickness
+ *     ior  attenuationDistance  reflections  texture  textureColor  wireframe
+ *     eyes  eyeColor  eyeThread  eyeSpacing  eyeHeight  eyeScale
+ *     eyeOffset  eyeFactory  eyeCount  eyeBlink
+ *
+ * ── API ───────────────────────────────────────────────────────────────────
+ *     jelly.mesh                     THREE.Mesh — add to your scene
+ *     jelly.material                 THREE.MeshPhysicalMaterial
+ *     jelly.basePosition             THREE.Vector3 (resting centre)
+ *     jelly.update(dt)               step physics — call every frame
+ *     jelly.set({...})               change options
+ *     jelly.get(key)                 read an option
+ *     jelly.setPreset(name)          rebuild geometry
+ *     jelly.sculpt(fn)               deform rest shape
+ *     jelly.crush(axis, amount)      squash / stretch with volume preserve
+ *     jelly.applyForce(dir, opts)    inject velocity
+ *     jelly.setGravity(v)            gravity on/off or strength multiplier
+ *     jelly.setFloating(bool)        drop the floor, free-float
+ *     jelly.setEyes(config)          custom eye setup
+ *     jelly.attach(obj, opts)        glue Object3D to surface
+ *     jelly.detachAll()
+ *     jelly.impulse(strength)  /  jelly.wobble(s)
+ *     jelly.reset()  pause()  resume()  toggle()
+ *     jelly.bind(dom, camera)  /  jelly.unbind()
+ *     jelly.dispose()
+ * ══════════════════════════════════════════════════════════════════════════
  */
 
 import * as THREE from 'three';
 import { mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
 
-/* -------------------------------------------------------------------------- */
-/*  scratch                                                                   */
-/* -------------------------------------------------------------------------- */
+/* ────────────────────────────────────────────────────────────────────────── */
+/*  scratch — zero-allocation per-frame math                                  */
+/* ────────────────────────────────────────────────────────────────────────── */
 
-const _point = new THREE.Vector3();
+const _p = new THREE.Vector3();
 const _inner = new THREE.Vector3();
-const _normal = new THREE.Vector3();
-const _world = new THREE.Vector3();
-const _delta = new THREE.Vector3();
+const _n = new THREE.Vector3();
+const _w = new THREE.Vector3();
+const _d = new THREE.Vector3();
 const _tint = new THREE.Color();
 const _clear = new THREE.Color();
-const _forward = new THREE.Vector3(0, 0, 1);
+const _fwd = new THREE.Vector3(0, 0, 1);
 const _up = new THREE.Vector3(0, 1, 0);
-const _quat = new THREE.Quaternion();
-const _clockNow = () => (typeof performance !== 'undefined' ? performance.now() : Date.now());
+const _q = new THREE.Quaternion();
+const _now = () => (typeof performance !== 'undefined' ? performance.now() : Date.now());
 
-/* -------------------------------------------------------------------------- */
+/* ────────────────────────────────────────────────────────────────────────── */
 /*  geometry builders                                                         */
-/* -------------------------------------------------------------------------- */
+/* ────────────────────────────────────────────────────────────────────────── */
 
 function roundedBox({ width = 2.8, height = 2.35, depth = 2.5, radius = 0.4, segments = 24, ripple = 0.055, squash = 0.8 } = {}) {
   const geometry = new THREE.BoxGeometry(width, height, depth, segments, segments, segments);
@@ -179,15 +158,15 @@ function roundedBox({ width = 2.8, height = 2.35, depth = 2.5, radius = 0.4, seg
   const core = new THREE.Vector3(width / 2 - radius, height / 2 - radius, depth / 2 - radius);
   const limit = core.clone().negate();
   for (let i = 0; i < position.count; i += 1) {
-    _point.fromBufferAttribute(position, i);
-    _inner.copy(_point).clamp(limit, core);
-    _normal.copy(_point).sub(_inner).normalize();
-    _point.copy(_inner).addScaledVector(_normal, radius);
+    _p.fromBufferAttribute(position, i);
+    _inner.copy(_p).clamp(limit, core);
+    _n.copy(_p).sub(_inner).normalize();
+    _p.copy(_inner).addScaledVector(_n, radius);
     if (ripple) {
-      const bump = ripple * Math.sin(_point.x * 3.8 + _point.z * 2.2) * Math.cos(_point.y * 3);
-      _point.addScaledVector(_normal, bump);
+      const bump = ripple * Math.sin(_p.x * 3.8 + _p.z * 2.2) * Math.cos(_p.y * 3);
+      _p.addScaledVector(_n, bump);
     }
-    position.setXYZ(i, _point.x, _point.y * squash, _point.z);
+    position.setXYZ(i, _p.x, _p.y * squash, _p.z);
   }
   geometry.deleteAttribute('normal');
   geometry.deleteAttribute('uv');
@@ -198,7 +177,7 @@ function ball({ radius = 1.25, segments = 44 } = {}) {
   return new THREE.SphereGeometry(radius, segments, Math.round(segments * 0.62));
 }
 
-function star({ outer = 1.4, inner = 0.62, points = 5, depth = 0.7, bevel = 0.12, bevelSegments = 3 } = {}) {
+function star({ outer = 1.4, inner = 0.62, points = 5, depth = 0.7, bevel = 0.12 } = {}) {
   const shape = new THREE.Shape();
   const total = points * 2;
   for (let i = 0; i < total; i += 1) {
@@ -211,7 +190,8 @@ function star({ outer = 1.4, inner = 0.62, points = 5, depth = 0.7, bevel = 0.12
   }
   shape.closePath();
   const geometry = new THREE.ExtrudeGeometry(shape, {
-    depth, bevelEnabled: true, bevelThickness: bevel, bevelSize: bevel, bevelSegments, curveSegments: 6, steps: 1,
+    depth, bevelEnabled: true, bevelThickness: bevel, bevelSize: bevel,
+    bevelSegments: 3, curveSegments: 6, steps: 1,
   });
   geometry.center();
   return geometry;
@@ -219,8 +199,7 @@ function star({ outer = 1.4, inner = 0.62, points = 5, depth = 0.7, bevel = 0.12
 
 function heart({ scale = 0.62, depth = 0.8, bevel = 0.12 } = {}) {
   const shape = new THREE.Shape();
-  const x = 0;
-  const y = 0;
+  const x = 0; const y = 0;
   shape.moveTo(x + 0.5, y + 0.5);
   shape.bezierCurveTo(x + 0.5, y + 0.5, x + 0.4, y, x, y);
   shape.bezierCurveTo(x - 0.6, y, x - 0.6, y + 0.7, x - 0.6, y + 0.7);
@@ -229,7 +208,8 @@ function heart({ scale = 0.62, depth = 0.8, bevel = 0.12 } = {}) {
   shape.bezierCurveTo(x + 1.6, y + 0.7, x + 1.6, y, x + 1.0, y);
   shape.bezierCurveTo(x + 0.7, y, x + 0.5, y + 0.5, x + 0.5, y + 0.5);
   const geometry = new THREE.ExtrudeGeometry(shape, {
-    depth, bevelEnabled: true, bevelThickness: bevel, bevelSize: bevel, bevelSegments: 3, curveSegments: 12, steps: 1,
+    depth, bevelEnabled: true, bevelThickness: bevel, bevelSize: bevel,
+    bevelSegments: 3, curveSegments: 12, steps: 1,
   });
   geometry.center();
   geometry.scale(scale, scale, scale);
@@ -248,10 +228,10 @@ function blob({ radius = 1.2, segments = 44, noise = 0.14, seed = 1.7 } = {}) {
   const geometry = new THREE.SphereGeometry(radius, segments, Math.round(segments * 0.62));
   const position = geometry.getAttribute('position');
   for (let i = 0; i < position.count; i += 1) {
-    _point.fromBufferAttribute(position, i);
-    const n = Math.sin(_point.x * 2.1 + seed) * Math.cos(_point.y * 2.7 - seed) * Math.sin(_point.z * 1.9 + seed);
-    _point.multiplyScalar(1 + n * noise);
-    position.setXYZ(i, _point.x, _point.y, _point.z);
+    _p.fromBufferAttribute(position, i);
+    const k = Math.sin(_p.x * 2.1 + seed) * Math.cos(_p.y * 2.7 - seed) * Math.sin(_p.z * 1.9 + seed);
+    _p.multiplyScalar(1 + k * noise);
+    position.setXYZ(i, _p.x, _p.y, _p.z);
   }
   return geometry;
 }
@@ -282,9 +262,9 @@ const PRESETS = {
   petCapsule: { build: capsule, eyes: true },
 };
 
-/* -------------------------------------------------------------------------- */
+/* ────────────────────────────────────────────────────────────────────────── */
 /*  geometry helpers                                                          */
-/* -------------------------------------------------------------------------- */
+/* ────────────────────────────────────────────────────────────────────────── */
 
 function projectUVs(geometry) {
   const position = geometry.getAttribute('position');
@@ -336,12 +316,15 @@ function speckleTexture({ size = 256, color = 0xffffff, alpha = 0.22, density = 
   }
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.wrapT = THREE.RepeatWrapping;
+  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
   return texture;
 }
 
-function createButtonEye(color, threadColor) {
+/* ────────────────────────────────────────────────────────────────────────── */
+/*  default button eye (used when no custom factory is supplied)              */
+/* ────────────────────────────────────────────────────────────────────────── */
+
+function createButtonEye(color = 0x453a33, threadColor = 0xf2e6cf) {
   const shape = new THREE.Shape();
   shape.absarc(0, 0, 0.225, 0, Math.PI * 2, false);
   for (const x of [-0.065, 0.065]) {
@@ -381,35 +364,49 @@ function createButtonEye(color, threadColor) {
   return group;
 }
 
-/* -------------------------------------------------------------------------- */
+/* ────────────────────────────────────────────────────────────────────────── */
 /*  defaults                                                                  */
-/* -------------------------------------------------------------------------- */
+/* ────────────────────────────────────────────────────────────────────────── */
 
 const DEFAULTS = {
+  /* shape */
   preset: 'cube',
   geometry: null,
   segments: 24,
 
+  /* transform */
   size: 1,
   height: 1,
   rotation: 0,
   autoRotate: false,
   autoRotateSpeed: 12,
+  position: null,
 
+  /* space */
+  floating: true,        /* true  → no floor, no ground collision, free float */
+  grounded: false,       /* true  → rest on `floor`                             */
+  floor: 0,
+
+  /* physics */
   firmness: 38,
   damping: 28,
   wobble: 70,
   speed: 100,
-  gravity: true,
-  floor: 0,
-  release: 0.65,
   paused: false,
+  release: 0.65,
 
+  gravity: true,
+  gravityStrength: 1,
+
+  squash: { x: 1, y: 1, z: 1 },
+
+  /* interaction */
   interactive: true,
   interaction: 'pull',
   pullRadius: 22,
   stretch: 65,
 
+  /* material */
   color: 0xe00072,
   clearColor: 0xffffff,
   saturation: 100,
@@ -423,20 +420,27 @@ const DEFAULTS = {
   textureColor: 0xffffff,
   wireframe: false,
 
+  /* eyes */
   eyes: false,
   eyeColor: 0x453a33,
   eyeThread: 0xf2e6cf,
   eyeSpacing: null,
-  blink: true,
+  eyeHeight: 0.62,
+  eyeScale: 1,
+  eyeOffset: 0.035,
+  eyeCount: 2,
+  eyeBlink: true,
+  eyeFactory: null,      /* (THREE, jelly, index) => Object3D                   */
+  eyeLayout: 'horizontal',
 };
 
-const REDUCED_MOTION = typeof window !== 'undefined'
+const REDUCED = typeof window !== 'undefined'
   && typeof window.matchMedia === 'function'
   && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* -------------------------------------------------------------------------- */
+/* ────────────────────────────────────────────────────────────────────────── */
 /*  Jelly                                                                     */
-/* -------------------------------------------------------------------------- */
+/* ────────────────────────────────────────────────────────────────────────── */
 
 export class Jelly {
   static PRESETS = Object.keys(PRESETS);
@@ -444,10 +448,13 @@ export class Jelly {
   static DEFAULTS = DEFAULTS;
 
   constructor(options = {}) {
-    const { camera = null, domElement = null, position = null, ...rest } = options;
+    const { camera = null, domElement = null, ...rest } = options;
 
     this.options = { ...DEFAULTS, ...rest };
-    if (PRESETS[this.options.preset]?.eyes) this.options.eyes = true;
+    this.options.squash = { ...DEFAULTS.squash, ...(rest.squash ?? {}) };
+    if (PRESETS[this.options.preset]?.eyes && rest.eyes === undefined) {
+      this.options.eyes = true;
+    }
 
     this.mesh = null;
     this.material = null;
@@ -470,10 +477,13 @@ export class Jelly {
     this._minY = -1;
     this._spanY = 2;
     this._halfHeight = 1;
-    this._explicitPosition = !!position;
+    this._explicitPosition = false;
     this._handlers = null;
 
-    if (position) this.basePosition.copy(toVector3(position, new THREE.Vector3()));
+    if (this.options.position) {
+      this.basePosition.copy(toVec3(this.options.position, new THREE.Vector3()));
+      this._explicitPosition = true;
+    }
 
     this.material = this._createMaterial();
     this.mesh = new THREE.Mesh(new THREE.BufferGeometry(), this.material);
@@ -499,7 +509,7 @@ export class Jelly {
     if (domElement) this.bind(domElement, camera);
   }
 
-  /* ---------------------------------------------------------------- build */
+  /* ─────────────────────────────────────────────────────────────── build */
 
   _createMaterial() {
     const o = this.options;
@@ -542,7 +552,11 @@ export class Jelly {
     this._halfHeight = this._spanY * 0.5;
 
     if (!this._explicitPosition) {
-      this.basePosition.set(0, o.floor + this._halfHeight * o.size * o.height, 0);
+      if (this.options.floating) {
+        this.basePosition.set(0, 0, 0);
+      } else {
+        this.basePosition.set(0, this.options.floor + this._halfHeight * o.size * o.height, 0);
+      }
     }
 
     this.mesh.scale.set(o.size, o.size * o.height, o.size);
@@ -558,38 +572,70 @@ export class Jelly {
     return this;
   }
 
+  /* ───────────────────────────────────────────────────────────── eyes */
+
   _buildEyes() {
     this._removeEyes();
     const o = this.options;
+    if (!o.eyes) return this;
+
+    const count = Math.max(1, Math.floor(o.eyeCount || 2));
     const box = this._geometry.boundingBox;
     const width = box.max.x - box.min.x;
     const height = box.max.y - box.min.y;
-    const spacing = o.eyeSpacing ?? width * 0.34;
-    const eyeY = box.min.y + height * 0.62;
-    const eyeZ = box.max.z + 0.03;
+    const spacing = o.eyeSpacing != null ? o.eyeSpacing : width * 0.34;
+    const eyeY = box.min.y + height * THREE.MathUtils.clamp(o.eyeHeight, 0, 1);
 
-    for (const side of [-1, 1]) {
-      const eye = createButtonEye(o.eyeColor, o.eyeThread);
-      eye.position.set(side * spacing * 0.5, eyeY, eyeZ);
-      this.mesh.add(eye);
-      this.attach(eye, { at: eye.position, offset: 0.035, align: true, blink: true });
-      this._eyes.push(eye);
+    for (let i = 0; i < count; i += 1) {
+      const object = this._createEyeObject(i, count);
+      if (!object) continue;
+
+      let px = 0;
+      let py = eyeY;
+      let pz = box.max.z + 0.02;
+
+      if (o.eyeLayout === 'vertical') {
+        py = eyeY + (i - (count - 1) * 0.5) * spacing;
+        px = 0;
+      } else if (count > 1) {
+        px = (i - (count - 1) * 0.5) * spacing;
+      }
+
+      object.scale.multiplyScalar(o.eyeScale);
+      object.position.set(px, py, pz);
+      this.mesh.add(object);
+      this.attach(object, {
+        at: object.position,
+        offset: o.eyeOffset,
+        align: true,
+        blink: o.eyeBlink,
+      });
+      this._eyes.push(object);
     }
     return this;
+  }
+
+  _createEyeObject(index, count) {
+    const o = this.options;
+    if (typeof o.eyeFactory === 'function') {
+      const result = o.eyeFactory(THREE, this, index);
+      if (result) return result;
+    }
+    return createButtonEye(o.eyeColor, o.eyeThread);
   }
 
   _removeEyes() {
     for (const eye of this._eyes) {
       const handle = this._attachments.find((a) => a.object === eye);
       if (handle) handle.detach();
-      eye.userData.dispose?.();
+      eye.userData?.dispose?.();
       eye.removeFromParent();
     }
     this._eyes = [];
     return this;
   }
 
-  /* ------------------------------------------------------------ materials */
+  /* ──────────────────────────────────────────────────────── material */
 
   _syncMaterial() {
     const o = this.options;
@@ -621,10 +667,10 @@ export class Jelly {
     }
   }
 
-  /* ----------------------------------------------------------- attachments */
+  /* ─────────────────────────────────────────────────────── attachments */
 
   attach(object, options = {}) {
-    const target = options.at ? toVector3(options.at, new THREE.Vector3()) : object.position.clone();
+    const target = options.at ? toVec3(options.at, new THREE.Vector3()) : object.position.clone();
     const index = this._nearestVertex(target);
     const handle = {
       object,
@@ -672,27 +718,27 @@ export class Jelly {
     const position = this._geometry.getAttribute('position');
     const normal = this._geometry.getAttribute('normal');
     const phase = (now / 1000) % 4.3;
-    const blink = this.options.blink && phase > 3.95
+    const blink = this.options.eyeBlink && phase > 3.95
       ? Math.max(0.06, Math.abs(((phase - 3.95) / 0.35) * 2 - 1))
       : 1;
 
     for (const handle of this._attachments) {
       const i = handle.index;
-      _normal.fromBufferAttribute(normal, i);
+      _n.fromBufferAttribute(normal, i);
       handle.object.position.set(
-        position.getX(i) + _normal.x * handle.offset,
-        position.getY(i) + _normal.y * handle.offset,
-        position.getZ(i) + _normal.z * handle.offset,
+        position.getX(i) + _n.x * handle.offset,
+        position.getY(i) + _n.y * handle.offset,
+        position.getZ(i) + _n.z * handle.offset,
       );
       if (handle.align) {
-        _quat.setFromUnitVectors(_forward, _normal);
-        handle.object.quaternion.copy(_quat);
+        _q.setFromUnitVectors(_fwd, _n);
+        handle.object.quaternion.copy(_q);
       }
       if (handle.blink) handle.object.scale.y = blink;
     }
   }
 
-  /* -------------------------------------------------------------- pointer */
+  /* ──────────────────────────────────────────────────────── pointer */
 
   bind(domElement, camera) {
     this.unbind();
@@ -754,7 +800,7 @@ export class Jelly {
     drag.worldOrigin.copy(hit.point);
     drag.normal.copy(hit.face ? hit.face.normal : _up);
     drag.plane.setFromNormalAndCoplanarPoint(
-      this._camera.getWorldDirection(_world).clone(),
+      this._camera.getWorldDirection(_w).clone(),
       hit.point,
     );
 
@@ -778,25 +824,25 @@ export class Jelly {
 
     this._updatePointer(event);
     this._drag.moved = true;
-    if (!this._raycaster.ray.intersectPlane(this._drag.plane, _world)) return;
+    if (!this._raycaster.ray.intersectPlane(this._drag.plane, _w)) return;
 
     const drag = this._drag;
-    _delta.copy(_world).sub(drag.worldOrigin);
+    _d.copy(_w).sub(drag.worldOrigin);
 
     if (o.interaction === 'move') {
-      drag.offset.copy(drag.origin).add(_delta);
-      drag.offset.y = Math.max(0, drag.offset.y);
+      drag.offset.copy(drag.origin).add(_d);
+      if (!o.floating && !o.grounded) drag.offset.y = Math.max(0, drag.offset.y);
       return;
     }
 
     const reach = 0.5 + o.stretch * 0.055;
-    const travel = Math.max(0, _delta.length() - reach * 0.55);
-    drag.offset.copy(drag.origin).addScaledVector(_delta.clone().normalize(), travel);
-    drag.offset.y = Math.max(0, drag.offset.y);
+    const travel = Math.max(0, _d.length() - reach * 0.55);
+    drag.offset.copy(drag.origin).addScaledVector(_d.clone().normalize(), travel);
+    if (!o.floating && !o.grounded) drag.offset.y = Math.max(0, drag.offset.y);
 
     this.mesh.position.copy(this.basePosition).add(drag.offset);
     this.mesh.updateWorldMatrix(true, false);
-    drag.target.copy(this.mesh.worldToLocal(_world.clone()));
+    drag.target.copy(this.mesh.worldToLocal(_w.clone()));
 
     const pull = drag.target.clone().sub(drag.point).clampLength(0, reach);
     const inward = pull.dot(drag.normal);
@@ -812,7 +858,7 @@ export class Jelly {
     if (this._dom) this._dom.style.cursor = '';
   }
 
-  /* ---------------------------------------------------------------- state */
+  /* ─────────────────────────────────────────────────────── state */
 
   set(options = {}) {
     const previousPreset = this.options.preset;
@@ -820,16 +866,18 @@ export class Jelly {
     const previousGeometry = this.options.geometry;
 
     if (options.position !== undefined) {
-      this.basePosition.copy(toVector3(options.position, new THREE.Vector3()));
+      this.basePosition.copy(toVec3(options.position, new THREE.Vector3()));
       this._explicitPosition = true;
       delete options.position;
     }
     if (options.camera) this._camera = options.camera;
-    if (options.floor !== undefined && !this._explicitPosition) {
-      this.basePosition.y = options.floor + this._halfHeight * this.options.size * this.options.height;
-    }
+    if (options.squash) options.squash = { ...this.options.squash, ...options.squash };
 
     Object.assign(this.options, options);
+
+    if (options.floor !== undefined && !this._explicitPosition && !this.options.floating) {
+      this.basePosition.y = this.options.floor + this._halfHeight * this.options.size * this.options.height;
+    }
 
     const rebuild = (options.preset !== undefined && options.preset !== previousPreset)
       || (options.geometry !== undefined && options.geometry !== previousGeometry);
@@ -838,9 +886,23 @@ export class Jelly {
       this._build();
     } else {
       this.mesh.scale.set(this.options.size, this.options.size * this.options.height, this.options.size);
-      if (!this._explicitPosition) this.basePosition.y = this.options.floor + this._halfHeight * this.mesh.scale.y;
+      if (!this._explicitPosition && !this.options.floating) {
+        this.basePosition.y = this.options.floor + this._halfHeight * this.mesh.scale.y;
+      }
       if (this.options.eyes && !previousEyes) this._buildEyes();
       if (!this.options.eyes && previousEyes) this._removeEyes();
+      if (this.options.eyes && (options.eyeFactory !== undefined
+        || options.eyeColor !== undefined
+        || options.eyeThread !== undefined
+        || options.eyeCount !== undefined
+        || options.eyeLayout !== undefined
+        || options.eyeSpacing !== undefined
+        || options.eyeHeight !== undefined
+        || options.eyeScale !== undefined
+        || options.eyeOffset !== undefined
+        || options.eyeBlink !== undefined)) {
+        this._buildEyes();
+      }
     }
     return this;
   }
@@ -852,6 +914,8 @@ export class Jelly {
   setPreset(preset) {
     return this.set({ preset });
   }
+
+  /* ────────────────────────────────────────────────── sculpt & crush */
 
   sculpt(fn) {
     const rest = this._rest;
@@ -874,11 +938,162 @@ export class Jelly {
     this._minY = box.min.y;
     this._spanY = Math.max(1e-4, box.max.y - box.min.y);
     this._halfHeight = this._spanY * 0.5;
-    if (!this._explicitPosition) this.basePosition.y = this.options.floor + this._halfHeight * this.mesh.scale.y;
+    if (!this._explicitPosition && !this.options.floating) {
+      this.basePosition.y = this.options.floor + this._halfHeight * this.mesh.scale.y;
+    }
 
     for (const handle of this._attachments) handle.index = this._nearestVertex(handle.object.position);
     return this;
   }
+
+  /**
+   * Squash / stretch on one axis while preserving volume.
+   *   jelly.crush('y', 0.5);   → half height, expanded sideways
+   *   jelly.crush('y', 1);     → back to shape
+   *   jelly.crush('y', 1.6);   → stretched tall, pinched sideways
+   */
+  crush(axis = 'y', amount = 1) {
+    const a = THREE.MathUtils.clamp(amount, 0.05, 4);
+    const lateral = 1 / Math.sqrt(a);
+    const s = this.options.squash;
+    if (axis === 'x') { s.x = a; s.y = lateral; s.z = lateral; }
+    else if (axis === 'z') { s.z = a; s.x = lateral; s.y = lateral; }
+    else { s.y = a; s.x = lateral; s.z = lateral; }
+    return this;
+  }
+
+  /** Uniform rescale of the rest shape (calls sculpt with a scalar). */
+  scaleRest(amount = 1) {
+    return this.sculpt((v) => v.multiplyScalar(amount));
+  }
+
+  /** Reset squash back to (1,1,1). */
+  unsquash() {
+    this.options.squash = { x: 1, y: 1, z: 1 };
+    return this;
+  }
+
+  /* ─────────────────────────────────────────────────────── forces */
+
+  /**
+   * Inject velocity into every vertex (or a falloff region).
+   *   jelly.applyForce([1, 0.5, 0], { strength: 2 });
+   *   jelly.applyForce([0, -1, 0], { strength: 4, origin: [0, 0.6, 0], radius: 0.5 });
+   */
+  applyForce(direction, options = {}) {
+    if (this.disposed) return this;
+    const strength = options.strength ?? 1;
+    const origin = options.origin ? toVec3(options.origin, new THREE.Vector3()) : null;
+    const radius = options.radius ?? 0.5;
+    const continuous = options.continuous ?? false;
+    const dir = toVec3(direction, new THREE.Vector3()).normalize();
+
+    const velocity = this._velocity;
+    const position = this._geometry.getAttribute('position');
+    const rest = this._rest;
+    const r2 = radius * radius;
+
+    for (let i = 0; i < position.count; i += 1) {
+      const j = i * 3;
+      let w = 1;
+      if (origin) {
+        const dx = rest[j] - origin.x;
+        const dy = rest[j + 1] - origin.y;
+        const dz = rest[j + 2] - origin.z;
+        w = Math.exp(-(dx * dx + dy * dy + dz * dz) / r2);
+      }
+      velocity[j] += dir.x * strength * w;
+      velocity[j + 1] += dir.y * strength * w;
+      velocity[j + 2] += dir.z * strength * w;
+      if (continuous) {
+        position.array[j] += dir.x * strength * w * 0.05;
+        position.array[j + 1] += dir.y * strength * w * 0.05;
+        position.array[j + 2] += dir.z * strength * w * 0.05;
+      }
+    }
+    if (continuous) position.needsUpdate = true;
+    return this;
+  }
+
+  /** Fire velocity outward from a local point — great for pokes. */
+  poke(point, options = {}) {
+    const at = toVec3(point, new THREE.Vector3());
+    const strength = options.strength ?? 1;
+    const radius = options.radius ?? 0.6;
+    const velocity = this._velocity;
+    const rest = this._rest;
+    const position = this._geometry.getAttribute('position');
+    const r2 = radius * radius;
+
+    for (let i = 0; i < position.count; i += 1) {
+      const j = i * 3;
+      const dx = rest[j] - at.x;
+      const dy = rest[j + 1] - at.y;
+      const dz = rest[j + 2] - at.z;
+      const d2 = dx * dx + dy * dy + dz * dz;
+      const w = Math.exp(-d2 / r2);
+      const inv = 1 / Math.max(1e-4, Math.sqrt(d2));
+      velocity[j] += dx * inv * strength * w;
+      velocity[j + 1] += dy * inv * strength * w;
+      velocity[j + 2] += dz * inv * strength * w;
+    }
+    return this;
+  }
+
+  /**
+   * Gravity control.
+   *   jelly.setGravity(false);  → off
+   *   jelly.setGravity(true);   → on, strength 1
+   *   jelly.setGravity(2.5);    → on, 2.5×  (heavier sag)
+   */
+  setGravity(value = true) {
+    if (typeof value === 'boolean') {
+      this.options.gravity = value;
+    } else {
+      this.options.gravity = value !== 0;
+      this.options.gravityStrength = Math.abs(value);
+    }
+    return this;
+  }
+
+  /** Toggle free-float mode. No floor, no ground collision. */
+  setFloating(value = true) {
+    this.options.floating = !!value;
+    if (this.options.floating) this.options.grounded = false;
+    else this.options.grounded = true;
+    if (!this.options.floating && !this._explicitPosition) {
+      this.basePosition.y = this.options.floor + this._halfHeight * this.mesh.scale.y;
+    }
+    return this;
+  }
+
+  /** Custom eyes in one call. */
+  setEyes(config = true) {
+    if (config === false || config === null) {
+      this.options.eyes = false;
+      this._removeEyes();
+      return this;
+    }
+    if (config === true) {
+      this.options.eyes = true;
+    } else {
+      this.options.eyes = true;
+      if (config.factory !== undefined) this.options.eyeFactory = config.factory;
+      if (config.count !== undefined) this.options.eyeCount = config.count;
+      if (config.spacing !== undefined) this.options.eyeSpacing = config.spacing;
+      if (config.height !== undefined) this.options.eyeHeight = config.height;
+      if (config.scale !== undefined) this.options.eyeScale = config.scale;
+      if (config.offset !== undefined) this.options.eyeOffset = config.offset;
+      if (config.color !== undefined) this.options.eyeColor = config.color;
+      if (config.thread !== undefined) this.options.eyeThread = config.thread;
+      if (config.blink !== undefined) this.options.eyeBlink = config.blink;
+      if (config.layout !== undefined) this.options.eyeLayout = config.layout;
+    }
+    this._buildEyes();
+    return this;
+  }
+
+  /* ─────────────────────────────────────────────────────── impulses */
 
   impulse(strength = 0.65) {
     this._bounce = Math.max(this._bounce, strength);
@@ -906,27 +1121,18 @@ export class Jelly {
     return this;
   }
 
-  pause() {
-    this.options.paused = true;
-    return this;
-  }
+  pause() { this.options.paused = true; return this; }
+  resume() { this.options.paused = false; return this; }
+  toggle() { this.options.paused = !this.options.paused; return this; }
 
-  resume() {
-    this.options.paused = false;
-    return this;
-  }
-
-  toggle() {
-    this.options.paused = !this.options.paused;
-    return this;
-  }
-
-  /* ---------------------------------------------------------------- frame */
+  /* ─────────────────────────────────────────────────────── frame */
 
   update(delta) {
     if (this.disposed) return this;
-    const now = _clockNow();
-    const raw = delta === undefined ? (this._last ? (now - this._last) / 1000 : 1 / 60) : delta;
+    const now = _now();
+    const raw = delta === undefined
+      ? (this._last ? (now - this._last) / 1000 : 1 / 60)
+      : delta;
     this._last = now;
     const dt = Math.min(Math.max(raw, 0), 0.05);
 
@@ -935,6 +1141,7 @@ export class Jelly {
     const position = geometry.getAttribute('position');
     const rest = this._rest;
     const velocity = this._velocity;
+    const squash = o.squash;
 
     this.mesh.scale.set(o.size, o.size * o.height, o.size);
     this.mesh.position.copy(this.basePosition).add(this._drag.offset);
@@ -954,7 +1161,7 @@ export class Jelly {
       const damping = Math.exp(-friction * step);
       this._bounce *= Math.exp(-step * 3.3);
 
-      const idle = REDUCED_MOTION ? 0 : Math.sin(this._elapsed * 2.3) * 0.035 * o.wobble / 100;
+      const idle = REDUCED ? 0 : Math.sin(this._elapsed * 2.3) * 0.035 * o.wobble / 100;
       const impact = Math.sin(this._elapsed * 14) * this._bounce;
 
       const drag = this._drag;
@@ -962,14 +1169,20 @@ export class Jelly {
       const radius = 0.18 + o.pullRadius * 0.018;
       const falloff = radius * radius / (1 + delta.length() * 0.35);
       const grabbing = drag.active;
-      const floorLocal = (o.floor - this.mesh.position.y) / Math.max(this.mesh.scale.y, 1e-5);
+
+      /* gravity: sag pulls targets down; grounded clamps them to the floor */
+      const sag = o.gravity ? -o.gravityStrength * 0.22 : 0;
+      const grounded = o.grounded && !o.floating;
+      const floorLocal = grounded
+        ? (o.floor - this.mesh.position.y) / Math.max(this.mesh.scale.y, 1e-5)
+        : -Infinity;
       const ramp = Math.max(this._spanY * 0.4, 1e-4);
 
       for (let i = 0; i < position.count; i += 1) {
         const j = i * 3;
-        const x = rest[j];
-        const y = rest[j + 1];
-        const z = rest[j + 2];
+        const x = rest[j] * squash.x;
+        const y = rest[j + 1] * squash.y;
+        const z = rest[j + 2] * squash.z;
 
         let weight = 0;
         if (grabbing) {
@@ -978,12 +1191,21 @@ export class Jelly {
           const dz = z - drag.point.z;
           weight = Math.exp(-(dx * dx + dy * dy + dz * dz) / falloff);
         }
-        const floorWeight = o.gravity ? THREE.MathUtils.clamp((y - this._minY) / ramp, 0, 1) : 1;
+        const floorWeight = grounded
+          ? THREE.MathUtils.clamp((y - this._minY * squash.y) / ramp, 0, 1)
+          : 1;
 
-        const tx = x * (1 + impact * 0.2) + Math.sin(y * 2 + this._elapsed * 2) * idle + delta.x * weight * floorWeight;
-        const ty = y * (1 - impact * 0.24) + delta.y * weight * floorWeight
-          + (o.gravity ? 0 : Math.sin(this._elapsed * 1.8) * 0.12);
-        const tz = z * (1 + impact * 0.18) + delta.z * weight * floorWeight;
+        const tx = x * (1 + impact * 0.2)
+          + Math.sin(y * 2 + this._elapsed * 2) * idle
+          + delta.x * weight * floorWeight;
+
+        const ty = y * (1 - impact * 0.24)
+          + delta.y * weight * floorWeight
+          + sag
+          + (o.floating ? Math.sin(this._elapsed * 1.8) * 0.12 : 0);
+
+        const tz = z * (1 + impact * 0.18)
+          + delta.z * weight * floorWeight;
 
         const px = position.array[j];
         const py = position.array[j + 1];
@@ -997,7 +1219,7 @@ export class Jelly {
         let ny = py + vy * step;
         let nz = pz + vz * step;
 
-        if (o.gravity && ny < floorLocal) {
+        if (grounded && ny < floorLocal) {
           ny = floorLocal;
           if (vy < 0) {
             vy = 0;
@@ -1022,7 +1244,7 @@ export class Jelly {
     return this;
   }
 
-  /* --------------------------------------------------------------- dispose */
+  /* ─────────────────────────────────────────────────────── dispose */
 
   dispose() {
     if (this.disposed) return this;
@@ -1030,7 +1252,7 @@ export class Jelly {
     this.unbind();
 
     for (const handle of [...this._attachments]) {
-      if (handle.object.userData?.dispose) handle.object.userData.dispose();
+      handle.object.userData?.dispose?.();
       handle.object.removeFromParent();
     }
     this._attachments.length = 0;
@@ -1048,11 +1270,12 @@ export class Jelly {
   }
 }
 
-/* -------------------------------------------------------------------------- */
+/* ────────────────────────────────────────────────────────────────────────── */
 /*  helpers                                                                   */
-/* -------------------------------------------------------------------------- */
+/* ────────────────────────────────────────────────────────────────────────── */
 
-function toVector3(value, target) {
+function toVec3(value, target) {
+  if (!value) return target.set(0, 0, 0);
   if (value.isVector3) return target.copy(value);
   if (Array.isArray(value)) return target.set(value[0] ?? 0, value[1] ?? 0, value[2] ?? 0);
   if (typeof value === 'object') return target.set(value.x ?? 0, value.y ?? 0, value.z ?? 0);
