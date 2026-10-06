@@ -1,12 +1,22 @@
 <div align="center">
 
-<img
-  src="./jelly/jelly.png"
-  width="172"
-  alt="jelly.js"
->
+<h1 align="center">
+  <img
+    src="https://raw.githubusercontent.com/joaoTYSM/tree.js/refs/heads/main/jelly/jelly.png"
+    width="140"
+    alt="jelly.js"
+    align="middle"
+  >
+  <span>
+    jelly.js<br>
+    <a href="https://github.com/joaoTYSM/tree.js/tree/main/jelly">
+      <small>View Source →</small>
+    </a>
+  </span>
+</h1>
 
-# jelly.js
+
+
 
 ### Interactive soft-body jelly physics for Three.js
 
