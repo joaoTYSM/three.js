@@ -1,6 +1,10 @@
 <div align="center">
 
-<img src="https://api.iconify.design/solar/blob-linear.svg?color=%23ffffff&width=72&height=72" width="72" height="72" alt="jelly.js">
+<img
+  src="./jelly/jelly.png"
+  width="172"
+  alt="jelly.js"
+>
 
 # jelly.js
 
