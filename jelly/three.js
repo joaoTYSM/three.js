@@ -1,11 +1,11 @@
-/* v2.5
+/* v3
  ──────────────────────────────────────────────────────────────────────────
         ██╗███████╗██╗     ██╗  ██╗   ██╗
         ██║██╔════╝██║     ██║  ╚██╗ ██╔╝
         ██║█████╗  ██║     ██║   ╚████╔╝
    ██   ██║██╔══╝  ██║     ██║    ╚██╔╝
    ╚█████╔╝███████╗███████╗███████╗██║          Discord: https://discord.gg/AUddtuAGUf (Guaranteed role on the server: "tree.js")
-    ╚════╝ ╚══════╝╚══════╝╚══════╝╚═╝          By joao repo: joaoTYSM/three.js/jelly/
+    ╚════╝ ╚══════╝╚══════╝╚══════╝╚═╝          By joao repo: joaoTYSM/tree.js/jelly.js
  
                                                    :::::.....::.::::::--..-:.........
                                                ....:.. ...:                  ....  ::....
@@ -46,95 +46,8 @@
  ──────────────────────────────────────────────────────────────────────────
 */
 
-/**
- * ══════════════════════════════════════════════════════════════════════════
- *   J E L L Y  .  J S   —   soft-body deformation for three.js
- * ══════════════════════════════════════════════════════════════════════════
- *
- *   A standalone spring-mass jelly. No scene, no lights, no renderer, no
- *   floor, no background required. Drop it anywhere — floating in space,
- *   pinned to a UI corner, or resting on the ground. Every parameter is
- *   live-editable from code, and every visual/behavioural aspect can be
- *   overridden or replaced.
- *
- * ── QUICK START ───────────────────────────────────────────────────────────
- *
- *     import { Jelly } from './jelly.js';
- *
- *     const jelly = new Jelly({
- *       camera,
- *       domElement: renderer.domElement,   // both optional — for pointer drag
- *       preset: 'petStar',
- *       floating: true,                    // no floor, no gravity pull
- *       color: 0xe00072,
- *     });
- *
- *     scene.add(jelly.mesh);
- *
- *     // every frame
- *     jelly.update(delta);
- *
- * ── POWER MOVES ───────────────────────────────────────────────────────────
- *
- *     jelly.crush('y', 0.45);                       // squash flat
- *     jelly.crush('y', 1.0);                        // back to normal
- *     jelly.applyForce([1, 0.4, 0], { strength: 2 });  // kick it
- *     jelly.setGravity(2.5);                        // heavier sag
- *     jelly.setFloating(true);                      // cut the floor loose
- *     jelly.impulse(1.2);                           // one-shot wobble
- *     jelly.sculpt(v => v.multiplyScalar(1.1));     // reshape the rest
- *     jelly.attach(myLogo, { at: [0, 0.6, 1.2] });  // glue to surface
- *     jelly.setEyes({ factory: (T) => myEyeMesh }); // custom eyes
- *
- * ── PRESETS ───────────────────────────────────────────────────────────────
- *     cube · box · sphere · ball · circle · star · heart · capsule · pill ·
- *     torus · donut · blob
- *     pet · petCube · petBox · petSphere · petBall · petCircle ·
- *     petStar · petHeart · petBlob · petCapsule      (with button eyes)
- *
- * ── OPTIONS (all live-editable via jelly.set({...})) ──────────────────────
- *     preset  geometry  segments
- *     size  height  rotation  autoRotate  autoRotateSpeed
- *     position  floating  grounded  floor
- *     firmness  damping  wobble  speed  paused  release
- *     gravity  gravityStrength
- *     squash: { x, y, z }
- *     interactive  interaction ('pull'|'move'|'camera'|'none')
- *     pullRadius  stretch
- *     color  clearColor  saturation  transmission  roughness  thickness
- *     ior  attenuationDistance  reflections  texture  textureColor  wireframe
- *     eyes  eyeColor  eyeThread  eyeSpacing  eyeHeight  eyeScale
- *     eyeOffset  eyeFactory  eyeCount  eyeBlink
- *
- * ── API ───────────────────────────────────────────────────────────────────
- *     jelly.mesh                     THREE.Mesh — add to your scene
- *     jelly.material                 THREE.MeshPhysicalMaterial
- *     jelly.basePosition             THREE.Vector3 (resting centre)
- *     jelly.update(dt)               step physics — call every frame
- *     jelly.set({...})               change options
- *     jelly.get(key)                 read an option
- *     jelly.setPreset(name)          rebuild geometry
- *     jelly.sculpt(fn)               deform rest shape
- *     jelly.crush(axis, amount)      squash / stretch with volume preserve
- *     jelly.applyForce(dir, opts)    inject velocity
- *     jelly.setGravity(v)            gravity on/off or strength multiplier
- *     jelly.setFloating(bool)        drop the floor, free-float
- *     jelly.setEyes(config)          custom eye setup
- *     jelly.attach(obj, opts)        glue Object3D to surface
- *     jelly.detachAll()
- *     jelly.impulse(strength)  /  jelly.wobble(s)
- *     jelly.reset()  pause()  resume()  toggle()
- *     jelly.bind(dom, camera)  /  jelly.unbind()
- *     jelly.dispose()
- * ══════════════════════════════════════════════════════════════════════════
- */
-
 import * as THREE from 'three';
 import { mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
-
-/* ────────────────────────────────────────────────────────────────────────── */
-/*  scratch — zero-allocation per-frame math                                  */
-/* ────────────────────────────────────────────────────────────────────────── */
 
 const _p = new THREE.Vector3();
 const _inner = new THREE.Vector3();
@@ -148,11 +61,9 @@ const _up = new THREE.Vector3(0, 1, 0);
 const _q = new THREE.Quaternion();
 const _now = () => (typeof performance !== 'undefined' ? performance.now() : Date.now());
 
-/* ────────────────────────────────────────────────────────────────────────── */
-/*  geometry builders                                                         */
-/* ────────────────────────────────────────────────────────────────────────── */
+/* geometry builders */
 
-function roundedBox({ width = 2.8, height = 2.35, depth = 2.5, radius = 0.4, segments = 24, ripple = 0.055, squash = 0.8 } = {}) {
+function roundedBox({ width = 2.8, height = 2.35, depth = 2.5, radius = 0.4, segments = 24, ripple = 0.055, shapeSquash = 0.8 } = {}) {
   const geometry = new THREE.BoxGeometry(width, height, depth, segments, segments, segments);
   const position = geometry.getAttribute('position');
   const core = new THREE.Vector3(width / 2 - radius, height / 2 - radius, depth / 2 - radius);
@@ -166,7 +77,7 @@ function roundedBox({ width = 2.8, height = 2.35, depth = 2.5, radius = 0.4, seg
       const bump = ripple * Math.sin(_p.x * 3.8 + _p.z * 2.2) * Math.cos(_p.y * 3);
       _p.addScaledVector(_n, bump);
     }
-    position.setXYZ(i, _p.x, _p.y * squash, _p.z);
+    position.setXYZ(i, _p.x, _p.y * shapeSquash, _p.z);
   }
   geometry.deleteAttribute('normal');
   geometry.deleteAttribute('uv');
@@ -262,9 +173,7 @@ const PRESETS = {
   petCapsule: { build: capsule, eyes: true },
 };
 
-/* ────────────────────────────────────────────────────────────────────────── */
-/*  geometry helpers                                                          */
-/* ────────────────────────────────────────────────────────────────────────── */
+/* geometry helpers */
 
 function projectUVs(geometry) {
   const position = geometry.getAttribute('position');
@@ -320,10 +229,6 @@ function speckleTexture({ size = 256, color = 0xffffff, alpha = 0.22, density = 
   return texture;
 }
 
-/* ────────────────────────────────────────────────────────────────────────── */
-/*  default button eye (used when no custom factory is supplied)              */
-/* ────────────────────────────────────────────────────────────────────────── */
-
 function createButtonEye(color = 0x453a33, threadColor = 0xf2e6cf) {
   const shape = new THREE.Shape();
   shape.absarc(0, 0, 0.225, 0, Math.PI * 2, false);
@@ -364,17 +269,11 @@ function createButtonEye(color = 0x453a33, threadColor = 0xf2e6cf) {
   return group;
 }
 
-/* ────────────────────────────────────────────────────────────────────────── */
-/*  defaults                                                                  */
-/* ────────────────────────────────────────────────────────────────────────── */
-
 const DEFAULTS = {
-  /* shape */
   preset: 'cube',
   geometry: null,
   segments: 24,
 
-  /* transform */
   size: 1,
   height: 1,
   rotation: 0,
@@ -382,12 +281,10 @@ const DEFAULTS = {
   autoRotateSpeed: 12,
   position: null,
 
-  /* space */
-  floating: true,        /* true  → no floor, no ground collision, free float */
-  grounded: false,       /* true  → rest on `floor`                             */
+  floating: true,
+  grounded: false,
   floor: 0,
 
-  /* physics */
   firmness: 38,
   damping: 28,
   wobble: 70,
@@ -400,13 +297,11 @@ const DEFAULTS = {
 
   squash: { x: 1, y: 1, z: 1 },
 
-  /* interaction */
   interactive: true,
   interaction: 'pull',
   pullRadius: 22,
   stretch: 65,
 
-  /* material */
   color: 0xe00072,
   clearColor: 0xffffff,
   saturation: 100,
@@ -420,7 +315,6 @@ const DEFAULTS = {
   textureColor: 0xffffff,
   wireframe: false,
 
-  /* eyes */
   eyes: false,
   eyeColor: 0x453a33,
   eyeThread: 0xf2e6cf,
@@ -430,7 +324,7 @@ const DEFAULTS = {
   eyeOffset: 0.035,
   eyeCount: 2,
   eyeBlink: true,
-  eyeFactory: null,      /* (THREE, jelly, index) => Object3D                   */
+  eyeFactory: null,
   eyeLayout: 'horizontal',
 };
 
@@ -438,13 +332,8 @@ const REDUCED = typeof window !== 'undefined'
   && typeof window.matchMedia === 'function'
   && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* ────────────────────────────────────────────────────────────────────────── */
-/*  Jelly                                                                     */
-/* ────────────────────────────────────────────────────────────────────────── */
-
 export class Jelly {
   static PRESETS = Object.keys(PRESETS);
-
   static DEFAULTS = DEFAULTS;
 
   constructor(options = {}) {
@@ -509,8 +398,6 @@ export class Jelly {
     if (domElement) this.bind(domElement, camera);
   }
 
-  /* ─────────────────────────────────────────────────────────────── build */
-
   _createMaterial() {
     const o = this.options;
     return new THREE.MeshPhysicalMaterial({
@@ -571,8 +458,6 @@ export class Jelly {
     if (o.eyes) this._buildEyes();
     return this;
   }
-
-  /* ───────────────────────────────────────────────────────────── eyes */
 
   _buildEyes() {
     this._removeEyes();
@@ -635,8 +520,6 @@ export class Jelly {
     return this;
   }
 
-  /* ──────────────────────────────────────────────────────── material */
-
   _syncMaterial() {
     const o = this.options;
     const m = this.material;
@@ -666,8 +549,6 @@ export class Jelly {
       this._texture = null;
     }
   }
-
-  /* ─────────────────────────────────────────────────────── attachments */
 
   attach(object, options = {}) {
     const target = options.at ? toVec3(options.at, new THREE.Vector3()) : object.position.clone();
@@ -737,8 +618,6 @@ export class Jelly {
       if (handle.blink) handle.object.scale.y = blink;
     }
   }
-
-  /* ──────────────────────────────────────────────────────── pointer */
 
   bind(domElement, camera) {
     this.unbind();
@@ -858,8 +737,6 @@ export class Jelly {
     if (this._dom) this._dom.style.cursor = '';
   }
 
-  /* ─────────────────────────────────────────────────────── state */
-
   set(options = {}) {
     const previousPreset = this.options.preset;
     const previousEyes = this.options.eyes;
@@ -915,8 +792,6 @@ export class Jelly {
     return this.set({ preset });
   }
 
-  /* ────────────────────────────────────────────────── sculpt & crush */
-
   sculpt(fn) {
     const rest = this._rest;
     const v = new THREE.Vector3();
@@ -946,12 +821,6 @@ export class Jelly {
     return this;
   }
 
-  /**
-   * Squash / stretch on one axis while preserving volume.
-   *   jelly.crush('y', 0.5);   → half height, expanded sideways
-   *   jelly.crush('y', 1);     → back to shape
-   *   jelly.crush('y', 1.6);   → stretched tall, pinched sideways
-   */
   crush(axis = 'y', amount = 1) {
     const a = THREE.MathUtils.clamp(amount, 0.05, 4);
     const lateral = 1 / Math.sqrt(a);
@@ -962,24 +831,15 @@ export class Jelly {
     return this;
   }
 
-  /** Uniform rescale of the rest shape (calls sculpt with a scalar). */
   scaleRest(amount = 1) {
     return this.sculpt((v) => v.multiplyScalar(amount));
   }
 
-  /** Reset squash back to (1,1,1). */
   unsquash() {
     this.options.squash = { x: 1, y: 1, z: 1 };
     return this;
   }
 
-  /* ─────────────────────────────────────────────────────── forces */
-
-  /**
-   * Inject velocity into every vertex (or a falloff region).
-   *   jelly.applyForce([1, 0.5, 0], { strength: 2 });
-   *   jelly.applyForce([0, -1, 0], { strength: 4, origin: [0, 0.6, 0], radius: 0.5 });
-   */
   applyForce(direction, options = {}) {
     if (this.disposed) return this;
     const strength = options.strength ?? 1;
@@ -1015,7 +875,6 @@ export class Jelly {
     return this;
   }
 
-  /** Fire velocity outward from a local point — great for pokes. */
   poke(point, options = {}) {
     const at = toVec3(point, new THREE.Vector3());
     const strength = options.strength ?? 1;
@@ -1040,12 +899,6 @@ export class Jelly {
     return this;
   }
 
-  /**
-   * Gravity control.
-   *   jelly.setGravity(false);  → off
-   *   jelly.setGravity(true);   → on, strength 1
-   *   jelly.setGravity(2.5);    → on, 2.5×  (heavier sag)
-   */
   setGravity(value = true) {
     if (typeof value === 'boolean') {
       this.options.gravity = value;
@@ -1056,7 +909,6 @@ export class Jelly {
     return this;
   }
 
-  /** Toggle free-float mode. No floor, no ground collision. */
   setFloating(value = true) {
     this.options.floating = !!value;
     if (this.options.floating) this.options.grounded = false;
@@ -1067,7 +919,6 @@ export class Jelly {
     return this;
   }
 
-  /** Custom eyes in one call. */
   setEyes(config = true) {
     if (config === false || config === null) {
       this.options.eyes = false;
@@ -1092,8 +943,6 @@ export class Jelly {
     this._buildEyes();
     return this;
   }
-
-  /* ─────────────────────────────────────────────────────── impulses */
 
   impulse(strength = 0.65) {
     this._bounce = Math.max(this._bounce, strength);
@@ -1124,8 +973,6 @@ export class Jelly {
   pause() { this.options.paused = true; return this; }
   resume() { this.options.paused = false; return this; }
   toggle() { this.options.paused = !this.options.paused; return this; }
-
-  /* ─────────────────────────────────────────────────────── frame */
 
   update(delta) {
     if (this.disposed) return this;
@@ -1170,7 +1017,6 @@ export class Jelly {
       const falloff = radius * radius / (1 + delta.length() * 0.35);
       const grabbing = drag.active;
 
-      /* gravity: sag pulls targets down; grounded clamps them to the floor */
       const sag = o.gravity ? -o.gravityStrength * 0.22 : 0;
       const grounded = o.grounded && !o.floating;
       const floorLocal = grounded
@@ -1244,8 +1090,6 @@ export class Jelly {
     return this;
   }
 
-  /* ─────────────────────────────────────────────────────── dispose */
-
   dispose() {
     if (this.disposed) return this;
     this.disposed = true;
@@ -1269,10 +1113,6 @@ export class Jelly {
     return this;
   }
 }
-
-/* ────────────────────────────────────────────────────────────────────────── */
-/*  helpers                                                                   */
-/* ────────────────────────────────────────────────────────────────────────── */
 
 function toVec3(value, target) {
   if (!value) return target.set(0, 0, 0);
