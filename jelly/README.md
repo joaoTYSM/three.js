@@ -7,12 +7,7 @@
     alt="jelly.js"
     align="middle"
   >
-  <span>
-    jelly.js<br>
-    <a href="https://github.com/joaoTYSM/tree.js/tree/main/jelly">
-      <small>View Source →</small>
-    </a>
-  </span>
+  <span>jelly.js</span>
 </h1>
 
 
