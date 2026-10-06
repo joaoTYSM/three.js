@@ -3,36 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="color-scheme" content="dark">
-
-<title>Jelly.js</title>
+<title>Jelly.js — Soft Matter</title>
 
 <style>
 :root{
   --bg:#0d1117;
   --panel:#161b22;
-  --panel2:#0d1117;
+  --panel2:#0f141a;
   --border:#30363d;
-  --border2:#21262d;
-  --text:#f0f6fc;
+  --text:#e6edf3;
   --muted:#8b949e;
-  --blue:#2f81f7;
-  --pink:#e00072;
+  --accent:#e00072;
   --green:#3fb950;
-  --radius:6px;
+  --blue:#58a6ff;
 }
 
 *{
   box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
-html{
-  scroll-behavior:smooth;
+html,
+body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
 }
 
 body{
-  margin:0;
-  min-width:320px;
   background:var(--bg);
   color:var(--text);
   font-family:
@@ -42,480 +41,511 @@ body{
     Helvetica,
     Arial,
     sans-serif;
-  font-size:14px;
-  line-height:1.5;
 }
 
-button,
-input{
-  font:inherit;
-}
-
-button{
-  color:inherit;
-}
-
-a{
-  color:inherit;
-  text-decoration:none;
-}
-
-.container{
-  width:min(1180px,calc(100% - 32px));
-  margin:auto;
-}
-
-/* HEADER */
-
-header{
-  position:sticky;
-  top:0;
-  z-index:20;
-  height:64px;
-  background:rgba(13,17,23,.94);
-  border-bottom:1px solid var(--border);
-  backdrop-filter:blur(10px);
-}
-
-.header-inner{
+canvas{
+  display:block;
+  width:100%;
   height:100%;
+}
+
+.app{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+}
+
+.topbar{
+  position:absolute;
+  left:18px;
+  right:18px;
+  top:14px;
+  height:46px;
+
   display:flex;
   align-items:center;
-  gap:24px;
+  justify-content:space-between;
+
+  padding:0 14px;
+
+  background:rgba(13,17,23,.86);
+  border:1px solid var(--border);
+  border-radius:8px;
+
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+
+  pointer-events:auto;
 }
 
 .brand{
   display:flex;
   align-items:center;
   gap:9px;
+  font-size:14px;
   font-weight:600;
-  font-size:16px;
 }
 
 .logo{
-  width:28px;
-  height:28px;
+  width:24px;
+  height:24px;
   display:grid;
   place-items:center;
+
   border:1px solid var(--border);
   border-radius:6px;
-  color:var(--pink);
+
+  color:var(--accent);
+  font-size:14px;
   font-weight:700;
 }
 
-.nav{
-  display:flex;
-  gap:18px;
+.version{
   color:var(--muted);
-}
-
-.nav a:hover{
-  color:var(--text);
-}
-
-.github{
-  margin-left:auto;
-  padding:6px 12px;
-  border:1px solid var(--border);
-  border-radius:6px;
-  background:var(--panel);
-}
-
-.github:hover{
-  border-color:#484f58;
-  background:#1c2128;
-}
-
-/* HERO */
-
-.hero{
-  border-bottom:1px solid var(--border);
-  padding:42px 0 36px;
-}
-
-.repo{
-  color:var(--muted);
-  font-size:13px;
-  margin-bottom:20px;
-}
-
-.hero-row{
-  display:flex;
-  justify-content:space-between;
-  gap:24px;
-}
-
-h1{
-  margin:0;
-  font-size:clamp(38px,7vw,58px);
-  line-height:1.05;
-  letter-spacing:-2px;
-}
-
-.hero p{
-  margin:12px 0 16px;
-  max-width:650px;
-  color:var(--muted);
-  font-size:16px;
-}
-
-.meta{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  color:var(--muted);
-  font-size:12px;
-}
-
-.badge{
-  padding:2px 7px;
-  border:1px solid var(--border);
-  border-radius:20px;
-  color:var(--text);
+  font-size:11px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
 }
 
 .status{
   display:flex;
   align-items:center;
   gap:7px;
+
   color:var(--muted);
+  font-size:11px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
 }
 
 .status-dot{
-  width:8px;
-  height:8px;
+  width:7px;
+  height:7px;
   border-radius:50%;
   background:var(--green);
+  box-shadow:0 0 8px rgba(63,185,80,.7);
 }
 
-/* SECTIONS */
-
-section{
-  padding:52px 0;
-}
-
-section+section{
-  border-top:1px solid var(--border2);
-}
-
-.heading{
-  margin-bottom:18px;
-}
-
-.heading h2{
-  margin:0;
-  font-size:22px;
-}
-
-.heading p{
-  margin:5px 0 0;
-  color:var(--muted);
-}
-
-/* PLAYGROUND */
-
-.playground{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) 330px;
-  gap:16px;
-}
-
-.viewport{
-  position:relative;
-  min-height:520px;
-  overflow:hidden;
-  background:#0d1117;
-  border:1px solid var(--border);
-  border-radius:8px;
-}
-
-.viewport::after{
-  content:"";
+.info{
   position:absolute;
-  inset:0;
+  left:22px;
+  top:82px;
   pointer-events:none;
-  background:
-    linear-gradient(
-      rgba(255,255,255,.018) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      rgba(255,255,255,.018) 1px,
-      transparent 1px
-    );
-  background-size:32px 32px;
 }
 
-canvas{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  display:block;
-  touch-action:none;
+.info h1{
+  font-size:clamp(28px,4vw,52px);
+  line-height:1;
+  letter-spacing:-1.8px;
+  font-weight:600;
 }
 
-.viewport-label{
-  position:absolute;
-  z-index:2;
-  left:14px;
-  bottom:12px;
+.info h1 span{
+  color:var(--accent);
+}
+
+.info p{
+  margin-top:9px;
   color:var(--muted);
   font-size:12px;
-  pointer-events:none;
+  max-width:340px;
+  line-height:1.55;
 }
 
-.loading{
+.panel{
   position:absolute;
-  inset:0;
-  z-index:5;
-  display:grid;
-  place-items:center;
-  background:var(--bg);
-  color:var(--muted);
-}
+  top:72px;
+  right:18px;
+  bottom:18px;
 
-.loading.hidden{
-  opacity:0;
-  pointer-events:none;
-}
+  width:280px;
 
-/* CONTROLS */
-
-.controls{
-  padding:16px;
-  background:var(--panel);
+  background:rgba(22,27,34,.94);
   border:1px solid var(--border);
   border-radius:8px;
+
+  overflow:auto;
+
+  pointer-events:auto;
+
+  scrollbar-width:thin;
+  scrollbar-color:#30363d transparent;
 }
 
-.control-section{
-  margin-bottom:20px;
+.panel::-webkit-scrollbar{
+  width:6px;
 }
 
-.control-section:last-child{
+.panel::-webkit-scrollbar-thumb{
+  background:#30363d;
+  border-radius:10px;
+}
+
+.panel-head{
+  position:sticky;
+  top:0;
+  z-index:5;
+
+  padding:14px 15px;
+
+  background:rgba(22,27,34,.94);
+  border-bottom:1px solid var(--border);
+
+  backdrop-filter:blur(12px);
+}
+
+.panel-head strong{
+  display:block;
+  font-size:13px;
+}
+
+.panel-head span{
+  display:block;
+  margin-top:3px;
+  color:var(--muted);
+  font-size:10px;
+}
+
+.section{
+  padding:14px 15px;
+  border-bottom:1px solid var(--border);
+}
+
+.section-title{
+  margin-bottom:10px;
+
+  color:var(--muted);
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:.8px;
+  text-transform:uppercase;
+}
+
+select,
+button{
+  font:inherit;
+}
+
+select{
+  width:100%;
+  height:32px;
+
+  padding:0 9px;
+
+  color:var(--text);
+  background:#0d1117;
+  border:1px solid var(--border);
+  border-radius:6px;
+
+  outline:none;
+}
+
+select:focus{
+  border-color:var(--blue);
+}
+
+option{
+  background:#161b22;
+  color:var(--text);
+}
+
+.slider{
+  margin-bottom:12px;
+}
+
+.slider:last-child{
   margin-bottom:0;
 }
 
-.control-title{
-  margin-bottom:9px;
-  color:var(--muted);
+.slider-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  margin-bottom:6px;
+}
+
+.slider-top span:first-child{
   font-size:11px;
-  font-weight:600;
-  text-transform:uppercase;
-  letter-spacing:.06em;
+}
+
+.value{
+  color:var(--accent);
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:10px;
+}
+
+input[type=range]{
+  width:100%;
+  height:4px;
+
+  appearance:none;
+  -webkit-appearance:none;
+
+  background:#30363d;
+  border-radius:4px;
+  outline:none;
+}
+
+input[type=range]::-webkit-slider-thumb{
+  appearance:none;
+  -webkit-appearance:none;
+
+  width:13px;
+  height:13px;
+
+  border:0;
+  border-radius:50%;
+
+  background:var(--accent);
+  cursor:pointer;
+}
+
+input[type=range]::-moz-range-thumb{
+  width:13px;
+  height:13px;
+
+  border:0;
+  border-radius:50%;
+
+  background:var(--accent);
+  cursor:pointer;
+}
+
+.toggle{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  min-height:29px;
+}
+
+.toggle span{
+  font-size:11px;
+}
+
+.switch{
+  position:relative;
+
+  width:31px;
+  height:18px;
+
+  appearance:none;
+  -webkit-appearance:none;
+
+  background:#30363d;
+  border-radius:20px;
+
+  cursor:pointer;
+  outline:none;
+}
+
+.switch::after{
+  content:"";
+
+  position:absolute;
+  top:3px;
+  left:3px;
+
+  width:12px;
+  height:12px;
+
+  border-radius:50%;
+  background:#8b949e;
+
+  transition:.15s;
+}
+
+.switch:checked{
+  background:var(--accent);
+}
+
+.switch:checked::after{
+  left:16px;
+  background:white;
+}
+
+.color-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  margin-bottom:10px;
+}
+
+.color-row:last-child{
+  margin-bottom:0;
+}
+
+.color-row span{
+  font-size:11px;
+}
+
+input[type=color]{
+  width:42px;
+  height:26px;
+
+  padding:2px;
+
+  background:#0d1117;
+  border:1px solid var(--border);
+  border-radius:5px;
+
+  cursor:pointer;
 }
 
 .buttons{
-  display:flex;
-  flex-wrap:wrap;
+  display:grid;
+  grid-template-columns:1fr 1fr;
   gap:6px;
 }
 
-.btn{
-  padding:5px 9px;
-  background:var(--bg);
+button{
+  min-height:31px;
+
+  color:var(--text);
+  background:#21262d;
+
   border:1px solid var(--border);
   border-radius:6px;
+
+  font-size:10px;
   cursor:pointer;
-  font-size:12px;
+
+  transition:
+    background .12s,
+    border-color .12s,
+    transform .12s;
 }
 
-.btn:hover{
-  background:#1c2128;
+button:hover{
+  background:#30363d;
   border-color:#484f58;
 }
 
-.btn.active{
-  color:#58a6ff;
-  border-color:var(--blue);
-  background:#10243f;
+button:active{
+  transform:scale(.97);
 }
 
-/* COLORS */
-
-.colors{
-  display:flex;
-  flex-wrap:wrap;
-  gap:9px;
+button.primary{
+  color:white;
+  background:var(--accent);
+  border-color:var(--accent);
 }
 
-.color{
-  width:22px;
-  height:22px;
-  padding:0;
-  border:2px solid var(--border);
-  border-radius:50%;
-  cursor:pointer;
+button.primary:hover{
+  background:#c80065;
 }
 
-.color.active{
-  outline:2px solid white;
-  outline-offset:2px;
-}
-
-/* SLIDERS */
-
-.slider{
+.stats{
   display:grid;
-  grid-template-columns:88px minmax(0,1fr) 38px;
-  gap:8px;
-  align-items:center;
-  margin-bottom:9px;
+  grid-template-columns:repeat(3,1fr);
+  gap:6px;
+}
+
+.stat{
+  padding:9px 7px;
+
+  background:#0d1117;
+  border:1px solid var(--border);
+  border-radius:6px;
+}
+
+.stat-value{
+  display:block;
+
+  color:var(--text);
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
   font-size:12px;
 }
 
-.slider label{
+.stat-label{
+  display:block;
+  margin-top:3px;
+
   color:var(--muted);
+  font-size:8px;
+  text-transform:uppercase;
 }
 
-.slider output{
+.help{
+  position:absolute;
+  left:22px;
+  bottom:18px;
+
   color:var(--muted);
-  text-align:right;
-  font-variant-numeric:tabular-nums;
+  font-size:10px;
+
+  pointer-events:none;
 }
 
-input[type="range"]{
-  width:100%;
-  margin:0;
-  accent-color:var(--blue);
-}
+.help kbd{
+  display:inline-block;
 
-/* GALLERY */
+  padding:2px 5px;
 
-.gallery{
-  min-height:570px;
-}
-
-/* CODE */
-
-.code{
-  overflow:auto;
-  background:#0d1117;
+  background:#161b22;
   border:1px solid var(--border);
-  border-radius:8px;
-}
+  border-radius:4px;
 
-pre{
-  margin:0;
-  padding:20px;
   color:#c9d1d9;
-  font-family:
-    ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    Monaco,
-    Consolas,
-    monospace;
-  font-size:13px;
-  line-height:1.65;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
 }
 
-/* FOOTER */
+@media(max-width:760px){
 
-footer{
-  border-top:1px solid var(--border);
-  padding:28px 0;
-  color:var(--muted);
-}
-
-.footer-inner{
-  display:flex;
-  flex-wrap:wrap;
-  gap:18px;
-}
-
-.footer-inner a{
-  color:#58a6ff;
-}
-
-.footer-inner a:hover{
-  text-decoration:underline;
-}
-
-/* RESPONSIVE */
-
-@media(max-width:900px){
-
-  .playground{
-    grid-template-columns:1fr;
+  .topbar{
+    left:10px;
+    right:10px;
+    top:10px;
   }
 
-  .controls{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:18px;
+  .info{
+    left:14px;
+    top:72px;
   }
 
-  .control-section{
-    margin:0;
+  .info h1{
+    font-size:28px;
   }
 
-  .viewport{
-    min-height:430px;
-  }
-}
-
-@media(max-width:640px){
-
-  .container{
-    width:calc(100% - 20px);
-  }
-
-  header{
-    height:56px;
-  }
-
-  .nav{
+  .info p{
     display:none;
   }
 
-  .hero{
-    padding-top:30px;
+  .panel{
+    left:10px;
+    right:10px;
+    top:auto;
+    bottom:10px;
+
+    width:auto;
+    max-height:43vh;
   }
 
-  .hero-row{
-    flex-direction:column;
+  .help{
+    display:none;
   }
 
   .status{
     display:none;
   }
-
-  section{
-    padding:38px 0;
-  }
-
-  .controls{
-    grid-template-columns:1fr;
-  }
-
-  .viewport{
-    min-height:360px;
-  }
-
-  .gallery{
-    min-height:440px;
-  }
 }
 
-@media(max-width:420px){
+@media(max-width:430px){
 
-  .github{
-    padding:5px 8px;
+  .panel{
+    max-height:48vh;
   }
 
-  h1{
-    font-size:40px;
+  .panel-head{
+    padding:10px 12px;
   }
 
-  .viewport{
-    min-height:320px;
+  .section{
+    padding:10px 12px;
   }
 
-  .slider{
-    grid-template-columns:78px minmax(0,1fr) 35px;
+  .section-title{
+    margin-bottom:8px;
   }
 }
 </style>
@@ -523,2326 +553,978 @@ footer{
 
 <body>
 
-<header>
-  <div class="container header-inner">
+<div class="app">
 
-    <a class="brand" href="#">
-      <span class="logo">J</span>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">J</div>
       <span>Jelly.js</span>
-    </a>
-
-    <nav class="nav">
-      <a href="#playground">Playground</a>
-      <a href="#gallery">Gallery</a>
-      <a href="#quick-start">Quick start</a>
-    </nav>
-
-    <a
-      class="github"
-      href="https://github.com/joaoTYSM/three.js"
-      target="_blank"
-      rel="noopener"
-    >
-      GitHub
-    </a>
-
-  </div>
-</header>
-
-
-<main>
-
-<section class="hero">
-  <div class="container">
-
-    <div class="repo">
-      joaoTYSM / three.js / jelly
+      <span class="version">v2.5</span>
     </div>
 
-    <div class="hero-row">
+    <div class="status">
+      <span class="status-dot"></span>
+      WebGL
+    </div>
+  </header>
 
-      <div>
-        <h1>Jelly.js</h1>
+  <div class="info">
+    <h1>Soft <span>Matter</span></h1>
+    <p>
+      A spring-mass soft body for three.js.
+      Grab the surface and pull it around.
+    </p>
+  </div>
 
-        <p>
-          A small soft-body physics experiment for Three.js.
-        </p>
+  <aside class="panel">
 
-        <div class="meta">
-          <span class="badge">v2.5</span>
-          <span>three.js</span>
-          <span>spring-mass physics</span>
+    <div class="panel-head">
+      <strong>Jelly playground</strong>
+      <span>Live parameters</span>
+    </div>
+
+    <section class="section">
+
+      <div class="section-title">Geometry</div>
+
+      <select id="preset">
+
+        <optgroup label="Shapes">
+          <option value="cube">Cube</option>
+          <option value="sphere">Sphere</option>
+          <option value="star">Star</option>
+          <option value="heart">Heart</option>
+          <option value="capsule">Capsule</option>
+          <option value="torus">Torus</option>
+          <option value="blob">Blob</option>
+        </optgroup>
+
+        <optgroup label="Pets">
+          <option value="petCube" selected>Pet Cube</option>
+          <option value="petSphere">Pet Sphere</option>
+          <option value="petStar">Pet Star</option>
+          <option value="petHeart">Pet Heart</option>
+          <option value="petBlob">Pet Blob</option>
+          <option value="petCapsule">Pet Capsule</option>
+        </optgroup>
+
+      </select>
+
+    </section>
+
+    <section class="section">
+
+      <div class="section-title">Elasticity</div>
+
+      <div class="slider">
+        <div class="slider-top">
+          <span>Firmness</span>
+          <span class="value" id="firmnessValue">38</span>
         </div>
+        <input id="firmness" type="range" min="0" max="100" value="38">
       </div>
 
-      <div class="status">
-        <span class="status-dot"></span>
-        <span>Interactive</span>
+      <div class="slider">
+        <div class="slider-top">
+          <span>Damping</span>
+          <span class="value" id="dampingValue">28</span>
+        </div>
+        <input id="damping" type="range" min="0" max="100" value="28">
       </div>
 
-    </div>
+      <div class="slider">
+        <div class="slider-top">
+          <span>Wobble</span>
+          <span class="value" id="wobbleValue">70</span>
+        </div>
+        <input id="wobble" type="range" min="0" max="100" value="70">
+      </div>
 
+      <div class="slider">
+        <div class="slider-top">
+          <span>Speed</span>
+          <span class="value" id="speedValue">100</span>
+        </div>
+        <input id="speed" type="range" min="10" max="150" value="100">
+      </div>
+
+      <div class="slider">
+        <div class="slider-top">
+          <span>Pull radius</span>
+          <span class="value" id="pullRadiusValue">22</span>
+        </div>
+        <input id="pullRadius" type="range" min="1" max="100" value="22">
+      </div>
+
+      <div class="slider">
+        <div class="slider-top">
+          <span>Stretch</span>
+          <span class="value" id="stretchValue">65</span>
+        </div>
+        <input id="stretch" type="range" min="0" max="100" value="65">
+      </div>
+
+    </section>
+
+    <section class="section">
+
+      <div class="section-title">Physics</div>
+
+      <div class="toggle">
+        <span>Gravity</span>
+        <input class="switch" id="gravity" type="checkbox" checked>
+      </div>
+
+      <div class="toggle">
+        <span>Floating</span>
+        <input class="switch" id="floating" type="checkbox" checked>
+      </div>
+
+      <div class="slider" style="margin-top:10px">
+        <div class="slider-top">
+          <span>Gravity strength</span>
+          <span class="value" id="gravityStrengthValue">1.0</span>
+        </div>
+        <input id="gravityStrength" type="range" min="0" max="5" step=".1" value="1">
+      </div>
+
+    </section>
+
+    <section class="section">
+
+      <div class="section-title">Material</div>
+
+      <div class="color-row">
+        <span>Color</span>
+        <input id="color" type="color" value="#e00072">
+      </div>
+
+      <div class="slider">
+        <div class="slider-top">
+          <span>Saturation</span>
+          <span class="value" id="saturationValue">100</span>
+        </div>
+        <input id="saturation" type="range" min="0" max="100" value="100">
+      </div>
+
+      <div class="slider">
+        <div class="slider-top">
+          <span>Transmission</span>
+          <span class="value" id="transmissionValue">1.00</span>
+        </div>
+        <input id="transmission" type="range" min="0" max="1" step=".01" value="1">
+      </div>
+
+      <div class="slider">
+        <div class="slider-top">
+          <span>Roughness</span>
+          <span class="value" id="roughnessValue">0.065</span>
+        </div>
+        <input id="roughness" type="range" min="0" max="1" step=".001" value=".065">
+      </div>
+
+      <div class="toggle">
+        <span>Wireframe</span>
+        <input class="switch" id="wireframe" type="checkbox">
+      </div>
+
+      <div class="toggle">
+        <span>Texture</span>
+        <input class="switch" id="texture" type="checkbox">
+      </div>
+
+    </section>
+
+    <section class="section">
+
+      <div class="section-title">Eyes</div>
+
+      <div class="toggle">
+        <span>Show eyes</span>
+        <input class="switch" id="eyes" type="checkbox" checked>
+      </div>
+
+      <div class="toggle">
+        <span>Blink</span>
+        <input class="switch" id="blink" type="checkbox" checked>
+      </div>
+
+      <div class="slider" style="margin-top:10px">
+        <div class="slider-top">
+          <span>Eye height</span>
+          <span class="value" id="eyeHeightValue">0.62</span>
+        </div>
+        <input id="eyeHeight" type="range" min="0" max="1" step=".01" value=".62">
+      </div>
+
+      <div class="slider">
+        <div class="slider-top">
+          <span>Eye spacing</span>
+          <span class="value" id="eyeSpacingValue">auto</span>
+        </div>
+        <input id="eyeSpacing" type="range" min="0" max="2" step=".05" value="0">
+      </div>
+
+    </section>
+
+    <section class="section">
+
+      <div class="section-title">Interaction</div>
+
+      <select id="interaction">
+        <option value="pull" selected>Pull / stretch</option>
+        <option value="move">Move</option>
+        <option value="camera">Camera</option>
+        <option value="none">None</option>
+      </select>
+
+    </section>
+
+    <section class="section">
+
+      <div class="section-title">Actions</div>
+
+      <div class="buttons">
+
+        <button class="primary" id="wobble">
+          Wobble
+        </button>
+
+        <button id="reset">
+          Reset
+        </button>
+
+        <button id="crush">
+          Crush
+        </button>
+
+        <button id="stretchAction">
+          Stretch
+        </button>
+
+        <button id="poke">
+          Poke
+        </button>
+
+        <button id="force">
+          Force
+        </button>
+
+        <button id="rotate">
+          Rotate
+        </button>
+
+        <button id="pause">
+          Pause
+        </button>
+
+      </div>
+
+    </section>
+
+    <section class="section">
+
+      <div class="section-title">Runtime</div>
+
+      <div class="stats">
+
+        <div class="stat">
+          <span class="stat-value" id="fps">60</span>
+          <span class="stat-label">FPS</span>
+        </div>
+
+        <div class="stat">
+          <span class="stat-value" id="vertices">0</span>
+          <span class="stat-label">Vertices</span>
+        </div>
+
+        <div class="stat">
+          <span class="stat-value" id="velocity">0</span>
+          <span class="stat-label">Velocity</span>
+        </div>
+
+      </div>
+
+    </section>
+
+  </aside>
+
+  <div class="help">
+    <kbd>Drag</kbd>
+    pull the jelly · <kbd>Click</kbd>
+    wobble
   </div>
-</section>
-
-
-<section id="playground">
-
-<div class="container">
-
-<div class="heading">
-  <h2>Playground</h2>
-  <p>
-    Drag the jelly to stretch it. Release it to let the spring system recover.
-  </p>
-</div>
-
-
-<div class="playground">
-
-<div
-  id="hero-stage"
-  class="viewport"
->
-
-<canvas id="hero-canvas"></canvas>
-
-<div class="viewport-label">
-  Drag the jelly
-</div>
-
-<div
-  id="loading"
-  class="loading"
->
-  Initializing...
-</div>
 
 </div>
-
-
-<aside class="controls">
-
-<div class="control-section">
-
-<div class="control-title">
-  Preset
-</div>
-
-<div
-  id="presets"
-  class="buttons"
-></div>
-
-</div>
-
-
-<div class="control-section">
-
-<div class="control-title">
-  Color
-</div>
-
-<div
-  id="colors"
-  class="colors"
-></div>
-
-</div>
-
-
-<div class="control-section">
-
-<div class="control-title">
-  Physics
-</div>
-
-<div id="physics"></div>
-
-</div>
-
-
-<div class="control-section">
-
-<div class="control-title">
-  Options
-</div>
-
-<div
-  id="options"
-  class="buttons"
-></div>
-
-</div>
-
-
-<div class="control-section">
-
-<div class="control-title">
-  Actions
-</div>
-
-<div
-  id="actions"
-  class="buttons"
-></div>
-
-</div>
-
-</aside>
-
-</div>
-
-</div>
-
-</section>
-
-
-<section id="gallery">
-
-<div class="container">
-
-<div class="heading">
-  <h2>Gallery</h2>
-
-  <p>
-    Different meshes using the same elastic deformation system.
-  </p>
-</div>
-
-
-<div
-  id="gallery-stage"
-  class="viewport gallery"
->
-
-<canvas id="gallery-canvas"></canvas>
-
-<div class="viewport-label">
-  Drag any mesh
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-<section id="quick-start">
-
-<div class="container">
-
-<div class="heading">
-  <h2>Quick start</h2>
-
-  <p>
-    Basic Jelly.js usage.
-  </p>
-</div>
-
-
-<div class="code">
-<pre><code>const jelly = new Jelly({
-  preset: "petBlob",
-  color: 0xe00072,
-  eyes: true,
-  elasticity: 2
-});
-
-scene.add(jelly.mesh);
-
-function animate() {
-  jelly.update(clock.getDelta());
-  renderer.render(scene, camera);
-}
-
-animate();</code></pre>
-</div>
-
-</div>
-
-</section>
-
-</main>
-
-
-<footer>
-
-<div class="container footer-inner">
-
-<span>Jelly.js</span>
-<span>Built with Three.js</span>
-
-<a
-  href="https://github.com/joaoTYSM/three.js"
-  target="_blank"
-  rel="noopener"
->
-  Source
-</a>
-
-</div>
-
-</footer>
-
 
 <script type="importmap">
 {
   "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
   }
 }
 </script>
 
-
 <script type="module">
 
 import * as THREE from "three";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { Jelly } from "https://cdn.jsdelivr.net/gh/joaoTYSM/three.js@main/jelly/three.js?v=2.5";
 
+const $ = id => document.getElementById(id);
 
-/* =========================================================
-   GEOMETRY
-========================================================= */
-
-function roundedBox(){
-
-  const g =
-    new THREE.BoxGeometry(
-      2.4,
-      2.15,
-      2.25,
-      26,
-      26,
-      26
-    );
-
-  const p =
-    g.attributes.position;
-
-  const half =
-    new THREE.Vector3(
-      1.2,
-      1.075,
-      1.125
-    );
-
-  const radius = .42;
-
-  const inner =
-    new THREE.Vector3(
-      half.x-radius,
-      half.y-radius,
-      half.z-radius
-    );
-
-  const min =
-    inner.clone().multiplyScalar(-1);
-
-  const a =
-    new THREE.Vector3();
-
-  const b =
-    new THREE.Vector3();
-
-  for(let i=0;i<p.count;i++){
-
-    a.fromBufferAttribute(p,i);
-
-    b.copy(a).clamp(
-      min,
-      inner
-    );
-
-    const d =
-      a.clone().sub(b);
-
-    if(d.lengthSq()>0){
-
-      d.normalize()
-       .multiplyScalar(radius);
-
-      a.copy(b).add(d);
-
-    }
-
-    p.setXYZ(
-      i,
-      a.x,
-      a.y,
-      a.z
-    );
-  }
-
-  g.computeVertexNormals();
-
-  return g;
-}
-
-
-function sphere(){
-
-  return new THREE.SphereGeometry(
-    1.25,
-    56,
-    40
-  );
-
-}
-
-
-function blob(){
-
-  const g =
-    new THREE.SphereGeometry(
-      1.25,
-      56,
-      40
-    );
-
-  const p =
-    g.attributes.position;
-
-  const v =
-    new THREE.Vector3();
-
-  for(let i=0;i<p.count;i++){
-
-    v.fromBufferAttribute(p,i);
-
-    const wave =
-      1 +
-      Math.sin(v.x*2.4) *
-      Math.cos(v.y*2.1) *
-      Math.sin(v.z*2.7) *
-      .09;
-
-    v.multiplyScalar(wave);
-
-    p.setXYZ(
-      i,
-      v.x,
-      v.y,
-      v.z
-    );
-
-  }
-
-  g.computeVertexNormals();
-
-  return g;
-}
-
-
-function capsule(){
-
-  const g =
-    new THREE.SphereGeometry(
-      1.15,
-      48,
-      36
-    );
-
-  const p =
-    g.attributes.position;
-
-  for(let i=0;i<p.count;i++){
-
-    const y =
-      p.getY(i);
-
-    const x =
-      p.getX(i);
-
-    const z =
-      p.getZ(i);
-
-    const factor =
-      1 +
-      Math.abs(y)*.34;
-
-    p.setXYZ(
-      i,
-      x*.94,
-      y*factor,
-      z*.94
-    );
-
-  }
-
-  g.computeVertexNormals();
-
-  return g;
-}
-
-
-function torus(){
-
-  return new THREE.TorusGeometry(
-    .95,
-    .40,
-    30,
-    64
-  );
-
-}
-
-
-function star(){
-
-  const shape =
-    new THREE.Shape();
-
-  const count = 10;
-
-  for(let i=0;i<count;i++){
-
-    const radius =
-      i%2===0
-        ? 1.35
-        : .62;
-
-    const angle =
-      i/count*Math.PI*2 -
-      Math.PI/2;
-
-    const x =
-      Math.cos(angle)*radius;
-
-    const y =
-      Math.sin(angle)*radius;
-
-    if(i===0)
-      shape.moveTo(x,y);
-    else
-      shape.lineTo(x,y);
-
-  }
-
-  shape.closePath();
-
-  const g =
-    new THREE.ExtrudeGeometry(
-      shape,
-      {
-        depth:.75,
-        bevelEnabled:true,
-        bevelThickness:.13,
-        bevelSize:.13,
-        bevelSegments:5,
-        curveSegments:16
-      }
-    );
-
-  g.center();
-
-  return g;
-}
-
-
-function heart(){
-
-  const shape =
-    new THREE.Shape();
-
-  shape.moveTo(0,.3);
-
-  shape.bezierCurveTo(
-    -.9,-.2,
-    -1.45,.55,
-    -1.05,1.15
-  );
-
-  shape.bezierCurveTo(
-    -.7,1.7,
-    0,1.55,
-    0,1.15
-  );
-
-  shape.bezierCurveTo(
-    0,1.55,
-    .7,1.7,
-    1.05,1.15
-  );
-
-  shape.bezierCurveTo(
-    1.45,.55,
-    .9,-.2,
-    0,.3
-  );
-
-  const g =
-    new THREE.ExtrudeGeometry(
-      shape,
-      {
-        depth:.72,
-        bevelEnabled:true,
-        bevelThickness:.13,
-        bevelSize:.13,
-        bevelSegments:5,
-        curveSegments:18
-      }
-    );
-
-  g.center();
-
-  g.scale.set(
-    .78,
-    .78,
-    .78
-  );
-
-  return g;
-}
-
-
-const BUILDERS = {
-  cube:roundedBox,
-  box:roundedBox,
-  sphere,
-  blob,
-  star,
-  heart,
-  capsule,
-  torus
-};
-
-
-/* =========================================================
-   EYES
-========================================================= */
-
-function createEye(){
-
-  const group =
-    new THREE.Group();
-
-  const white =
-    new THREE.MeshStandardMaterial({
-      color:0xf0f6fc,
-      roughness:.35
-    });
-
-  const black =
-    new THREE.MeshStandardMaterial({
-      color:0x171b22,
-      roughness:.25
-    });
-
-  const eye =
-    new THREE.Mesh(
-      new THREE.SphereGeometry(
-        .19,
-        24,
-        16
-      ),
-      white
-    );
-
-  const pupil =
-    new THREE.Mesh(
-      new THREE.SphereGeometry(
-        .095,
-        20,
-        14
-      ),
-      black
-    );
-
-  pupil.position.z=.17;
-
-  group.add(eye);
-  group.add(pupil);
-
-  return group;
-}
-
-
-/* =========================================================
-   JELLY
-========================================================= */
-
-const DEFAULTS = {
-
-  preset:"blob",
-
-  color:0xe00072,
-
-  size:1,
-
-  firmness:30,
-
-  damping:16,
-
-  wobble:60,
-
-  gravity:false,
-
-  gravityStrength:1,
-
-  reach:1.7,
-
-  elasticity:2,
-
-  pullRadius:1.45,
-
-  floating:true,
-
-  eyes:true,
-
-  autoRotate:false,
-
-  wireframe:false
-};
-
-
-class Jelly{
-
-  constructor(options={}){
-
-    this.o={
-      ...DEFAULTS,
-      ...options
-    };
-
-    this.mesh =
-      new THREE.Mesh();
-
-    this.material =
-      new THREE.MeshPhysicalMaterial({
-
-        color:this.o.color,
-
-        roughness:.1,
-
-        metalness:0,
-
-        transmission:.25,
-
-        thickness:1.5,
-
-        ior:1.4,
-
-        clearcoat:.4,
-
-        clearcoatRoughness:.15
-
-      });
-
-    this.mesh.material =
-      this.material;
-
-    this.velocity =
-      new Float32Array(0);
-
-    this.rest =
-      new Float32Array(0);
-
-    this.position =
-      null;
-
-    this.eyes = [];
-
-    this.drag = {
-
-      active:false,
-
-      grab:
-        new THREE.Vector3(),
-
-      target:
-        new THREE.Vector3(),
-
-      pull:
-        new THREE.Vector3(),
-
-      amount:0
-
-    };
-
-    this.raycaster =
-      new THREE.Raycaster();
-
-    this.pointer =
-      new THREE.Vector2();
-
-    this.dragPlane =
-      new THREE.Plane();
-
-    this.worldPoint =
-      new THREE.Vector3();
-
-    this.localPoint =
-      new THREE.Vector3();
-
-    this.radius=1;
-
-    this.build();
-
-  }
-
-
-  shapeName(){
-
-    let name =
-      this.o.preset;
-
-    if(name.startsWith("pet"))
-      name=name.substring(3);
-
-    return name.toLowerCase();
-
-  }
-
-
-  build(){
-
-    const builder =
-      BUILDERS[
-        this.shapeName()
-      ] || BUILDERS.blob;
-
-    const geometry =
-      builder();
-
-    geometry.computeBoundingBox();
-    geometry.computeBoundingSphere();
-    geometry.computeVertexNormals();
-
-    this.mesh.geometry =
-      geometry;
-
-    this.position =
-      geometry.attributes.position;
-
-    this.position.setUsage(
-      THREE.DynamicDrawUsage
-    );
-
-    this.rest =
-      new Float32Array(
-        this.position.array
-      );
-
-    this.velocity =
-      new Float32Array(
-        this.rest.length
-      );
-
-    this.radius =
-      geometry.boundingSphere.radius;
-
-    this.createEyes();
-
-    this.updateMaterial();
-
-  }
-
-
-  updateMaterial(){
-
-    this.material.color.set(
-      this.o.color
-    );
-
-    this.material.wireframe =
-      this.o.wireframe;
-
-  }
-
-
-  set(values={}){
-
-    const oldPreset =
-      this.o.preset;
-
-    Object.assign(
-      this.o,
-      values
-    );
-
-    if(
-      values.preset &&
-      values.preset!==oldPreset
-    ){
-
-      this.build();
-
-    }
-
-    if(
-      values.eyes!==undefined
-    ){
-
-      this.createEyes();
-
-    }
-
-    this.updateMaterial();
-
-    return this;
-
-  }
-
-
-  createEyes(){
-
-    for(
-      const eye of this.eyes
-    ){
-
-      this.mesh.remove(
-        eye.object
-      );
-
-    }
-
-    this.eyes=[];
-
-    if(!this.o.eyes)
-      return;
-
-    const geometry =
-      this.mesh.geometry;
-
-    const position =
-      geometry.attributes.position;
-
-    const bounds =
-      geometry.boundingBox;
-
-    const width =
-      bounds.max.x -
-      bounds.min.x;
-
-    const height =
-      bounds.max.y -
-      bounds.min.y;
-
-    for(
-      const side of [-1,1]
-    ){
-
-      let best=0;
-      let bestDistance=Infinity;
-
-      const wantedX =
-        side*width*.17;
-
-      const wantedY =
-        bounds.min.y+
-        height*.23;
-
-      const wantedZ =
-        bounds.max.z;
-
-      for(
-        let i=0;
-        i<position.count;
-        i++
-      ){
-
-        const dx =
-          position.getX(i)-wantedX;
-
-        const dy =
-          position.getY(i)-wantedY;
-
-        const dz =
-          position.getZ(i)-wantedZ;
-
-        const distance =
-          dx*dx+
-          dy*dy+
-          dz*dz;
-
-        if(
-          distance<bestDistance
-        ){
-
-          bestDistance=
-            distance;
-
-          best=i;
-
-        }
-
-      }
-
-      const eye =
-        createEye();
-
-      eye.scale.setScalar(
-        this.radius*.9
-      );
-
-      this.mesh.add(eye);
-
-      this.eyes.push({
-        object:eye,
-        vertex:best
-      });
-
-    }
-
-  }
-
-
-  bind(canvas,camera){
-
-    this.canvas=canvas;
-    this.camera=camera;
-
-    canvas.addEventListener(
-      "pointerdown",
-      event=>{
-
-        const rect =
-          canvas.getBoundingClientRect();
-
-        this.pointer.x =
-          ((event.clientX-rect.left)/
-          rect.width)*2-1;
-
-        this.pointer.y =
-          -((event.clientY-rect.top)/
-          rect.height)*2+1;
-
-        this.raycaster.setFromCamera(
-          this.pointer,
-          camera
-        );
-
-        const hit =
-          this.raycaster.intersectObject(
-            this.mesh,
-            false
-          )[0];
-
-        if(!hit)
-          return;
-
-        this.mesh.updateWorldMatrix(
-          true,
-          false
-        );
-
-        this.drag.active=true;
-
-        this.drag.grab.copy(
-          this.mesh.worldToLocal(
-            hit.point.clone()
-          )
-        );
-
-        this.drag.target.copy(
-          this.drag.grab
-        );
-
-        camera.getWorldDirection(
-          this.localPoint
-        );
-
-        this.dragPlane.setFromNormalAndCoplanarPoint(
-          this.localPoint,
-          hit.point
-        );
-
-        canvas.setPointerCapture?.(
-          event.pointerId
-        );
-
-        event.preventDefault();
-
-      },
-      {passive:false}
-    );
-
-
-    canvas.addEventListener(
-      "pointermove",
-      event=>{
-
-        if(!this.drag.active)
-          return;
-
-        const rect =
-          canvas.getBoundingClientRect();
-
-        this.pointer.x =
-          ((event.clientX-rect.left)/
-          rect.width)*2-1;
-
-        this.pointer.y =
-          -((event.clientY-rect.top)/
-          rect.height)*2+1;
-
-        this.raycaster.setFromCamera(
-          this.pointer,
-          camera
-        );
-
-        if(
-          !this.raycaster.ray.intersectPlane(
-            this.dragPlane,
-            this.worldPoint
-          )
-        )
-          return;
-
-        const local =
-          this.mesh.worldToLocal(
-            this.worldPoint.clone()
-          );
-
-        this.drag.pull.copy(
-          local
-        ).sub(
-          this.drag.grab
-        );
-
-        const maximum =
-          this.radius*this.o.reach;
-
-        this.drag.pull.clampLength(
-          0,
-          maximum
-        );
-
-        this.drag.target.copy(
-          this.drag.grab
-        ).add(
-          this.drag.pull
-        );
-
-        this.drag.amount =
-          Math.min(
-            1.5,
-            this.drag.pull.length()/
-            this.radius
-          );
-
-        event.preventDefault();
-
-      },
-      {passive:false}
-    );
-
-
-    const release=()=>{
-      this.drag.active=false;
-    };
-
-    canvas.addEventListener(
-      "pointerup",
-      release
-    );
-
-    canvas.addEventListener(
-      "pointercancel",
-      release
-    );
-
-    canvas.addEventListener(
-      "pointerleave",
-      ()=>{
-        if(
-          this.drag.active &&
-          !canvas.hasPointerCapture?.(
-            event?.pointerId
-          )
-        ){
-          this.drag.active=false;
-        }
-      }
-    );
-
-    return this;
-
-  }
-
-
-  impulse(strength=1){
-
-    for(
-      let i=0;
-      i<this.velocity.length;
-      i+=3
-    ){
-
-      this.velocity[i]+=
-        this.rest[i]*
-        strength*.35;
-
-      this.velocity[i+1]+=
-        this.rest[i+1]*
-        strength*.35;
-
-      this.velocity[i+2]+=
-        this.rest[i+2]*
-        strength*.35;
-
-    }
-
-  }
-
-
-  squash(amount=.7){
-
-    for(
-      let i=1;
-      i<this.velocity.length;
-      i+=3
-    ){
-
-      this.velocity[i]+=
-        this.rest[i]*
-        (amount-1)*
-        1.5;
-
-    }
-
-  }
-
-
-  stretch(amount=1.4){
-
-    for(
-      let i=1;
-      i<this.velocity.length;
-      i+=3
-    ){
-
-      this.velocity[i]+=
-        this.rest[i]*
-        (amount-1)*
-        1.5;
-
-    }
-
-  }
-
-
-  kick(){
-
-    for(
-      let i=0;
-      i<this.velocity.length;
-      i+=3
-    ){
-
-      this.velocity[i]+=.65;
-      this.velocity[i+1]+=.22;
-
-    }
-
-  }
-
-
-  reset(){
-
-    this.velocity.fill(0);
-
-    this.position.array.set(
-      this.rest
-    );
-
-    this.position.needsUpdate=true;
-
-    this.mesh.geometry.computeVertexNormals();
-
-    this.drag.active=false;
-
-  }
-
-
-  update(dt){
-
-    dt=Math.min(
-      dt,
-      .033
-    );
-
-    const now =
-      performance.now()*.001;
-
-    const stiffness =
-      26+
-      this.o.firmness*1.15;
-
-    const damping =
-      3+
-      this.o.damping*.16;
-
-    const influenceRadius =
-      this.radius*
-      this.o.pullRadius;
-
-    const pos =
-      this.position.array;
-
-    const vel =
-      this.velocity;
-
-    for(
-      let i=0;
-      i<this.position.count;
-      i++
-    ){
-
-      const j=i*3;
-
-      const rx=this.rest[j];
-      const ry=this.rest[j+1];
-      const rz=this.rest[j+2];
-
-      let tx=rx;
-      let ty=ry;
-      let tz=rz;
-
-
-      /* IDLE WOBBLE */
-
-      if(this.o.floating){
-
-        const wobble=
-          this.o.wobble/100;
-
-        tx+=
-          Math.sin(
-            now*1.7+
-            ry*2.2
-          )*
-          .025*
-          wobble;
-
-        ty+=
-          Math.sin(
-            now*1.45+
-            rx*2
-          )*
-          .018*
-          wobble;
-
-        tz+=
-          Math.cos(
-            now*1.55+
-            rz*2
-          )*
-          .025*
-          wobble;
-
-      }
-
-
-      /* DRAG */
-
-      if(this.drag.active){
-
-        const dx=
-          rx-
-          this.drag.grab.x;
-
-        const dy=
-          ry-
-          this.drag.grab.y;
-
-        const dz=
-          rz-
-          this.drag.grab.z;
-
-        const distance=
-          Math.sqrt(
-            dx*dx+
-            dy*dy+
-            dz*dz
-          );
-
-        let influence=
-          1-
-          distance/
-          influenceRadius;
-
-        influence=
-          Math.max(
-            0,
-            Math.min(
-              1,
-              influence
-            )
-          );
-
-        influence=
-          influence*
-          influence*
-          (3-2*influence);
-
-
-        /*
-          Extra elasticity.
-
-          The center of the pull follows the finger,
-          while the surrounding vertices follow with
-          progressively smaller displacement.
-        */
-
-        const factor=
-          influence*
-          this.o.elasticity;
-
-        tx+=
-          this.drag.pull.x*
-          factor;
-
-        ty+=
-          this.drag.pull.y*
-          factor;
-
-        tz+=
-          this.drag.pull.z*
-          factor;
-
-
-        /*
-          Volume compensation.
-          Pulling in one direction slightly compresses
-          the other axes instead of simply scaling the
-          entire object.
-        */
-
-        const pullLength=
-          this.drag.pull.length()/
-          Math.max(
-            this.radius,
-            .0001
-          );
-
-        const compression=
-          Math.min(
-            .28,
-            pullLength*
-            influence*
-            .16
-          );
-
-        tx*=
-          1-compression;
-
-        tz*=
-          1-compression;
-
-      }
-
-
-      /* GRAVITY */
-
-      if(this.o.gravity){
-
-        ty-=
-          this.o.gravityStrength*
-          .045;
-
-      }
-
-
-      const cx=pos[j];
-      const cy=pos[j+1];
-      const cz=pos[j+2];
-
-
-      /* SPRING */
-
-      const fx=
-        (tx-cx)*
-        stiffness;
-
-      const fy=
-        (ty-cy)*
-        stiffness;
-
-      const fz=
-        (tz-cz)*
-        stiffness;
-
-
-      vel[j]+=
-        fx*
-        dt;
-
-      vel[j+1]+=
-        fy*
-        dt;
-
-      vel[j+2]+=
-        fz*
-        dt;
-
-
-      const dampingFactor=
-        Math.exp(
-          -damping*
-          dt
-        );
-
-      vel[j]*=
-        dampingFactor;
-
-      vel[j+1]*=
-        dampingFactor;
-
-      vel[j+2]*=
-        dampingFactor;
-
-
-      pos[j]+=
-        vel[j]*
-        dt;
-
-      pos[j+1]+=
-        vel[j+1]*
-        dt;
-
-      pos[j+2]+=
-        vel[j+2]*
-        dt;
-
-    }
-
-
-    this.position.needsUpdate=true;
-
-    this.mesh.geometry.computeVertexNormals();
-
-    this.updateEyes();
-
-    this.mesh.scale.setScalar(
-      this.o.size
-    );
-
-
-    if(
-      this.o.autoRotate &&
-      !this.drag.active
-    ){
-
-      this.mesh.rotation.y+=
-        dt*.55;
-
-    }
-
-  }
-
-
-  updateEyes(){
-
-    if(!this.o.eyes)
-      return;
-
-    const position=
-      this.position;
-
-    const normals=
-      this.mesh.geometry.attributes.normal;
-
-    const forward=
-      new THREE.Vector3(
-        0,
-        0,
-        1
-      );
-
-    const normal=
-      new THREE.Vector3();
-
-
-    for(
-      const eye of this.eyes
-    ){
-
-      const i=
-        eye.vertex;
-
-      eye.object.position.set(
-        position.getX(i),
-        position.getY(i),
-        position.getZ(i)
-      );
-
-      normal.set(
-        normals.getX(i),
-        normals.getY(i),
-        normals.getZ(i)
-      ).normalize();
-
-      eye.object.quaternion.setFromUnitVectors(
-        forward,
-        normal
-      );
-
-    }
-
-  }
-
-}
-
-
-/* =========================================================
+/* --------------------------------------------------
    SCENE
-========================================================= */
+-------------------------------------------------- */
 
-function createScene(
-  canvas,
-  container,
-  cameraDistance
+const scene = new THREE.Scene();
+
+scene.background = new THREE.Color(0x0d1117);
+
+const camera = new THREE.PerspectiveCamera(
+  36,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  100
+);
+
+camera.position.set(4.7,2.8,6.8);
+camera.lookAt(0,0.8,0);
+
+const renderer = new THREE.WebGLRenderer({
+  antialias:true,
+  alpha:false
+});
+
+renderer.setPixelRatio(
+  Math.min(window.devicePixelRatio || 1,2)
+);
+
+renderer.setSize(
+  window.innerWidth,
+  window.innerHeight
+);
+
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.15;
+
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+document.body.appendChild(renderer.domElement);
+
+/* --------------------------------------------------
+   ENVIRONMENT
+-------------------------------------------------- */
+
+const pmrem = new THREE.PMREMGenerator(renderer);
+
+const room = new RoomEnvironment();
+
+scene.environment =
+  pmrem.fromScene(room,0.04).texture;
+
+room.dispose();
+
+/* --------------------------------------------------
+   LIGHT
+-------------------------------------------------- */
+
+const keyLight =
+  new THREE.DirectionalLight(0xffffff,3.2);
+
+keyLight.position.set(-3,6,5);
+keyLight.castShadow = true;
+
+keyLight.shadow.mapSize.set(1024,1024);
+
+scene.add(keyLight);
+
+scene.add(
+  new THREE.HemisphereLight(
+    0xffffff,
+    0x20242b,
+    1.4
+  )
+);
+
+/* --------------------------------------------------
+   GROUND
+-------------------------------------------------- */
+
+const ground =
+  new THREE.Mesh(
+    new THREE.PlaneGeometry(100,100),
+    new THREE.ShadowMaterial({
+      opacity:.18
+    })
+  );
+
+ground.rotation.x = -Math.PI / 2;
+ground.position.y = -1.55;
+ground.receiveShadow = true;
+
+scene.add(ground);
+
+/* --------------------------------------------------
+   JELLY
+   This uses the exact Jelly.js constructor logic.
+-------------------------------------------------- */
+
+const jelly = new Jelly({
+
+  camera,
+
+  domElement:
+    renderer.domElement,
+
+  preset:
+    "petCube",
+
+  segments:
+    32,
+
+  size:
+    1,
+
+  height:
+    1,
+
+  floating:
+    true,
+
+  grounded:
+    false,
+
+  gravity:
+    true,
+
+  gravityStrength:
+    1,
+
+  firmness:
+    38,
+
+  damping:
+    28,
+
+  wobble:
+    70,
+
+  speed:
+    100,
+
+  interaction:
+    "pull",
+
+  interactive:
+    true,
+
+  pullRadius:
+    22,
+
+  stretch:
+    65,
+
+  eyes:
+    true,
+
+  eyeBlink:
+    true,
+
+  eyeHeight:
+    .62,
+
+  eyeSpacing:
+    null,
+
+  eyeScale:
+    1,
+
+  eyeOffset:
+    .035,
+
+  eyeCount:
+    2,
+
+  color:
+    0xe00072,
+
+  clearColor:
+    0xffffff,
+
+  saturation:
+    100,
+
+  transmission:
+    1,
+
+  roughness:
+    .065,
+
+  thickness:
+    2.3,
+
+  ior:
+    1.42,
+
+  attenuationDistance:
+    1.8,
+
+  reflections:
+    48,
+
+  texture:
+    false,
+
+  wireframe:
+    false,
+
+  position:
+    [0,0,0]
+
+});
+
+scene.add(jelly.mesh);
+
+/* --------------------------------------------------
+   HELPERS
+-------------------------------------------------- */
+
+function updateValue(id,value){
+  $(id).textContent = value;
+}
+
+function bindRange(
+  input,
+  option,
+  output,
+  formatter = v => v
 ){
 
-  const renderer =
-    new THREE.WebGLRenderer({
-      canvas,
-      antialias:true,
-      powerPreference:"high-performance"
+  $(input).addEventListener(
+    "input",
+    () => {
+
+      const value =
+        Number($(input).value);
+
+      jelly.set({
+        [option]:value
+      });
+
+      updateValue(
+        output,
+        formatter(value)
+      );
+    }
+  );
+}
+
+/* --------------------------------------------------
+   PHYSICS CONTROLS
+-------------------------------------------------- */
+
+bindRange(
+  "firmness",
+  "firmness",
+  "firmnessValue"
+);
+
+bindRange(
+  "damping",
+  "damping",
+  "dampingValue"
+);
+
+bindRange(
+  "wobble",
+  "wobble",
+  "wobbleValue"
+);
+
+bindRange(
+  "speed",
+  "speed",
+  "speedValue"
+);
+
+bindRange(
+  "pullRadius",
+  "pullRadius",
+  "pullRadiusValue"
+);
+
+bindRange(
+  "stretch",
+  "stretch",
+  "stretchValue"
+);
+
+bindRange(
+  "gravityStrength",
+  "gravityStrength",
+  "gravityStrengthValue",
+  v => v.toFixed(1)
+);
+
+/* --------------------------------------------------
+   MATERIAL
+-------------------------------------------------- */
+
+bindRange(
+  "saturation",
+  "saturation",
+  "saturationValue"
+);
+
+bindRange(
+  "transmission",
+  "transmission",
+  "transmissionValue",
+  v => v.toFixed(2)
+);
+
+bindRange(
+  "roughness",
+  "roughness",
+  "roughnessValue",
+  v => v.toFixed(3)
+);
+
+$("color").addEventListener(
+  "input",
+  e => {
+
+    jelly.set({
+      color:e.target.value
     });
-
-  renderer.setPixelRatio(
-    Math.min(
-      window.devicePixelRatio||1,
-      2
-    )
-  );
-
-  renderer.outputColorSpace=
-    THREE.SRGBColorSpace;
-
-  renderer.toneMapping=
-    THREE.ACESFilmicToneMapping;
-
-  renderer.toneMappingExposure=
-    1.15;
-
-  const scene=
-    new THREE.Scene();
-
-  scene.background=
-    new THREE.Color(
-      0x0d1117
-    );
-
-  const camera=
-    new THREE.PerspectiveCamera(
-      40,
-      1,
-      .1,
-      100
-    );
-
-  camera.position.z=
-    cameraDistance;
-
-
-  const hemi=
-    new THREE.HemisphereLight(
-      0xffffff,
-      0x161b22,
-      2.4
-    );
-
-  scene.add(hemi);
-
-
-  const key=
-    new THREE.DirectionalLight(
-      0xffffff,
-      4
-    );
-
-  key.position.set(
-    4,
-    6,
-    7
-  );
-
-  scene.add(key);
-
-
-  const fill=
-    new THREE.DirectionalLight(
-      0x7aa2ff,
-      1.5
-    );
-
-  fill.position.set(
-    -5,
-    2,
-    4
-  );
-
-  scene.add(fill);
-
-
-  function resize(){
-
-    const width=
-      Math.max(
-        1,
-        container.clientWidth
-      );
-
-    const height=
-      Math.max(
-        1,
-        container.clientHeight
-      );
-
-    renderer.setSize(
-      width,
-      height,
-      false
-    );
-
-    camera.aspect=
-      width/height;
-
-    camera.updateProjectionMatrix();
 
   }
-
-
-  const observer=
-    new ResizeObserver(
-      resize
-    );
-
-  observer.observe(
-    container
-  );
-
-  resize();
-
-
-  return {
-    renderer,
-    scene,
-    camera
-  };
-
-}
-
-
-/* =========================================================
-   HERO
-========================================================= */
-
-const heroContainer=
-  document.getElementById(
-    "hero-stage"
-  );
-
-const heroCanvas=
-  document.getElementById(
-    "hero-canvas"
-  );
-
-const loading=
-  document.getElementById(
-    "loading"
-  );
-
-
-const heroScene=
-  createScene(
-    heroCanvas,
-    heroContainer,
-    5.3
-  );
-
-
-const hero=
-  new Jelly({
-
-    preset:"petBlob",
-
-    color:0xe00072,
-
-    eyes:true,
-
-    elasticity:2.1,
-
-    pullRadius:1.45,
-
-    reach:1.7,
-
-    firmness:30,
-
-    damping:16,
-
-    wobble:60
-
-  });
-
-
-heroScene.scene.add(
-  hero.mesh
 );
 
-
-hero.bind(
-  heroCanvas,
-  heroScene.camera
-);
-
-
-loading.classList.add(
-  "hidden"
-);
-
-
-/* =========================================================
-   BUTTONS
-========================================================= */
-
-function button(
-  text,
-  callback,
-  active=false
-){
-
-  const b=
-    document.createElement(
-      "button"
-    );
-
-  b.type="button";
-  b.className="btn";
-  b.textContent=text;
-
-  if(active)
-    b.classList.add("active");
-
-  b.addEventListener(
-    "click",
-    callback
-  );
-
-  return b;
-
-}
-
-
-/* PRESETS */
-
-const presetBox=
-  document.getElementById(
-    "presets"
-  );
-
-const presetNames=[
-  "cube",
-  "sphere",
-  "blob",
-  "star",
-  "heart",
-  "capsule",
-  "torus"
-];
-
-const presetButtons=
-  new Map();
-
-
-for(
-  const name of presetNames
-){
-
-  const b=
-    button(
-      name,
-      ()=>{
-        hero.set({
-          preset:name,
-          eyes:true
-        });
-
-        presetButtons.forEach(
-          x=>x.classList.remove(
-            "active"
-          )
-        );
-
-        b.classList.add(
-          "active"
-        );
-      },
-      name==="blob"
-    );
-
-  presetButtons.set(
-    name,
-    b
-  );
-
-  presetBox.append(b);
-
-}
-
-
-/* COLORS */
-
-const colorBox=
-  document.getElementById(
-    "colors"
-  );
-
-const colorList=[
-  0xe00072,
-  0x2f81f7,
-  0x3fb950,
-  0xd29922,
-  0xf85149,
-  0xa371f7,
-  0x06b6d4,
-  0xf0f6fc
-];
-
-for(
-  let i=0;
-  i<colorList.length;
-  i++
-){
-
-  const color=
-    colorList[i];
-
-  const b=
-    document.createElement(
-      "button"
-    );
-
-  b.type="button";
-  b.className="color";
-
-  b.style.backgroundColor=
-    "#"+
-    color.toString(16)
-      .padStart(6,"0");
-
-  if(i===0)
-    b.classList.add("active");
-
-  b.addEventListener(
-    "click",
-    ()=>{
-
-      hero.set({
-        color
-      });
-
-      colorBox
-        .querySelectorAll(".color")
-        .forEach(
-          x=>x.classList.remove(
-            "active"
-          )
-        );
-
-      b.classList.add(
-        "active"
-      );
-
-    }
-  );
-
-  colorBox.append(b);
-
-}
-
-
-/* PHYSICS */
-
-const physics=
-  document.getElementById(
-    "physics"
-  );
-
-const sliderData=[
-
-  ["firmness","Firmness",0,80,1],
-
-  ["damping","Damping",0,60,1],
-
-  ["wobble","Wobble",0,150,1],
-
-  ["gravityStrength","Gravity",0,3,.05],
-
-  ["size","Size",.5,1.5,.01],
-
-  ["reach","Pull reach",.3,2.5,.05],
-
-  ["elasticity","Elasticity",.5,3.5,.05],
-
-  ["pullRadius","Pull radius",.4,2.5,.05]
-
-];
-
-
-for(
-  const [
-    key,
-    label,
-    min,
-    max,
-    step
-  ] of sliderData
-){
-
-  const row=
-    document.createElement(
-      "div"
-    );
-
-  row.className="slider";
-
-  const labelEl=
-    document.createElement(
-      "label"
-    );
-
-  labelEl.textContent=
-    label;
-
-  const input=
-    document.createElement(
-      "input"
-    );
-
-  input.type="range";
-  input.min=min;
-  input.max=max;
-  input.step=step;
-  input.value=
-    hero.o[key];
-
-  const output=
-    document.createElement(
-      "output"
-    );
-
-  output.textContent=
-    hero.o[key];
-
-  input.addEventListener(
-    "input",
-    ()=>{
-
-      const value=
-        Number(input.value);
-
-      output.textContent=
-        value;
-
-      hero.set({
-        [key]:value
-      });
-
-    }
-  );
-
-  row.append(
-    labelEl,
-    input,
-    output
-  );
-
-  physics.append(row);
-
-}
-
-
-/* OPTIONS */
-
-const optionBox=
-  document.getElementById(
-    "options"
-  );
-
-const optionData=[
-
-  ["eyes","Eyes"],
-
-  ["floating","Floating"],
-
-  ["autoRotate","Auto rotate"],
-
-  ["wireframe","Wireframe"],
-
-  ["gravity","Gravity"]
-
-];
-
-
-for(
-  const [
-    key,
-    label
-  ] of optionData
-){
-
-  const b=
-    button(
-      label,
-      ()=>{
-
-        hero.o[key]=
-          !hero.o[key];
-
-        b.classList.toggle(
-          "active",
-          hero.o[key]
-        );
-
-        if(
-          key==="eyes"
-        ){
-
-          hero.createEyes();
-
-        }
-
-        hero.updateMaterial();
-
-      },
-      hero.o[key]
-    );
-
-  optionBox.append(b);
-
-}
-
-
-/* ACTIONS */
-
-const actionBox=
-  document.getElementById(
-    "actions"
-  );
-
-
-actionBox.append(
-
-  button(
-    "Impulse",
-    ()=>{
-      hero.impulse(1.4);
-    }
-  ),
-
-  button(
-    "Squash",
-    ()=>{
-      hero.squash(.65);
-    }
-  ),
-
-  button(
-    "Stretch",
-    ()=>{
-      hero.stretch(1.45);
-    }
-  ),
-
-  button(
-    "Kick",
-    ()=>{
-      hero.kick();
-    }
-  ),
-
-  button(
-    "Reset",
-    ()=>{
-      hero.reset();
-    }
-  )
-
-);
-
-
-/* =========================================================
-   GALLERY
-========================================================= */
-
-const galleryContainer=
-  document.getElementById(
-    "gallery-stage"
-  );
-
-const galleryCanvas=
-  document.getElementById(
-    "gallery-canvas"
-  );
-
-
-const galleryScene=
-  createScene(
-    galleryCanvas,
-    galleryContainer,
-    9
-  );
-
-
-const galleryData=[
-
-  ["cube",0xe00072],
-
-  ["sphere",0x2f81f7],
-
-  ["star",0xd29922],
-
-  ["heart",0xf85149],
-
-  ["blob",0x3fb950],
-
-  ["capsule",0xa371f7],
-
-  ["torus",0x06b6d4],
-
-  ["cube",0x8b949e]
-
-];
-
-
-const galleryJellies=[];
-
-
-for(
-  const [
-    preset,
-    color
-  ] of galleryData
-){
-
-  const jelly=
-    new Jelly({
-
-      preset,
-
-      color,
-
-      eyes:true,
-
-      size:.56,
-
-      elasticity:1.8,
-
-      pullRadius:1.4,
-
-      reach:1.6,
-
-      firmness:28,
-
-      damping:17,
-
-      wobble:45,
-
-      floating:true
-
+$("wireframe").addEventListener(
+  "change",
+  e => {
+
+    jelly.set({
+      wireframe:e.target.checked
     });
 
+  }
+);
 
-  galleryScene.scene.add(
-    jelly.mesh
-  );
+$("texture").addEventListener(
+  "change",
+  e => {
 
+    jelly.set({
+      texture:e.target.checked
+    });
 
-  jelly.bind(
-    galleryCanvas,
-    galleryScene.camera
-  );
+  }
+);
 
+/* --------------------------------------------------
+   PHYSICS TOGGLES
+-------------------------------------------------- */
 
-  galleryJellies.push(
-    jelly
-  );
+$("gravity").addEventListener(
+  "change",
+  e => {
 
-}
+    jelly.set({
+      gravity:e.target.checked
+    });
 
+  }
+);
 
-function layoutGallery(){
+$("floating").addEventListener(
+  "change",
+  e => {
 
-  const width=
-    galleryContainer.clientWidth;
-
-  let columns;
-
-  if(width>=1000)
-    columns=4;
-  else if(width>=650)
-    columns=3;
-  else
-    columns=2;
-
-  const gap=
-    columns===2
-      ? 2.35
-      : 2.5;
-
-  const rows=
-    Math.ceil(
-      galleryJellies.length/
-      columns
+    jelly.setFloating(
+      e.target.checked
     );
 
-  galleryJellies.forEach(
-    (jelly,index)=>{
+  }
+);
 
-      const column=
-        index%columns;
+/* --------------------------------------------------
+   EYES
+-------------------------------------------------- */
 
-      const row=
-        Math.floor(
-          index/columns
-        );
+$("eyes").addEventListener(
+  "change",
+  e => {
 
-      jelly.mesh.position.x=
-        (
-          column-
-          (columns-1)/2
-        )*gap;
+    jelly.setEyes(
+      e.target.checked
+    );
 
-      jelly.mesh.position.y=
-        (
-          (rows-1)/2-
-          row
-        )*gap;
+  }
+);
 
-    }
-  );
+$("blink").addEventListener(
+  "change",
+  e => {
 
-  galleryScene.camera.position.z=
-    columns===2
-      ? 8
-      : columns===3
-        ? 8.8
-        : 9.5;
+    jelly.set({
+      eyeBlink:e.target.checked
+    });
 
-}
+  }
+);
 
+$("eyeHeight").addEventListener(
+  "input",
+  e => {
 
-layoutGallery();
+    const value =
+      Number(e.target.value);
 
+    jelly.set({
+      eyeHeight:value
+    });
+
+    updateValue(
+      "eyeHeightValue",
+      value.toFixed(2)
+    );
+
+  }
+);
+
+$("eyeSpacing").addEventListener(
+  "input",
+  e => {
+
+    const value =
+      Number(e.target.value);
+
+    jelly.set({
+      eyeSpacing:
+        value === 0 ? null : value
+    });
+
+    updateValue(
+      "eyeSpacingValue",
+      value === 0
+        ? "auto"
+        : value.toFixed(2)
+    );
+
+  }
+);
+
+/* --------------------------------------------------
+   PRESETS
+-------------------------------------------------- */
+
+$("preset").addEventListener(
+  "change",
+  e => {
+
+    const preset =
+      e.target.value;
+
+    const pet =
+      preset.startsWith("pet");
+
+    jelly.set({
+      preset,
+      eyes:pet
+    });
+
+    $("eyes").checked = pet;
+
+  }
+);
+
+/* --------------------------------------------------
+   INTERACTION
+-------------------------------------------------- */
+
+$("interaction").addEventListener(
+  "change",
+  e => {
+
+    jelly.set({
+      interaction:e.target.value
+    });
+
+  }
+);
+
+/* --------------------------------------------------
+   ACTIONS
+-------------------------------------------------- */
+
+$("wobble").addEventListener(
+  "click",
+  () => {
+
+    jelly.impulse(1.2);
+
+  }
+);
+
+$("crush").addEventListener(
+  "click",
+  () => {
+
+    jelly.crush(
+      "y",
+      .45
+    );
+
+  }
+);
+
+$("stretchAction").addEventListener(
+  "click",
+  () => {
+
+    jelly.crush(
+      "y",
+      1.6
+    );
+
+  }
+);
+
+$("force").addEventListener(
+  "click",
+  () => {
+
+    jelly.applyForce(
+      [1,.35,.15],
+      {
+        strength:2.5
+      }
+    );
+
+  }
+);
+
+$("poke").addEventListener(
+  "click",
+  () => {
+
+    const box =
+      jelly._geometry.boundingBox;
+
+    jelly.poke(
+      [0,box.max.y,0],
+      {
+        strength:3,
+        radius:.8
+      }
+    );
+
+  }
+);
+
+$("reset").addEventListener(
+  "click",
+  () => {
+
+    jelly.reset();
+
+  }
+);
+
+$("pause").addEventListener(
+  "click",
+  () => {
+
+    jelly.toggle();
+
+    $("pause").textContent =
+      jelly.options.paused
+        ? "Resume"
+        : "Pause";
+
+  }
+);
+
+$("rotate").addEventListener(
+  "click",
+  () => {
+
+    const next =
+      !jelly.options.autoRotate;
+
+    jelly.set({
+      autoRotate:next
+    });
+
+    $("rotate").textContent =
+      next
+        ? "Stop rotate"
+        : "Rotate";
+
+  }
+);
+
+/* --------------------------------------------------
+   CLICK WOBBLE
+-------------------------------------------------- */
+
+renderer.domElement.addEventListener(
+  "pointerup",
+  event => {
+
+    if(
+      event.clientX < 0 ||
+      event.clientY < 0
+    ) return;
+
+  }
+);
+
+/* --------------------------------------------------
+   RESIZE
+-------------------------------------------------- */
 
 window.addEventListener(
   "resize",
-  layoutGallery
+  () => {
+
+    camera.aspect =
+      window.innerWidth /
+      window.innerHeight;
+
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(
+      window.innerWidth,
+      window.innerHeight
+    );
+
+  }
 );
 
+/* --------------------------------------------------
+   RUNTIME STATS
+-------------------------------------------------- */
 
-/* =========================================================
+let previousTime =
+  performance.now();
+
+let frames = 0;
+let fpsTime = previousTime;
+
+/* --------------------------------------------------
    LOOP
-========================================================= */
+-------------------------------------------------- */
 
-const clock=
+const clock =
   new THREE.Clock();
-
 
 function animate(){
 
@@ -2850,31 +1532,92 @@ function animate(){
     animate
   );
 
-  const dt=
-    clock.getDelta();
+  const dt =
+    Math.min(
+      clock.getDelta(),
+      .05
+    );
 
-  hero.update(dt);
+  jelly.update(dt);
 
-  for(
-    const jelly of galleryJellies
+  frames++;
+
+  const now =
+    performance.now();
+
+  if(
+    now - fpsTime >= 500
   ){
 
-    jelly.update(dt);
+    const fps =
+      Math.round(
+        frames /
+        ((now-fpsTime)/1000)
+      );
+
+    updateValue(
+      "fps",
+      fps
+    );
+
+    frames = 0;
+    fpsTime = now;
 
   }
 
-  heroScene.renderer.render(
-    heroScene.scene,
-    heroScene.camera
+  const position =
+    jelly._geometry
+      .getAttribute("position");
+
+  updateValue(
+    "vertices",
+    position.count
   );
 
-  galleryScene.renderer.render(
-    galleryScene.scene,
-    galleryScene.camera
+  let velocity = 0;
+
+  if(jelly._velocity){
+
+    for(
+      let i=0;
+      i<jelly._velocity.length;
+      i+=3
+    ){
+
+      const x =
+        jelly._velocity[i];
+
+      const y =
+        jelly._velocity[i+1];
+
+      const z =
+        jelly._velocity[i+2];
+
+      velocity +=
+        Math.sqrt(
+          x*x+y*y+z*z
+        );
+
+    }
+
+    velocity /=
+      Math.max(
+        1,
+        position.count
+      );
+
+  }
+
+  updateValue(
+    "velocity",
+    velocity.toFixed(2)
   );
 
+  renderer.render(
+    scene,
+    camera
+  );
 }
-
 
 animate();
 
