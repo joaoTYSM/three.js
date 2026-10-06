@@ -1,594 +1,274 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Jelly.js — Soft Matter</title>
-
-<style>
-:root{
-  --bg:#0d1117;
-  --panel:#161b22;
-  --panel2:#0f141a;
-  --border:#30363d;
-  --text:#e6edf3;
-  --muted:#8b949e;
-  --accent:#e00072;
-  --green:#3fb950;
-  --blue:#58a6ff;
-}
-
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
-html,
-body{
-  width:100%;
-  height:100%;
-  overflow:hidden;
-}
-
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Helvetica,
-    Arial,
-    sans-serif;
-}
-
-canvas{
-  display:block;
-  width:100%;
-  height:100%;
-}
-
-.app{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-}
-
-.topbar{
-  position:absolute;
-  left:18px;
-  right:18px;
-  top:14px;
-  height:46px;
-
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  padding:0 14px;
-
-  background:rgba(13,17,23,.86);
-  border:1px solid var(--border);
-  border-radius:8px;
-
-  backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);
-
-  pointer-events:auto;
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  font-size:14px;
-  font-weight:600;
-}
-
-.logo{
-  width:24px;
-  height:24px;
-  display:grid;
-  place-items:center;
-
-  border:1px solid var(--border);
-  border-radius:6px;
-
-  color:var(--accent);
-  font-size:14px;
-  font-weight:700;
-}
-
-.version{
-  color:var(--muted);
-  font-size:11px;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-}
-
-.status{
-  display:flex;
-  align-items:center;
-  gap:7px;
-
-  color:var(--muted);
-  font-size:11px;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-}
-
-.status-dot{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--green);
-  box-shadow:0 0 8px rgba(63,185,80,.7);
-}
-
-.info{
-  position:absolute;
-  left:22px;
-  top:82px;
-  pointer-events:none;
-}
-
-.info h1{
-  font-size:clamp(28px,4vw,52px);
-  line-height:1;
-  letter-spacing:-1.8px;
-  font-weight:600;
-}
-
-.info h1 span{
-  color:var(--accent);
-}
-
-.info p{
-  margin-top:9px;
-  color:var(--muted);
-  font-size:12px;
-  max-width:340px;
-  line-height:1.55;
-}
-
-.panel{
-  position:absolute;
-  top:72px;
-  right:18px;
-  bottom:18px;
-
-  width:280px;
-
-  background:rgba(22,27,34,.94);
-  border:1px solid var(--border);
-  border-radius:8px;
-
-  overflow:auto;
-
-  pointer-events:auto;
-
-  scrollbar-width:thin;
-  scrollbar-color:#30363d transparent;
-}
-
-.panel::-webkit-scrollbar{
-  width:6px;
-}
-
-.panel::-webkit-scrollbar-thumb{
-  background:#30363d;
-  border-radius:10px;
-}
-
-.panel-head{
-  position:sticky;
-  top:0;
-  z-index:5;
-
-  padding:14px 15px;
-
-  background:rgba(22,27,34,.94);
-  border-bottom:1px solid var(--border);
-
-  backdrop-filter:blur(12px);
-}
-
-.panel-head strong{
-  display:block;
-  font-size:13px;
-}
-
-.panel-head span{
-  display:block;
-  margin-top:3px;
-  color:var(--muted);
-  font-size:10px;
-}
-
-.section{
-  padding:14px 15px;
-  border-bottom:1px solid var(--border);
-}
-
-.section-title{
-  margin-bottom:10px;
-
-  color:var(--muted);
-  font-size:10px;
-  font-weight:600;
-  letter-spacing:.8px;
-  text-transform:uppercase;
-}
-
-select,
-button{
-  font:inherit;
-}
-
-select{
-  width:100%;
-  height:32px;
-
-  padding:0 9px;
-
-  color:var(--text);
-  background:#0d1117;
-  border:1px solid var(--border);
-  border-radius:6px;
-
-  outline:none;
-}
-
-select:focus{
-  border-color:var(--blue);
-}
-
-option{
-  background:#161b22;
-  color:var(--text);
-}
-
-.slider{
-  margin-bottom:12px;
-}
-
-.slider:last-child{
-  margin-bottom:0;
-}
-
-.slider-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-
-  margin-bottom:6px;
-}
-
-.slider-top span:first-child{
-  font-size:11px;
-}
-
-.value{
-  color:var(--accent);
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:10px;
-}
-
-input[type=range]{
-  width:100%;
-  height:4px;
-
-  appearance:none;
-  -webkit-appearance:none;
-
-  background:#30363d;
-  border-radius:4px;
-  outline:none;
-}
-
-input[type=range]::-webkit-slider-thumb{
-  appearance:none;
-  -webkit-appearance:none;
-
-  width:13px;
-  height:13px;
-
-  border:0;
-  border-radius:50%;
-
-  background:var(--accent);
-  cursor:pointer;
-}
-
-input[type=range]::-moz-range-thumb{
-  width:13px;
-  height:13px;
-
-  border:0;
-  border-radius:50%;
-
-  background:var(--accent);
-  cursor:pointer;
-}
-
-.toggle{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  min-height:29px;
-}
-
-.toggle span{
-  font-size:11px;
-}
-
-.switch{
-  position:relative;
-
-  width:31px;
-  height:18px;
-
-  appearance:none;
-  -webkit-appearance:none;
-
-  background:#30363d;
-  border-radius:20px;
-
-  cursor:pointer;
-  outline:none;
-}
-
-.switch::after{
-  content:"";
-
-  position:absolute;
-  top:3px;
-  left:3px;
-
-  width:12px;
-  height:12px;
-
-  border-radius:50%;
-  background:#8b949e;
-
-  transition:.15s;
-}
-
-.switch:checked{
-  background:var(--accent);
-}
-
-.switch:checked::after{
-  left:16px;
-  background:white;
-}
-
-.color-row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  margin-bottom:10px;
-}
-
-.color-row:last-child{
-  margin-bottom:0;
-}
-
-.color-row span{
-  font-size:11px;
-}
-
-input[type=color]{
-  width:42px;
-  height:26px;
-
-  padding:2px;
-
-  background:#0d1117;
-  border:1px solid var(--border);
-  border-radius:5px;
-
-  cursor:pointer;
-}
-
-.buttons{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:6px;
-}
-
-button{
-  min-height:31px;
-
-  color:var(--text);
-  background:#21262d;
-
-  border:1px solid var(--border);
-  border-radius:6px;
-
-  font-size:10px;
-  cursor:pointer;
-
-  transition:
-    background .12s,
-    border-color .12s,
-    transform .12s;
-}
-
-button:hover{
-  background:#30363d;
-  border-color:#484f58;
-}
-
-button:active{
-  transform:scale(.97);
-}
-
-button.primary{
-  color:white;
-  background:var(--accent);
-  border-color:var(--accent);
-}
-
-button.primary:hover{
-  background:#c80065;
-}
-
-.stats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:6px;
-}
-
-.stat{
-  padding:9px 7px;
-
-  background:#0d1117;
-  border:1px solid var(--border);
-  border-radius:6px;
-}
-
-.stat-value{
-  display:block;
-
-  color:var(--text);
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-  font-size:12px;
-}
-
-.stat-label{
-  display:block;
-  margin-top:3px;
-
-  color:var(--muted);
-  font-size:8px;
-  text-transform:uppercase;
-}
-
-.help{
-  position:absolute;
-  left:22px;
-  bottom:18px;
-
-  color:var(--muted);
-  font-size:10px;
-
-  pointer-events:none;
-}
-
-.help kbd{
-  display:inline-block;
-
-  padding:2px 5px;
-
-  background:#161b22;
-  border:1px solid var(--border);
-  border-radius:4px;
-
-  color:#c9d1d9;
-  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
-}
-
-@media(max-width:760px){
-
-  .topbar{
-    left:10px;
-    right:10px;
-    top:10px;
-  }
-
-  .info{
-    left:14px;
-    top:72px;
-  }
-
-  .info h1{
-    font-size:28px;
-  }
-
-  .info p{
-    display:none;
-  }
-
-  .panel{
-    left:10px;
-    right:10px;
-    top:auto;
-    bottom:10px;
-
-    width:auto;
-    max-height:43vh;
-  }
-
-  .help{
-    display:none;
-  }
-
-  .status{
-    display:none;
-  }
-}
-
-@media(max-width:430px){
-
-  .panel{
-    max-height:48vh;
-  }
-
-  .panel-head{
-    padding:10px 12px;
-  }
-
-  .section{
-    padding:10px 12px;
-  }
-
-  .section-title{
-    margin-bottom:8px;
-  }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jelly.js — Showcase</title>
+  <style>
+    :root {
+      --bg: #0f0f12;
+      --panel: rgba(22, 22, 28, 0.92);
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #e8e8ec;
+      --muted: #7a7a88;
+      --accent: #e00072;
+      --accent2: #00c9a7;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      overflow: hidden;
+      height: 100vh;
+    }
+    canvas { display: block; }
+
+    .gui {
+      position: fixed;
+      top: 28px;
+      right: 28px;
+      bottom: 28px;
+      width: 280px;
+      z-index: 200;
+      background: var(--panel);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 0;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.12) transparent;
+      font-size: 11px;
+    }
+    .gui::-webkit-scrollbar { width: 4px; }
+    .gui::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 2px; }
+
+    .gui-header {
+      padding: 16px 18px 12px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: var(--panel);
+      backdrop-filter: blur(24px);
+      z-index: 10;
+    }
+    .gui-header h2 {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .gui-section {
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .gui-section:last-child { border-bottom: none; }
+
+    .gui-section-title {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .gui-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      gap: 8px;
+    }
+    .gui-row:last-child { margin-bottom: 0; }
+    .gui-row label {
+      font-size: 11px;
+      color: var(--text);
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .gui-row .val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--accent);
+      min-width: 42px;
+      text-align: right;
+    }
+    .gui-row input[type="range"] {
+      width: 100%;
+      height: 3px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+      outline: none;
+      margin: 2px 0;
+    }
+    .gui-row input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      border: none;
+    }
+    .gui-row input[type="range"]::-moz-range-thumb {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      border: none;
+    }
+
+    .gui-slider-group { margin-bottom: 10px; }
+    .gui-slider-group .slider-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 3px;
+    }
+    .gui-slider-group .slider-label span {
+      font-size: 10px;
+      color: var(--text);
+    }
+    .gui-slider-group .slider-label .val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--accent);
+    }
+
+    .gui-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .gui-toggle label {
+      font-size: 11px;
+      color: var(--text);
+    }
+    .gui-toggle input[type="checkbox"] {
+      appearance: none;
+      width: 30px;
+      height: 16px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+    .gui-toggle input[type="checkbox"]::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #888;
+      transition: all 0.2s;
+    }
+    .gui-toggle input[type="checkbox"]:checked {
+      background: var(--accent);
+    }
+    .gui-toggle input[type="checkbox"]:checked::after {
+      left: 16px;
+      background: #fff;
+    }
+
+    .gui-select {
+      width: 100%;
+      padding: 7px 10px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 11px;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237a7a88'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+    }
+    .gui-select option { background: #1a1a20; color: var(--text); }
+
+    .gui-btn {
+      width: 100%;
+      padding: 8px 12px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: all 0.15s;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+    .gui-btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.15); }
+    .gui-btn:active { transform: scale(0.97); }
+    .gui-btn.accent { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .gui-btn.accent:hover { background: #c80064; }
+    .gui-btn.mint { background: var(--accent2); border-color: var(--accent2); color: #0f0f12; }
+    .gui-btn.mint:hover { background: #00b396; }
+    .gui-btn-row { display: flex; gap: 6px; }
+    .gui-btn-row .gui-btn { flex: 1; }
+
+    .gui-color-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .gui-color-row label { font-size: 10px; color: var(--text); flex: 1; }
+    .gui-color-row input[type="color"] {
+      width: 32px;
+      height: 24px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: transparent;
+      cursor: pointer;
+      padding: 0;
+    }
+    .gui-color-row input[type="color"]::-webkit-color-swatch-wrapper { padding: 2px; }
+    .gui-color-row input[type="color"]::-webkit-color-swatch { border: none; border-radius: 2px; }
+
+    .gui-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 10px 0;
+    }
+
+    @media (max-width: 900px) {
+      .gui { width: 240px; right: 16px; top: 16px; bottom: 16px; }
+    }
+    @media (max-width: 600px) {
+      .gui { width: 200px; right: 10px; top: 10px; bottom: 10px; }
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="app">
-
-  <header class="topbar">
-    <div class="brand">
-      <div class="logo">J</div>
-      <span>Jelly.js</span>
-      <span class="version">v2.5</span>
+  <aside class="gui" id="gui">
+    <div class="gui-header">
+      <h2>The Specimen</h2>
     </div>
 
-    <div class="status">
-      <span class="status-dot"></span>
-      WebGL
-    </div>
-  </header>
-
-  <div class="info">
-    <h1>Soft <span>Matter</span></h1>
-    <p>
-      A spring-mass soft body for three.js.
-      Grab the surface and pull it around.
-    </p>
-  </div>
-
-  <aside class="panel">
-
-    <div class="panel-head">
-      <strong>Jelly playground</strong>
-      <span>Live parameters</span>
-    </div>
-
-    <section class="section">
-
-      <div class="section-title">Geometry</div>
-
-      <select id="preset">
-
+    <div class="gui-section">
+      <div class="gui-section-title">Geometry</div>
+      <select class="gui-select" id="preset-select">
         <optgroup label="Shapes">
           <option value="cube">Cube</option>
           <option value="sphere">Sphere</option>
@@ -598,8 +278,7 @@ button.primary:hover{
           <option value="torus">Torus</option>
           <option value="blob">Blob</option>
         </optgroup>
-
-        <optgroup label="Pets">
+        <optgroup label="Pets (with eyes)">
           <option value="petCube" selected>Pet Cube</option>
           <option value="petSphere">Pet Sphere</option>
           <option value="petStar">Pet Star</option>
@@ -607,1021 +286,377 @@ button.primary:hover{
           <option value="petBlob">Pet Blob</option>
           <option value="petCapsule">Pet Capsule</option>
         </optgroup>
-
       </select>
+    </div>
 
-    </section>
+    <div class="gui-section">
+      <div class="gui-section-title">Physics</div>
 
-    <section class="section">
-
-      <div class="section-title">Elasticity</div>
-
-      <div class="slider">
-        <div class="slider-top">
-          <span>Firmness</span>
-          <span class="value" id="firmnessValue">38</span>
-        </div>
-        <input id="firmness" type="range" min="0" max="100" value="38">
+      <div class="gui-slider-group">
+        <div class="slider-label"><span>Firmness</span><span class="val" id="v-firmness">38</span></div>
+        <input type="range" id="r-firmness" min="0" max="100" value="38">
+      </div>
+      <div class="gui-slider-group">
+        <div class="slider-label"><span>Damping</span><span class="val" id="v-damping">28</span></div>
+        <input type="range" id="r-damping" min="0" max="100" value="28">
+      </div>
+      <div class="gui-slider-group">
+        <div class="slider-label"><span>Wobble</span><span class="val" id="v-wobble">70</span></div>
+        <input type="range" id="r-wobble" min="0" max="100" value="70">
+      </div>
+      <div class="gui-slider-group">
+        <div class="slider-label"><span>Speed</span><span class="val" id="v-speed">100</span></div>
+        <input type="range" id="r-speed" min="10" max="150" value="100">
       </div>
 
-      <div class="slider">
-        <div class="slider-top">
-          <span>Damping</span>
-          <span class="value" id="dampingValue">28</span>
-        </div>
-        <input id="damping" type="range" min="0" max="100" value="28">
+      <div class="gui-divider"></div>
+
+      <div class="gui-toggle">
+        <label>Gravity</label>
+        <input type="checkbox" id="t-gravity" checked>
+      </div>
+      <div class="gui-toggle">
+        <label>Grounded (floor)</label>
+        <input type="checkbox" id="t-grounded">
+      </div>
+      <div class="gui-toggle">
+        <label>Floating (free)</label>
+        <input type="checkbox" id="t-floating" checked>
       </div>
 
-      <div class="slider">
-        <div class="slider-top">
-          <span>Wobble</span>
-          <span class="value" id="wobbleValue">70</span>
-        </div>
-        <input id="wobble" type="range" min="0" max="100" value="70">
+      <div class="gui-divider"></div>
+
+      <div class="gui-slider-group">
+        <div class="slider-label"><span>Gravity strength</span><span class="val" id="v-gravityStrength">1.0</span></div>
+        <input type="range" id="r-gravityStrength" min="0" max="5" step="0.1" value="1">
+      </div>
+    </div>
+
+    <div class="gui-section">
+      <div class="gui-section-title">Material</div>
+
+      <div class="gui-color-row">
+        <label>Color</label>
+        <input type="color" id="c-color" value="#e00072">
+      </div>
+      <div class="gui-color-row">
+        <label>Clear color</label>
+        <input type="color" id="c-clearColor" value="#ffffff">
       </div>
 
-      <div class="slider">
-        <div class="slider-top">
-          <span>Speed</span>
-          <span class="value" id="speedValue">100</span>
-        </div>
-        <input id="speed" type="range" min="10" max="150" value="100">
+      <div class="gui-slider-group">
+        <div class="slider-label"><span>Saturation</span><span class="val" id="v-saturation">100</span></div>
+        <input type="range" id="r-saturation" min="0" max="100" value="100">
+      </div>
+      <div class="gui-slider-group">
+        <div class="slider-label"><span>Transmission</span><span class="val" id="v-transmission">1.00</span></div>
+        <input type="range" id="r-transmission" min="0" max="1" step="0.01" value="1">
+      </div>
+      <div class="gui-slider-group">
+        <div class="slider-label"><span>Roughness</span><span class="val" id="v-roughness">0.065</span></div>
+        <input type="range" id="r-roughness" min="0" max="1" step="0.001" value="0.065">
+      </div>
+      <div class="gui-slider-group">
+        <div class="slider-label"><span>Reflections</span><span class="val" id="v-reflections">48</span></div>
+        <input type="range" id="r-reflections" min="0" max="100" value="48">
       </div>
 
-      <div class="slider">
-        <div class="slider-top">
-          <span>Pull radius</span>
-          <span class="value" id="pullRadiusValue">22</span>
-        </div>
-        <input id="pullRadius" type="range" min="1" max="100" value="22">
+      <div class="gui-toggle">
+        <label>Speckle texture</label>
+        <input type="checkbox" id="t-texture">
       </div>
-
-      <div class="slider">
-        <div class="slider-top">
-          <span>Stretch</span>
-          <span class="value" id="stretchValue">65</span>
-        </div>
-        <input id="stretch" type="range" min="0" max="100" value="65">
+      <div class="gui-toggle">
+        <label>Wireframe</label>
+        <input type="checkbox" id="t-wireframe">
       </div>
+    </div>
 
-    </section>
-
-    <section class="section">
-
-      <div class="section-title">Physics</div>
-
-      <div class="toggle">
-        <span>Gravity</span>
-        <input class="switch" id="gravity" type="checkbox" checked>
+    <div class="gui-section">
+      <div class="gui-section-title">Eyes</div>
+      <div class="gui-toggle">
+        <label>Show eyes</label>
+        <input type="checkbox" id="t-eyes" checked>
       </div>
-
-      <div class="toggle">
-        <span>Floating</span>
-        <input class="switch" id="floating" type="checkbox" checked>
+      <div class="gui-toggle">
+        <label>Blink</label>
+        <input type="checkbox" id="t-blink" checked>
       </div>
-
-      <div class="slider" style="margin-top:10px">
-        <div class="slider-top">
-          <span>Gravity strength</span>
-          <span class="value" id="gravityStrengthValue">1.0</span>
-        </div>
-        <input id="gravityStrength" type="range" min="0" max="5" step=".1" value="1">
+      <div class="gui-color-row">
+        <label>Button color</label>
+        <input type="color" id="c-eyeColor" value="#453a33">
       </div>
-
-    </section>
-
-    <section class="section">
-
-      <div class="section-title">Material</div>
-
-      <div class="color-row">
-        <span>Color</span>
-        <input id="color" type="color" value="#e00072">
+      <div class="gui-color-row">
+        <label>Thread color</label>
+        <input type="color" id="c-eyeThread" value="#f2e6cf">
       </div>
-
-      <div class="slider">
-        <div class="slider-top">
-          <span>Saturation</span>
-          <span class="value" id="saturationValue">100</span>
-        </div>
-        <input id="saturation" type="range" min="0" max="100" value="100">
+      <div class="gui-slider-group">
+        <div class="slider-label"><span>Eye spacing</span><span class="val" id="v-eyeSpacing">auto</span></div>
+        <input type="range" id="r-eyeSpacing" min="0" max="2" step="0.05" value="0">
       </div>
-
-      <div class="slider">
-        <div class="slider-top">
-          <span>Transmission</span>
-          <span class="value" id="transmissionValue">1.00</span>
-        </div>
-        <input id="transmission" type="range" min="0" max="1" step=".01" value="1">
+      <div class="gui-slider-group">
+        <div class="slider-label"><span>Eye height</span><span class="val" id="v-eyeHeight">0.62</span></div>
+        <input type="range" id="r-eyeHeight" min="0" max="1" step="0.01" value="0.62">
       </div>
+    </div>
 
-      <div class="slider">
-        <div class="slider-top">
-          <span>Roughness</span>
-          <span class="value" id="roughnessValue">0.065</span>
-        </div>
-        <input id="roughness" type="range" min="0" max="1" step=".001" value=".065">
-      </div>
-
-      <div class="toggle">
-        <span>Wireframe</span>
-        <input class="switch" id="wireframe" type="checkbox">
-      </div>
-
-      <div class="toggle">
-        <span>Texture</span>
-        <input class="switch" id="texture" type="checkbox">
-      </div>
-
-    </section>
-
-    <section class="section">
-
-      <div class="section-title">Eyes</div>
-
-      <div class="toggle">
-        <span>Show eyes</span>
-        <input class="switch" id="eyes" type="checkbox" checked>
-      </div>
-
-      <div class="toggle">
-        <span>Blink</span>
-        <input class="switch" id="blink" type="checkbox" checked>
-      </div>
-
-      <div class="slider" style="margin-top:10px">
-        <div class="slider-top">
-          <span>Eye height</span>
-          <span class="value" id="eyeHeightValue">0.62</span>
-        </div>
-        <input id="eyeHeight" type="range" min="0" max="1" step=".01" value=".62">
-      </div>
-
-      <div class="slider">
-        <div class="slider-top">
-          <span>Eye spacing</span>
-          <span class="value" id="eyeSpacingValue">auto</span>
-        </div>
-        <input id="eyeSpacing" type="range" min="0" max="2" step=".05" value="0">
-      </div>
-
-    </section>
-
-    <section class="section">
-
-      <div class="section-title">Interaction</div>
-
-      <select id="interaction">
-        <option value="pull" selected>Pull / stretch</option>
-        <option value="move">Move</option>
-        <option value="camera">Camera</option>
+    <div class="gui-section">
+      <div class="gui-section-title">Interaction</div>
+      <select class="gui-select" id="interaction-select">
+        <option value="pull" selected>Pull (stretch)</option>
+        <option value="move">Move (drag)</option>
+        <option value="camera">Camera only</option>
         <option value="none">None</option>
       </select>
-
-    </section>
-
-    <section class="section">
-
-      <div class="section-title">Actions</div>
-
-      <div class="buttons">
-
-        <button class="primary" id="wobble">
-          Wobble
-        </button>
-
-        <button id="reset">
-          Reset
-        </button>
-
-        <button id="crush">
-          Crush
-        </button>
-
-        <button id="stretchAction">
-          Stretch
-        </button>
-
-        <button id="poke">
-          Poke
-        </button>
-
-        <button id="force">
-          Force
-        </button>
-
-        <button id="rotate">
-          Rotate
-        </button>
-
-        <button id="pause">
-          Pause
-        </button>
-
+      <div class="gui-slider-group" style="margin-top: 10px;">
+        <div class="slider-label"><span>Pull radius</span><span class="val" id="v-pullRadius">22</span></div>
+        <input type="range" id="r-pullRadius" min="0" max="100" value="22">
       </div>
-
-    </section>
-
-    <section class="section">
-
-      <div class="section-title">Runtime</div>
-
-      <div class="stats">
-
-        <div class="stat">
-          <span class="stat-value" id="fps">60</span>
-          <span class="stat-label">FPS</span>
-        </div>
-
-        <div class="stat">
-          <span class="stat-value" id="vertices">0</span>
-          <span class="stat-label">Vertices</span>
-        </div>
-
-        <div class="stat">
-          <span class="stat-value" id="velocity">0</span>
-          <span class="stat-label">Velocity</span>
-        </div>
-
+      <div class="gui-slider-group">
+        <div class="slider-label"><span>Max stretch</span><span class="val" id="v-stretch">65</span></div>
+        <input type="range" id="r-stretch" min="0" max="100" value="65">
       </div>
+    </div>
 
-    </section>
-
+    <div class="gui-section">
+      <div class="gui-section-title">Actions</div>
+      <div class="gui-btn-row">
+        <button class="gui-btn accent" id="btn-wobble">Wobble</button>
+        <button class="gui-btn" id="btn-crush">Crush Y</button>
+      </div>
+      <div class="gui-btn-row">
+        <button class="gui-btn" id="btn-stretch">Stretch Y</button>
+        <button class="gui-btn mint" id="btn-force">Apply force</button>
+      </div>
+      <div class="gui-btn-row">
+        <button class="gui-btn" id="btn-poke">Poke top</button>
+        <button class="gui-btn" id="btn-reset">Reset</button>
+      </div>
+      <div class="gui-btn-row">
+        <button class="gui-btn" id="btn-pause">Pause</button>
+        <button class="gui-btn" id="btn-rotate">Auto-rotate</button>
+      </div>
+    </div>
   </aside>
 
-  <div class="help">
-    <kbd>Drag</kbd>
-    pull the jelly · <kbd>Click</kbd>
-    wobble
-  </div>
-
-</div>
-
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-  }
-}
-</script>
-
-<script type="module">
-
-import * as THREE from "three";
-import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
-import { Jelly } from "https://cdn.jsdelivr.net/gh/joaoTYSM/three.js@main/jelly/three.js?v=2.5";
-
-const $ = id => document.getElementById(id);
-
-/* --------------------------------------------------
-   SCENE
--------------------------------------------------- */
-
-const scene = new THREE.Scene();
-
-scene.background = new THREE.Color(0x0d1117);
-
-const camera = new THREE.PerspectiveCamera(
-  36,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  100
-);
-
-camera.position.set(4.7,2.8,6.8);
-camera.lookAt(0,0.8,0);
-
-const renderer = new THREE.WebGLRenderer({
-  antialias:true,
-  alpha:false
-});
-
-renderer.setPixelRatio(
-  Math.min(window.devicePixelRatio || 1,2)
-);
-
-renderer.setSize(
-  window.innerWidth,
-  window.innerHeight
-);
-
-renderer.outputColorSpace = THREE.SRGBColorSpace;
-
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.15;
-
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-document.body.appendChild(renderer.domElement);
-
-/* --------------------------------------------------
-   ENVIRONMENT
--------------------------------------------------- */
-
-const pmrem = new THREE.PMREMGenerator(renderer);
-
-const room = new RoomEnvironment();
-
-scene.environment =
-  pmrem.fromScene(room,0.04).texture;
-
-room.dispose();
-
-/* --------------------------------------------------
-   LIGHT
--------------------------------------------------- */
-
-const keyLight =
-  new THREE.DirectionalLight(0xffffff,3.2);
-
-keyLight.position.set(-3,6,5);
-keyLight.castShadow = true;
-
-keyLight.shadow.mapSize.set(1024,1024);
-
-scene.add(keyLight);
-
-scene.add(
-  new THREE.HemisphereLight(
-    0xffffff,
-    0x20242b,
-    1.4
-  )
-);
-
-/* --------------------------------------------------
-   GROUND
--------------------------------------------------- */
-
-const ground =
-  new THREE.Mesh(
-    new THREE.PlaneGeometry(100,100),
-    new THREE.ShadowMaterial({
-      opacity:.18
-    })
-  );
-
-ground.rotation.x = -Math.PI / 2;
-ground.position.y = -1.55;
-ground.receiveShadow = true;
-
-scene.add(ground);
-
-/* --------------------------------------------------
-   JELLY
-   This uses the exact Jelly.js constructor logic.
--------------------------------------------------- */
-
-const jelly = new Jelly({
-
-  camera,
-
-  domElement:
-    renderer.domElement,
-
-  preset:
-    "petCube",
-
-  segments:
-    32,
-
-  size:
-    1,
-
-  height:
-    1,
-
-  floating:
-    true,
-
-  grounded:
-    false,
-
-  gravity:
-    true,
-
-  gravityStrength:
-    1,
-
-  firmness:
-    38,
-
-  damping:
-    28,
-
-  wobble:
-    70,
-
-  speed:
-    100,
-
-  interaction:
-    "pull",
-
-  interactive:
-    true,
-
-  pullRadius:
-    22,
-
-  stretch:
-    65,
-
-  eyes:
-    true,
-
-  eyeBlink:
-    true,
-
-  eyeHeight:
-    .62,
-
-  eyeSpacing:
-    null,
-
-  eyeScale:
-    1,
-
-  eyeOffset:
-    .035,
-
-  eyeCount:
-    2,
-
-  color:
-    0xe00072,
-
-  clearColor:
-    0xffffff,
-
-  saturation:
-    100,
-
-  transmission:
-    1,
-
-  roughness:
-    .065,
-
-  thickness:
-    2.3,
-
-  ior:
-    1.42,
-
-  attenuationDistance:
-    1.8,
-
-  reflections:
-    48,
-
-  texture:
-    false,
-
-  wireframe:
-    false,
-
-  position:
-    [0,0,0]
-
-});
-
-scene.add(jelly.mesh);
-
-/* --------------------------------------------------
-   HELPERS
--------------------------------------------------- */
-
-function updateValue(id,value){
-  $(id).textContent = value;
-}
-
-function bindRange(
-  input,
-  option,
-  output,
-  formatter = v => v
-){
-
-  $(input).addEventListener(
-    "input",
-    () => {
-
-      const value =
-        Number($(input).value);
-
-      jelly.set({
-        [option]:value
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+    import { Jelly } from 'https://cdn.jsdelivr.net/gh/joaoTYSM/three.js@main/jelly/three.js';
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0f0f12);
+
+    const camera = new THREE.PerspectiveCamera(34, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(5.2, 3.6, 7.4);
+    camera.lookAt(0, 1.1, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    document.body.appendChild(renderer.domElement);
+
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    const room = new RoomEnvironment();
+    scene.environment = pmrem.fromScene(room, 0.04).texture;
+    room.dispose();
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 3.5);
+    dirLight.position.set(-3, 7, 5);
+    dirLight.castShadow = true;
+    dirLight.shadow.mapSize.set(1024, 1024);
+    dirLight.shadow.camera.left = -6;
+    dirLight.shadow.camera.right = 6;
+    dirLight.shadow.camera.top = 6;
+    dirLight.shadow.camera.bottom = -6;
+    dirLight.shadow.normalBias = 0.04;
+    dirLight.shadow.radius = 5;
+    scene.add(dirLight);
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x9b9b9b, 1.8));
+
+    const jelly = new Jelly({
+      camera,
+      domElement: renderer.domElement,
+      preset: 'petCube',
+      floating: true,
+      grounded: false,
+      gravity: true,
+      gravityStrength: 1,
+      eyes: true,
+      eyeBlink: true,
+      color: 0xe00072,
+      clearColor: 0xffffff,
+      transmission: 1,
+      reflections: 48,
+      position: [0, 1.0, 0],
+    });
+
+    scene.add(jelly.mesh);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.1;
+    controls.target.set(0, 1.1, 0);
+    controls.enablePan = false;
+    controls.minDistance = 3;
+    controls.maxDistance = 20;
+    controls.update();
+
+    const $ = (id) => document.getElementById(id);
+    const fmt = (v, d = 2) => Number(v).toFixed(d);
+
+    $('preset-select').addEventListener('change', (e) => {
+      const val = e.target.value;
+      const hasEyes = val.startsWith('pet');
+      jelly.set({ preset: val, eyes: hasEyes });
+      $('t-eyes').checked = hasEyes;
+    });
+
+    const slider = (id, key, format, transform) => {
+      const r = $(`r-${id}`);
+      const v = $(`v-${id}`);
+      r.addEventListener('input', () => {
+        const raw = parseFloat(r.value);
+        const val = transform ? transform(raw) : raw;
+        jelly.set({ [key]: val });
+        v.textContent = format(val);
       });
+    };
 
-      updateValue(
-        output,
-        formatter(value)
-      );
-    }
-  );
-}
+    slider('firmness', 'firmness', (v) => v);
+    slider('damping', 'damping', (v) => v);
+    slider('wobble', 'wobble', (v) => v);
+    slider('speed', 'speed', (v) => v);
+    slider('gravityStrength', 'gravityStrength', (v) => v.toFixed(1));
+    slider('saturation', 'saturation', (v) => v);
+    slider('transmission', 'transmission', (v) => v.toFixed(2));
+    slider('roughness', 'roughness', (v) => v.toFixed(3));
+    slider('reflections', 'reflections', (v) => v);
+    slider('pullRadius', 'pullRadius', (v) => v);
+    slider('stretch', 'stretch', (v) => v);
+    slider('eyeHeight', 'eyeHeight', (v) => v.toFixed(2));
 
-/* --------------------------------------------------
-   PHYSICS CONTROLS
--------------------------------------------------- */
-
-bindRange(
-  "firmness",
-  "firmness",
-  "firmnessValue"
-);
-
-bindRange(
-  "damping",
-  "damping",
-  "dampingValue"
-);
-
-bindRange(
-  "wobble",
-  "wobble",
-  "wobbleValue"
-);
-
-bindRange(
-  "speed",
-  "speed",
-  "speedValue"
-);
-
-bindRange(
-  "pullRadius",
-  "pullRadius",
-  "pullRadiusValue"
-);
-
-bindRange(
-  "stretch",
-  "stretch",
-  "stretchValue"
-);
-
-bindRange(
-  "gravityStrength",
-  "gravityStrength",
-  "gravityStrengthValue",
-  v => v.toFixed(1)
-);
-
-/* --------------------------------------------------
-   MATERIAL
--------------------------------------------------- */
-
-bindRange(
-  "saturation",
-  "saturation",
-  "saturationValue"
-);
-
-bindRange(
-  "transmission",
-  "transmission",
-  "transmissionValue",
-  v => v.toFixed(2)
-);
-
-bindRange(
-  "roughness",
-  "roughness",
-  "roughnessValue",
-  v => v.toFixed(3)
-);
-
-$("color").addEventListener(
-  "input",
-  e => {
-
-    jelly.set({
-      color:e.target.value
+    $('r-eyeSpacing').addEventListener('input', () => {
+      const raw = parseFloat($('r-eyeSpacing').value);
+      const val = raw === 0 ? null : raw;
+      jelly.set({ eyeSpacing: val });
+      $('v-eyeSpacing').textContent = raw === 0 ? 'auto' : raw.toFixed(2);
     });
 
-  }
-);
-
-$("wireframe").addEventListener(
-  "change",
-  e => {
-
-    jelly.set({
-      wireframe:e.target.checked
+    $('c-color').addEventListener('input', (e) => jelly.set({ color: e.target.value }));
+    $('c-clearColor').addEventListener('input', (e) => jelly.set({ clearColor: e.target.value }));
+    $('c-eyeColor').addEventListener('input', (e) => {
+      jelly.set({ eyeColor: e.target.value });
+      jelly.set({ eyes: true, eyeColor: e.target.value });
+    });
+    $('c-eyeThread').addEventListener('input', (e) => {
+      jelly.set({ eyeThread: e.target.value });
+      jelly.set({ eyes: true, eyeThread: e.target.value });
     });
 
-  }
-);
+    const toggle = (id, key, onChange) => {
+      const t = $(`t-${id}`);
+      t.addEventListener('change', () => {
+        if (onChange) onChange(t.checked);
+        else jelly.set({ [key]: t.checked });
+      });
+    };
 
-$("texture").addEventListener(
-  "change",
-  e => {
-
-    jelly.set({
-      texture:e.target.checked
+    toggle('gravity', 'gravity');
+    toggle('grounded', 'grounded', (v) => {
+      jelly.set({ grounded: v, floating: !v });
+      $('t-floating').checked = !v;
+    });
+    toggle('floating', 'floating', (v) => {
+      jelly.set({ floating: v, grounded: !v });
+      $('t-grounded').checked = !v;
+    });
+    toggle('texture', 'texture');
+    toggle('wireframe', 'wireframe');
+    toggle('blink', 'eyeBlink');
+    toggle('eyes', 'eyes', (v) => {
+      jelly.set({ eyes: v });
     });
 
-  }
-);
-
-/* --------------------------------------------------
-   PHYSICS TOGGLES
--------------------------------------------------- */
-
-$("gravity").addEventListener(
-  "change",
-  e => {
-
-    jelly.set({
-      gravity:e.target.checked
+    $('interaction-select').addEventListener('change', (e) => {
+      jelly.set({ interaction: e.target.value });
     });
 
-  }
-);
-
-$("floating").addEventListener(
-  "change",
-  e => {
-
-    jelly.setFloating(
-      e.target.checked
-    );
-
-  }
-);
-
-/* --------------------------------------------------
-   EYES
--------------------------------------------------- */
-
-$("eyes").addEventListener(
-  "change",
-  e => {
-
-    jelly.setEyes(
-      e.target.checked
-    );
-
-  }
-);
-
-$("blink").addEventListener(
-  "change",
-  e => {
-
-    jelly.set({
-      eyeBlink:e.target.checked
+    $('btn-wobble').addEventListener('click', () => jelly.impulse(0.8));
+    $('btn-crush').addEventListener('click', () => jelly.crush('y', 0.45));
+    $('btn-stretch').addEventListener('click', () => jelly.crush('y', 1.6));
+    $('btn-force').addEventListener('click', () => {
+      jelly.applyForce([1, 0.3, 0], { strength: 2.5 });
+    });
+    $('btn-poke').addEventListener('click', () => {
+      const box = jelly._geometry.boundingBox;
+      jelly.poke([0, box.max.y, 0], { strength: 3, radius: 0.8 });
+    });
+    $('btn-reset').addEventListener('click', () => jelly.reset());
+    $('btn-pause').addEventListener('click', () => {
+      jelly.toggle();
+      $('btn-pause').textContent = jelly.options.paused ? 'Resume' : 'Pause';
+    });
+    $('btn-rotate').addEventListener('click', () => {
+      const next = !jelly.options.autoRotate;
+      jelly.set({ autoRotate: next });
+      $('btn-rotate').textContent = next ? 'Stop rotate' : 'Auto-rotate';
     });
 
-  }
-);
-
-$("eyeHeight").addEventListener(
-  "input",
-  e => {
-
-    const value =
-      Number(e.target.value);
-
-    jelly.set({
-      eyeHeight:value
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
     });
 
-    updateValue(
-      "eyeHeightValue",
-      value.toFixed(2)
-    );
-
-  }
-);
-
-$("eyeSpacing").addEventListener(
-  "input",
-  e => {
-
-    const value =
-      Number(e.target.value);
-
-    jelly.set({
-      eyeSpacing:
-        value === 0 ? null : value
-    });
-
-    updateValue(
-      "eyeSpacingValue",
-      value === 0
-        ? "auto"
-        : value.toFixed(2)
-    );
-
-  }
-);
-
-/* --------------------------------------------------
-   PRESETS
--------------------------------------------------- */
-
-$("preset").addEventListener(
-  "change",
-  e => {
-
-    const preset =
-      e.target.value;
-
-    const pet =
-      preset.startsWith("pet");
-
-    jelly.set({
-      preset,
-      eyes:pet
-    });
-
-    $("eyes").checked = pet;
-
-  }
-);
-
-/* --------------------------------------------------
-   INTERACTION
--------------------------------------------------- */
-
-$("interaction").addEventListener(
-  "change",
-  e => {
-
-    jelly.set({
-      interaction:e.target.value
-    });
-
-  }
-);
-
-/* --------------------------------------------------
-   ACTIONS
--------------------------------------------------- */
-
-$("wobble").addEventListener(
-  "click",
-  () => {
-
-    jelly.impulse(1.2);
-
-  }
-);
-
-$("crush").addEventListener(
-  "click",
-  () => {
-
-    jelly.crush(
-      "y",
-      .45
-    );
-
-  }
-);
-
-$("stretchAction").addEventListener(
-  "click",
-  () => {
-
-    jelly.crush(
-      "y",
-      1.6
-    );
-
-  }
-);
-
-$("force").addEventListener(
-  "click",
-  () => {
-
-    jelly.applyForce(
-      [1,.35,.15],
-      {
-        strength:2.5
-      }
-    );
-
-  }
-);
-
-$("poke").addEventListener(
-  "click",
-  () => {
-
-    const box =
-      jelly._geometry.boundingBox;
-
-    jelly.poke(
-      [0,box.max.y,0],
-      {
-        strength:3,
-        radius:.8
-      }
-    );
-
-  }
-);
-
-$("reset").addEventListener(
-  "click",
-  () => {
-
-    jelly.reset();
-
-  }
-);
-
-$("pause").addEventListener(
-  "click",
-  () => {
-
-    jelly.toggle();
-
-    $("pause").textContent =
-      jelly.options.paused
-        ? "Resume"
-        : "Pause";
-
-  }
-);
-
-$("rotate").addEventListener(
-  "click",
-  () => {
-
-    const next =
-      !jelly.options.autoRotate;
-
-    jelly.set({
-      autoRotate:next
-    });
-
-    $("rotate").textContent =
-      next
-        ? "Stop rotate"
-        : "Rotate";
-
-  }
-);
-
-/* --------------------------------------------------
-   CLICK WOBBLE
--------------------------------------------------- */
-
-renderer.domElement.addEventListener(
-  "pointerup",
-  event => {
-
-    if(
-      event.clientX < 0 ||
-      event.clientY < 0
-    ) return;
-
-  }
-);
-
-/* --------------------------------------------------
-   RESIZE
--------------------------------------------------- */
-
-window.addEventListener(
-  "resize",
-  () => {
-
-    camera.aspect =
-      window.innerWidth /
-      window.innerHeight;
-
-    camera.updateProjectionMatrix();
-
-    renderer.setSize(
-      window.innerWidth,
-      window.innerHeight
-    );
-
-  }
-);
-
-/* --------------------------------------------------
-   RUNTIME STATS
--------------------------------------------------- */
-
-let previousTime =
-  performance.now();
-
-let frames = 0;
-let fpsTime = previousTime;
-
-/* --------------------------------------------------
-   LOOP
--------------------------------------------------- */
-
-const clock =
-  new THREE.Clock();
-
-function animate(){
-
-  requestAnimationFrame(
-    animate
-  );
-
-  const dt =
-    Math.min(
-      clock.getDelta(),
-      .05
-    );
-
-  jelly.update(dt);
-
-  frames++;
-
-  const now =
-    performance.now();
-
-  if(
-    now - fpsTime >= 500
-  ){
-
-    const fps =
-      Math.round(
-        frames /
-        ((now-fpsTime)/1000)
-      );
-
-    updateValue(
-      "fps",
-      fps
-    );
-
-    frames = 0;
-    fpsTime = now;
-
-  }
-
-  const position =
-    jelly._geometry
-      .getAttribute("position");
-
-  updateValue(
-    "vertices",
-    position.count
-  );
-
-  let velocity = 0;
-
-  if(jelly._velocity){
-
-    for(
-      let i=0;
-      i<jelly._velocity.length;
-      i+=3
-    ){
-
-      const x =
-        jelly._velocity[i];
-
-      const y =
-        jelly._velocity[i+1];
-
-      const z =
-        jelly._velocity[i+2];
-
-      velocity +=
-        Math.sqrt(
-          x*x+y*y+z*z
-        );
-
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const dt = Math.min(clock.getDelta(), 0.05);
+      jelly.update(dt);
+      controls.update();
+      renderer.render(scene, camera);
     }
 
-    velocity /=
-      Math.max(
-        1,
-        position.count
-      );
+    animate();
 
-  }
+    $('v-firmness').textContent = jelly.options.firmness;
+    $('v-damping').textContent = jelly.options.damping;
+    $('v-wobble').textContent = jelly.options.wobble;
+    $('v-speed').textContent = jelly.options.speed;
+    $('v-gravityStrength').textContent = jelly.options.gravityStrength.toFixed(1);
+    $('v-saturation').textContent = jelly.options.saturation;
+    $('v-transmission').textContent = jelly.options.transmission.toFixed(2);
+    $('v-roughness').textContent = jelly.options.roughness.toFixed(3);
+    $('v-reflections').textContent = jelly.options.reflections;
+    $('v-pullRadius').textContent = jelly.options.pullRadius;
+    $('v-stretch').textContent = jelly.options.stretch;
+    $('v-eyeHeight').textContent = jelly.options.eyeHeight.toFixed(2);
+    $('v-eyeSpacing').textContent = 'auto';
 
-  updateValue(
-    "velocity",
-    velocity.toFixed(2)
-  );
-
-  renderer.render(
-    scene,
-    camera
-  );
-}
-
-animate();
-
-</script>
-
+    $('preset-select').value = 'petCube';
+    $('interaction-select').value = 'pull';
+    $('t-gravity').checked = true;
+    $('t-grounded').checked = false;
+    $('t-floating').checked = true;
+    $('t-eyes').checked = true;
+    $('t-blink').checked = true;
+    $('t-texture').checked = false;
+    $('t-wireframe').checked = false;
+  </script>
 </body>
 </html>
