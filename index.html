@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>tree.js</title>
+
+  <link
+    rel="icon"
+    type="image/png"
+    href="https://raw.githubusercontent.com/joaoTYSM/three.js/refs/heads/main/icon.png"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown.min.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css"
+    id="highlightTheme"
+  >
+
+  <style>
+    :root {
+      color-scheme: dark;
+
+      --bg: #0d1117;
+      --text: #f0f6fc;
+      --border: #30363d;
+      --surface: #161b22;
+      --button-bg: #161b22;
+      --button-hover: #21262d;
+    }
+
+    html.light {
+      color-scheme: light;
+
+      --bg: #ffffff;
+      --text: #1f2328;
+      --border: #d0d7de;
+      --surface: #f6f8fa;
+      --button-bg: #ffffff;
+      --button-hover: #f3f4f6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+
+      transition:
+        background-color .25s ease,
+        color .25s ease;
+    }
+
+    #themeButton {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 1000;
+
+      width: 42px;
+      height: 42px;
+      padding: 0;
+
+      border: 1px solid var(--border);
+      border-radius: 10px;
+
+      background: var(--button-bg);
+      color: var(--text);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      cursor: pointer;
+      font-size: 18px;
+
+      box-shadow:
+        0 6px 24px rgba(0, 0, 0, .25);
+
+      transition:
+        background .15s ease,
+        border-color .15s ease,
+        transform .15s ease;
+    }
+
+    #themeButton:hover {
+      background: var(--button-hover);
+      border-color: #8b949e;
+    }
+
+    #themeButton:active {
+      transform: scale(.94);
+    }
+
+    .markdown-body {
+      width: min(980px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 60px 0 80px;
+
+      background: transparent !important;
+      color: var(--text);
+    }
+
+    .markdown-body h1,
+    .markdown-body h2,
+    .markdown-body h3,
+    .markdown-body h4,
+    .markdown-body h5,
+    .markdown-body h6 {
+      color: var(--text);
+      border-bottom-color: var(--border);
+    }
+
+    .markdown-body p,
+    .markdown-body li {
+      color: var(--text);
+    }
+
+    .markdown-body blockquote {
+      color: #8b949e;
+      border-left-color: var(--border);
+    }
+
+    .markdown-body hr {
+      background-color: var(--border);
+    }
+
+    .markdown-body table {
+      display: block;
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .markdown-body table th,
+    .markdown-body table td {
+      border-color: var(--border);
+    }
+
+    .markdown-body table tr {
+      background: transparent;
+      border-color: var(--border);
+    }
+
+    .markdown-body table tr:nth-child(2n) {
+      background: var(--surface);
+    }
+
+    .markdown-body code {
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    .markdown-body pre {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      position: relative;
+    }
+
+    .markdown-body pre code {
+      background: transparent;
+    }
+
+    .markdown-body img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .markdown-body details {
+      margin: 14px 0;
+      padding: 12px 16px;
+
+      border: 1px solid var(--border);
+      border-radius: 8px;
+
+      background: var(--surface);
+    }
+
+    .markdown-body details > summary {
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .markdown-body kbd {
+      background: var(--surface);
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    .markdown-body input[type="checkbox"] {
+      accent-color: #2f81f7;
+    }
+
+    .code-wrapper {
+      position: relative;
+    }
+
+    .copy-code {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 5;
+
+      height: 30px;
+      padding: 0 9px;
+
+      border: 1px solid var(--border);
+      border-radius: 6px;
+
+      background: var(--surface);
+      color: #8b949e;
+
+      cursor: pointer;
+
+      font:
+        12px
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      opacity: 0;
+
+      transition:
+        opacity .15s ease,
+        background .15s ease,
+        color .15s ease;
+    }
+
+    .code-wrapper:hover .copy-code {
+      opacity: 1;
+    }
+
+    .copy-code:hover {
+      color: var(--text);
+      background: var(--button-hover);
+    }
+
+    #loading {
+      min-height: 100vh;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .spinner {
+      width: 26px;
+      height: 26px;
+
+      border: 3px solid var(--border);
+      border-top-color: #58a6ff;
+
+      border-radius: 50%;
+
+      animation:
+        spin .8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (max-width: 700px) {
+      #themeButton {
+        top: 12px;
+        right: 12px;
+      }
+
+      .markdown-body {
+        width: calc(100% - 28px);
+        padding: 50px 0 50px;
+        font-size: 15px;
+      }
+
+      .markdown-body pre {
+        margin-left: -4px;
+        margin-right: -4px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <button
+    id="themeButton"
+    type="button"
+    aria-label="Toggle theme"
+    title="Toggle theme"
+  >
+    ☀
+  </button>
+
+  <main
+    id="content"
+    class="markdown-body"
+  >
+    <div id="loading">
+      <div class="spinner"></div>
+    </div>
+  </main>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/marked@15.0.7/marked.min.js"
+  ></script>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/dompurify@3.2.4/dist/purify.min.js"
+  ></script>
+
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"
+  ></script>
+
+  <script>
+    const README_URL =
+      "https://raw.githubusercontent.com/joaoTYSM/three.js/refs/heads/main/README.md";
+
+    const REPOSITORY_URL =
+      "https://github.com/joaoTYSM/three.js";
+
+    const REPOSITORY_RAW =
+      "https://raw.githubusercontent.com/joaoTYSM/three.js/refs/heads/main/";
+
+    const content =
+      document.getElementById("content");
+
+    const themeButton =
+      document.getElementById("themeButton");
+
+    const highlightTheme =
+      document.getElementById("highlightTheme");
+
+    function getSystemTheme() {
+      return window.matchMedia(
+        "(prefers-color-scheme: light)"
+      ).matches
+        ? "light"
+        : "dark";
+    }
+
+    function setTheme(theme) {
+      const light =
+        theme === "light";
+
+      document.documentElement.classList.toggle(
+        "light",
+        light
+      );
+
+      themeButton.textContent =
+        light ? "☾" : "☀";
+
+      themeButton.title =
+        light
+          ? "Dark mode"
+          : "Light mode";
+
+      themeButton.setAttribute(
+        "aria-label",
+        themeButton.title
+      );
+
+      highlightTheme.href =
+        light
+          ? "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github.min.css"
+          : "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css";
+
+      localStorage.setItem(
+        "tree-theme",
+        theme
+      );
+    }
+
+    function toggleTheme() {
+      const light =
+        document.documentElement.classList.contains(
+          "light"
+        );
+
+      setTheme(
+        light
+          ? "dark"
+          : "light"
+      );
+    }
+
+    themeButton.addEventListener(
+      "click",
+      toggleTheme
+    );
+
+    setTheme(
+      localStorage.getItem("tree-theme") ||
+      getSystemTheme()
+    );
+
+    marked.setOptions({
+      gfm: true,
+      breaks: false,
+      pedantic: false
+    });
+
+    function resolveURL(url, type) {
+      if (!url) {
+        return url;
+      }
+
+      if (
+        url.startsWith("#") ||
+        url.startsWith("data:") ||
+        url.startsWith("mailto:") ||
+        url.startsWith("tel:") ||
+        url.startsWith("//") ||
+        /^[a-z][a-z0-9+.-]*:/i.test(url)
+      ) {
+        return url;
+      }
+
+      if (type === "image") {
+        return new URL(
+          url,
+          REPOSITORY_RAW
+        ).href;
+      }
+
+      return new URL(
+        url,
+        REPOSITORY_URL + "/blob/main/"
+      ).href;
+    }
+
+    function fixURLs(root) {
+      root
+        .querySelectorAll("img")
+        .forEach(img => {
+          const src =
+            img.getAttribute("src");
+
+          if (src) {
+            img.src =
+              resolveURL(
+                src,
+                "image"
+              );
+          }
+
+          img.loading = "lazy";
+        });
+
+      root
+        .querySelectorAll("a")
+        .forEach(a => {
+          const href =
+            a.getAttribute("href");
+
+          if (!href) {
+            return;
+          }
+
+          if (href.startsWith("#")) {
+            return;
+          }
+
+          a.href =
+            resolveURL(
+              href,
+              "link"
+            );
+
+          a.target = "_blank";
+          a.rel =
+            "noopener noreferrer";
+        });
+    }
+
+    function addCopyButtons(root) {
+      root
+        .querySelectorAll("pre")
+        .forEach(pre => {
+
+          const wrapper =
+            document.createElement("div");
+
+          wrapper.className =
+            "code-wrapper";
+
+          pre.parentNode.insertBefore(
+            wrapper,
+            pre
+          );
+
+          wrapper.appendChild(pre);
+
+          const button =
+            document.createElement("button");
+
+          button.className =
+            "copy-code";
+
+          button.type = "button";
+          button.textContent = "Copy";
+
+          button.addEventListener(
+            "click",
+            async () => {
+
+              const code =
+                pre.querySelector("code");
+
+              const text =
+                code
+                  ? code.textContent
+                  : pre.textContent;
+
+              try {
+                await navigator.clipboard.writeText(
+                  text
+                );
+
+                button.textContent =
+                  "Copied";
+
+                setTimeout(
+                  () => {
+                    button.textContent =
+                      "Copy";
+                  },
+                  1200
+                );
+
+              } catch {
+                button.textContent =
+                  "Failed";
+
+                setTimeout(
+                  () => {
+                    button.textContent =
+                      "Copy";
+                  },
+                  1200
+                );
+              }
+            }
+          );
+
+          wrapper.appendChild(button);
+        });
+    }
+
+    function highlight(root) {
+      root
+        .querySelectorAll("pre code")
+        .forEach(code => {
+          try {
+            hljs.highlightElement(code);
+          } catch {}
+        });
+    }
+
+    async function loadREADME() {
+      try {
+        const response =
+          await fetch(
+            README_URL,
+            {
+              cache: "no-cache"
+            }
+          );
+
+        if (!response.ok) {
+          throw new Error(
+            "Failed to fetch README"
+          );
+        }
+
+        const markdown =
+          await response.text();
+
+        const html =
+          marked.parse(markdown);
+
+        const safe =
+          DOMPurify.sanitize(
+            html,
+            {
+              USE_PROFILES: {
+                html: true
+              },
+
+              ADD_TAGS: [
+                "details",
+                "summary",
+                "kbd",
+                "sub",
+                "sup",
+                "ins",
+                "del",
+                "picture",
+                "source"
+              ],
+
+              ADD_ATTR: [
+                "target",
+                "rel",
+                "loading",
+                "open",
+                "align",
+                "colspan",
+                "rowspan",
+                "width",
+                "height"
+              ]
+            }
+          );
+
+        content.innerHTML = safe;
+
+        fixURLs(content);
+        highlight(content);
+        addCopyButtons(content);
+
+      } catch (error) {
+
+        content.innerHTML = `
+          <p>
+            Failed to load README.
+          </p>
+
+          <p>
+            <a
+              href="${README_URL}"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open README
+            </a>
+          </p>
+        `;
+
+        console.error(error);
+      }
+    }
+
+    loadREADME();
+  </script>
+
+</body>
+</html>
+
+©joaoTYSM
