@@ -2,7 +2,7 @@
 
 <h1 align="center">
   <img
-    src="https://raw.githubusercontent.com/joaoTYSM/tree.js/refs/heads/main/jelly/jelly.png"
+    src="https://raw.githubusercontent.com/joaoTYSM/three.js/refs/heads/main/jelly/jelly.png"
     width="140"
     alt="jelly.js"
     align="middle"
@@ -20,7 +20,7 @@ A lightweight JavaScript library for creating interactive, deformable and custom
 
 <br>
 
-[![GitHub](https://img.shields.io/badge/GitHub-joaoTYSM%2Ftree.js-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/joaoTYSM/tree.js)
+[![GitHub](https://img.shields.io/badge/GitHub-joaoTYSM%2Ftree.js-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/joaoTYSM/three.js)
 [![Three.js](https://img.shields.io/badge/Three.js-0.160.0-black?style=flat-square&logo=threedotjs&logoColor=white)](https://threejs.org/)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 [![Discord](https://img.shields.io/badge/Discord-RCXKUtYhpp-5865F2?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/RCXKUtYhpp)
@@ -73,7 +73,7 @@ to customize the appearance and behavior of the jelly.
 
 <div align="center">
 
-<a href="https://github.com/joaoTYSM/tree.js">
+<a href="https://github.com/joaoTYSM/three.js">
 
 <img src="https://img.shields.io/badge/OPEN_LIVE_DEMO-ffffff?style=for-the-badge&logo=googlechrome&logoColor=ffffff&labelColor=000000">
 
@@ -102,5 +102,5 @@ You can load `jelly.js` directly from the GitHub repository.
 </script>
 
 <script type="module">
-  import Jelly from "https://raw.githubusercontent.com/joaoTYSM/tree.js/refs/heads/main/jelly/tree.js";
+  import Jelly from "https://raw.githubusercontent.com/joaoTYSM/three.js/refs/heads/main/jelly/three.js";
 </script>
