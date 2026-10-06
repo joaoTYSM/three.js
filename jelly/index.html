@@ -1,343 +1,2884 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>show-case</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+
+<title>Jelly.js</title>
+
 <style>
-:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f6f3fb;--card:#fff;--fg:#1b1530;--mut:#6b6485;--line:#e3ddf0;--acc:#e00072}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e0b1a;--card:#171228;--fg:#f1edfb;--mut:#a39bbd;--line:#2a2342}}
-:root[data-theme="dark"]{--bg:#0e0b1a;--card:#171228;--fg:#f1edfb;--mut:#a39bbd;--line:#2a2342}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*,*:before,*:after{box-sizing:inherit}
-body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-.wrap{max-width:1100px;margin:0 auto;padding:0 18px}
-header{padding:44px 0 20px}
-h1{font-size:clamp(2rem,6vw,3.4rem);line-height:1.05;margin:0 0 10px;letter-spacing:-.02em}
-h1 span{color:var(--acc)}
-h2{font-size:clamp(1.3rem,3.5vw,1.8rem);margin:44px 0 6px}
-p.lead{color:var(--mut);max-width:640px;margin:0}
-.tag{display:inline-block;font-size:.75rem;padding:3px 10px;border:1px solid var(--line);border-radius:99px;color:var(--mut);margin:0 6px 12px 0}
-.stage{display:grid;gap:16px;margin-top:18px}
-@media(min-width:900px){.stage{grid-template-columns:1.4fr 1fr}}
-.cv{position:relative;border-radius:20px;overflow:hidden;background:#0e0b1a;border:1px solid var(--line);touch-action:none}
-.cv canvas{display:block;width:100%;height:100%}
-#hero{height:min(78vw,520px)}
-#gal{height:min(110vw,560px)}
-@media(min-width:900px){#gal{height:520px}#hero{height:600px}}
-.hint{position:absolute;left:12px;bottom:10px;font-size:.78rem;color:#b9b0d6;pointer-events:none}
-.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px}
-.panel h3{margin:14px 0 8px;font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--mut)}
-.panel h3:first-child{margin-top:0}
-.chips{display:flex;flex-wrap:wrap;gap:6px}
-button,select{font:inherit;font-size:.86rem;color:var(--fg);background:transparent;border:1px solid var(--line);border-radius:10px;padding:7px 11px;cursor:pointer}
-button:hover{border-color:var(--acc)}
-button.on{background:var(--acc);border-color:var(--acc);color:#fff}
-.sw{width:30px;height:30px;padding:0;border-radius:50%}
-.sw.on{outline:2px solid var(--fg);outline-offset:2px}
-.row{display:grid;grid-template-columns:96px 1fr 44px;gap:8px;align-items:center;font-size:.85rem;margin:6px 0}
-.row output{color:var(--mut);text-align:right;font-variant-numeric:tabular-nums}
-input[type=range]{width:100%;accent-color:var(--acc)}
-.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));margin-top:14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
-.card b{display:block;margin-bottom:4px}
-.card p{margin:0;color:var(--mut);font-size:.9rem}
-code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
-.codebox{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:14px}
-pre{margin:0;font-size:.82rem;line-height:1.55}
-code.i{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:.82em}
-footer{padding:36px 0 50px;color:var(--mut);font-size:.88rem}
-footer a{color:var(--acc)}
-#err{display:none;padding:14px;border:1px solid var(--acc);border-radius:12px;margin-top:14px}
+:root{
+  --bg:#0d1117;
+  --panel:#161b22;
+  --panel2:#0d1117;
+  --border:#30363d;
+  --border2:#21262d;
+  --text:#f0f6fc;
+  --muted:#8b949e;
+  --blue:#2f81f7;
+  --pink:#e00072;
+  --green:#3fb950;
+  --radius:6px;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  min-width:320px;
+  background:var(--bg);
+  color:var(--text);
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Helvetica,
+    Arial,
+    sans-serif;
+  font-size:14px;
+  line-height:1.5;
+}
+
+button,
+input{
+  font:inherit;
+}
+
+button{
+  color:inherit;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+.container{
+  width:min(1180px,calc(100% - 32px));
+  margin:auto;
+}
+
+/* HEADER */
+
+header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  height:64px;
+  background:rgba(13,17,23,.94);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(10px);
+}
+
+.header-inner{
+  height:100%;
+  display:flex;
+  align-items:center;
+  gap:24px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-weight:600;
+  font-size:16px;
+}
+
+.logo{
+  width:28px;
+  height:28px;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--border);
+  border-radius:6px;
+  color:var(--pink);
+  font-weight:700;
+}
+
+.nav{
+  display:flex;
+  gap:18px;
+  color:var(--muted);
+}
+
+.nav a:hover{
+  color:var(--text);
+}
+
+.github{
+  margin-left:auto;
+  padding:6px 12px;
+  border:1px solid var(--border);
+  border-radius:6px;
+  background:var(--panel);
+}
+
+.github:hover{
+  border-color:#484f58;
+  background:#1c2128;
+}
+
+/* HERO */
+
+.hero{
+  border-bottom:1px solid var(--border);
+  padding:42px 0 36px;
+}
+
+.repo{
+  color:var(--muted);
+  font-size:13px;
+  margin-bottom:20px;
+}
+
+.hero-row{
+  display:flex;
+  justify-content:space-between;
+  gap:24px;
+}
+
+h1{
+  margin:0;
+  font-size:clamp(38px,7vw,58px);
+  line-height:1.05;
+  letter-spacing:-2px;
+}
+
+.hero p{
+  margin:12px 0 16px;
+  max-width:650px;
+  color:var(--muted);
+  font-size:16px;
+}
+
+.meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.badge{
+  padding:2px 7px;
+  border:1px solid var(--border);
+  border-radius:20px;
+  color:var(--text);
+}
+
+.status{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:var(--muted);
+}
+
+.status-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--green);
+}
+
+/* SECTIONS */
+
+section{
+  padding:52px 0;
+}
+
+section+section{
+  border-top:1px solid var(--border2);
+}
+
+.heading{
+  margin-bottom:18px;
+}
+
+.heading h2{
+  margin:0;
+  font-size:22px;
+}
+
+.heading p{
+  margin:5px 0 0;
+  color:var(--muted);
+}
+
+/* PLAYGROUND */
+
+.playground{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 330px;
+  gap:16px;
+}
+
+.viewport{
+  position:relative;
+  min-height:520px;
+  overflow:hidden;
+  background:#0d1117;
+  border:1px solid var(--border);
+  border-radius:8px;
+}
+
+.viewport::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(
+      rgba(255,255,255,.018) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.018) 1px,
+      transparent 1px
+    );
+  background-size:32px 32px;
+}
+
+canvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+  touch-action:none;
+}
+
+.viewport-label{
+  position:absolute;
+  z-index:2;
+  left:14px;
+  bottom:12px;
+  color:var(--muted);
+  font-size:12px;
+  pointer-events:none;
+}
+
+.loading{
+  position:absolute;
+  inset:0;
+  z-index:5;
+  display:grid;
+  place-items:center;
+  background:var(--bg);
+  color:var(--muted);
+}
+
+.loading.hidden{
+  opacity:0;
+  pointer-events:none;
+}
+
+/* CONTROLS */
+
+.controls{
+  padding:16px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:8px;
+}
+
+.control-section{
+  margin-bottom:20px;
+}
+
+.control-section:last-child{
+  margin-bottom:0;
+}
+
+.control-title{
+  margin-bottom:9px;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+
+.buttons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
+.btn{
+  padding:5px 9px;
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:6px;
+  cursor:pointer;
+  font-size:12px;
+}
+
+.btn:hover{
+  background:#1c2128;
+  border-color:#484f58;
+}
+
+.btn.active{
+  color:#58a6ff;
+  border-color:var(--blue);
+  background:#10243f;
+}
+
+/* COLORS */
+
+.colors{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+}
+
+.color{
+  width:22px;
+  height:22px;
+  padding:0;
+  border:2px solid var(--border);
+  border-radius:50%;
+  cursor:pointer;
+}
+
+.color.active{
+  outline:2px solid white;
+  outline-offset:2px;
+}
+
+/* SLIDERS */
+
+.slider{
+  display:grid;
+  grid-template-columns:88px minmax(0,1fr) 38px;
+  gap:8px;
+  align-items:center;
+  margin-bottom:9px;
+  font-size:12px;
+}
+
+.slider label{
+  color:var(--muted);
+}
+
+.slider output{
+  color:var(--muted);
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+}
+
+input[type="range"]{
+  width:100%;
+  margin:0;
+  accent-color:var(--blue);
+}
+
+/* GALLERY */
+
+.gallery{
+  min-height:570px;
+}
+
+/* CODE */
+
+.code{
+  overflow:auto;
+  background:#0d1117;
+  border:1px solid var(--border);
+  border-radius:8px;
+}
+
+pre{
+  margin:0;
+  padding:20px;
+  color:#c9d1d9;
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+  font-size:13px;
+  line-height:1.65;
+}
+
+/* FOOTER */
+
+footer{
+  border-top:1px solid var(--border);
+  padding:28px 0;
+  color:var(--muted);
+}
+
+.footer-inner{
+  display:flex;
+  flex-wrap:wrap;
+  gap:18px;
+}
+
+.footer-inner a{
+  color:#58a6ff;
+}
+
+.footer-inner a:hover{
+  text-decoration:underline;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px){
+
+  .playground{
+    grid-template-columns:1fr;
+  }
+
+  .controls{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:18px;
+  }
+
+  .control-section{
+    margin:0;
+  }
+
+  .viewport{
+    min-height:430px;
+  }
+}
+
+@media(max-width:640px){
+
+  .container{
+    width:calc(100% - 20px);
+  }
+
+  header{
+    height:56px;
+  }
+
+  .nav{
+    display:none;
+  }
+
+  .hero{
+    padding-top:30px;
+  }
+
+  .hero-row{
+    flex-direction:column;
+  }
+
+  .status{
+    display:none;
+  }
+
+  section{
+    padding:38px 0;
+  }
+
+  .controls{
+    grid-template-columns:1fr;
+  }
+
+  .viewport{
+    min-height:360px;
+  }
+
+  .gallery{
+    min-height:440px;
+  }
+}
+
+@media(max-width:420px){
+
+  .github{
+    padding:5px 8px;
+  }
+
+  h1{
+    font-size:40px;
+  }
+
+  .viewport{
+    min-height:320px;
+  }
+
+  .slider{
+    grid-template-columns:78px minmax(0,1fr) 35px;
+  }
+}
 </style>
 </head>
+
 <body>
-<div class="wrap">
+
 <header>
-  <span class="tag">three.js</span><span class="tag">spring-mass physics</span><span class="tag">v2.5</span>
-  <h1>Jelly<span>.js</span></h1>
-  <p class="lead">A standalone soft-body jelly for three.js. No scene, lights or floor required — drop it anywhere, grab it, squash it, kick it.</p>
-  <div id="err">WebGL could not start in this browser.</div>
+  <div class="container header-inner">
+
+    <a class="brand" href="#">
+      <span class="logo">J</span>
+      <span>Jelly.js</span>
+    </a>
+
+    <nav class="nav">
+      <a href="#playground">Playground</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#quick-start">Quick start</a>
+    </nav>
+
+    <a
+      class="github"
+      href="https://github.com/joaoTYSM/three.js"
+      target="_blank"
+      rel="noopener"
+    >
+      GitHub
+    </a>
+
+  </div>
 </header>
 
-<section>
-  <h2>Live playground</h2>
-  <p class="lead">Drag the jelly to stretch it. Tap without dragging for a wobble. Every control below maps to a live <code class="i">jelly.set({...})</code> option.</p>
-  <div class="stage">
-    <div class="cv" id="hero"><canvas></canvas><div class="hint">Drag to pull · tap to wobble</div></div>
-    <div class="panel" id="panel">
-      <h3>Preset</h3><div class="chips" id="presets"></div>
-      <h3>Color</h3><div class="chips" id="colors"></div>
-      <h3>Physics</h3><div id="sliders"></div>
-      <h3>Options</h3><div class="chips" id="toggles"></div>
-      <h3>Actions</h3><div class="chips" id="actions"></div>
+
+<main>
+
+<section class="hero">
+  <div class="container">
+
+    <div class="repo">
+      joaoTYSM / three.js / jelly
     </div>
+
+    <div class="hero-row">
+
+      <div>
+        <h1>Jelly.js</h1>
+
+        <p>
+          A small soft-body physics experiment for Three.js.
+        </p>
+
+        <div class="meta">
+          <span class="badge">v2.5</span>
+          <span>three.js</span>
+          <span>spring-mass physics</span>
+        </div>
+      </div>
+
+      <div class="status">
+        <span class="status-dot"></span>
+        <span>Interactive</span>
+      </div>
+
+    </div>
+
   </div>
 </section>
 
-<section>
-  <h2>Preset gallery</h2>
-  <p class="lead">Eight jellies in a single scene — each one is its own independent physics body. Grab any of them.</p>
-  <div class="cv" id="gal" style="margin-top:18px"><canvas></canvas><div class="hint">Every jelly is draggable</div></div>
+
+<section id="playground">
+
+<div class="container">
+
+<div class="heading">
+  <h2>Playground</h2>
+  <p>
+    Drag the jelly to stretch it. Release it to let the spring system recover.
+  </p>
+</div>
+
+
+<div class="playground">
+
+<div
+  id="hero-stage"
+  class="viewport"
+>
+
+<canvas id="hero-canvas"></canvas>
+
+<div class="viewport-label">
+  Drag the jelly
+</div>
+
+<div
+  id="loading"
+  class="loading"
+>
+  Initializing...
+</div>
+
+</div>
+
+
+<aside class="controls">
+
+<div class="control-section">
+
+<div class="control-title">
+  Preset
+</div>
+
+<div
+  id="presets"
+  class="buttons"
+></div>
+
+</div>
+
+
+<div class="control-section">
+
+<div class="control-title">
+  Color
+</div>
+
+<div
+  id="colors"
+  class="colors"
+></div>
+
+</div>
+
+
+<div class="control-section">
+
+<div class="control-title">
+  Physics
+</div>
+
+<div id="physics"></div>
+
+</div>
+
+
+<div class="control-section">
+
+<div class="control-title">
+  Options
+</div>
+
+<div
+  id="options"
+  class="buttons"
+></div>
+
+</div>
+
+
+<div class="control-section">
+
+<div class="control-title">
+  Actions
+</div>
+
+<div
+  id="actions"
+  class="buttons"
+></div>
+
+</div>
+
+</aside>
+
+</div>
+
+</div>
+
 </section>
 
-<section>
-  <h2>Power moves</h2>
-  <div class="grid">
-    <div class="card"><b>crush(axis, amount)</b><p>Squash or stretch on one axis with volume preserved.</p></div>
-    <div class="card"><b>applyForce(dir, opts)</b><p>Inject velocity globally or in a falloff region.</p></div>
-    <div class="card"><b>setGravity(v)</b><p>Turn gravity off, on, or use a multiplier for heavier sag.</p></div>
-    <div class="card"><b>setFloating(bool)</b><p>Cut the floor loose and let the jelly bob freely.</p></div>
-    <div class="card"><b>sculpt(fn)</b><p>Reshape the rest pose vertex by vertex.</p></div>
-    <div class="card"><b>attach(obj, opts)</b><p>Glue any Object3D to the jelly surface — that's how the eyes work.</p></div>
-    <div class="card"><b>setEyes(config)</b><p>Button eyes by default, or supply your own factory.</p></div>
-    <div class="card"><b>impulse(strength)</b><p>One-shot wobble you can trigger from anywhere.</p></div>
-  </div>
+
+<section id="gallery">
+
+<div class="container">
+
+<div class="heading">
+  <h2>Gallery</h2>
+
+  <p>
+    Different meshes using the same elastic deformation system.
+  </p>
+</div>
+
+
+<div
+  id="gallery-stage"
+  class="viewport gallery"
+>
+
+<canvas id="gallery-canvas"></canvas>
+
+<div class="viewport-label">
+  Drag any mesh
+</div>
+
+</div>
+
+</div>
+
 </section>
 
-<section>
+
+<section id="quick-start">
+
+<div class="container">
+
+<div class="heading">
   <h2>Quick start</h2>
-  <div class="codebox"><pre>import { Jelly } from './jelly.js';
 
-const jelly = new Jelly({
-  camera,
-  domElement: renderer.domElement,  // pointer drag
-  preset: 'petStar',
-  floating: true,
+  <p>
+    Basic Jelly.js usage.
+  </p>
+</div>
+
+
+<div class="code">
+<pre><code>const jelly = new Jelly({
+  preset: "petBlob",
   color: 0xe00072,
+  eyes: true,
+  elasticity: 2
 });
 
 scene.add(jelly.mesh);
 
-// every frame
-jelly.update(delta);
+function animate() {
+  jelly.update(clock.getDelta());
+  renderer.render(scene, camera);
+}
 
-jelly.crush('y', 0.45);                         // squash flat
-jelly.applyForce([1, 0.4, 0], { strength: 2 }); // kick it
-jelly.setGravity(2.5);                          // heavier sag</pre></div>
-</section>
-
-<section>
-  <h2>Presets &amp; options</h2>
-  <div class="grid">
-    <div class="card"><b>Shapes</b><p>cube · box · sphere · ball · circle · star · heart · capsule · pill · torus · donut · blob</p></div>
-    <div class="card"><b>Pets (with eyes)</b><p>pet · petCube · petBox · petSphere · petBall · petCircle · petStar · petHeart · petBlob · petCapsule</p></div>
-    <div class="card"><b>Physics</b><p>firmness · damping · wobble · speed · release · gravity · gravityStrength · squash</p></div>
-    <div class="card"><b>Material</b><p>color · saturation · transmission · roughness · thickness · ior · attenuationDistance · reflections · wireframe</p></div>
-  </div>
-</section>
-
-<footer>
-  This page runs a condensed port of Jelly.js v2.5 by joao. Full library:
-  <a href="https://github.com/joaoTYSM/three.js/tree/main/jelly" target="_blank" rel="noopener">joaoTYSM/three.js/jelly</a>
-  · <a href="https://discord.gg/AUddtuAGUf" target="_blank" rel="noopener">Discord</a>
-</footer>
+animate();</code></pre>
 </div>
 
+</div>
+
+</section>
+
+</main>
+
+
+<footer>
+
+<div class="container footer-inner">
+
+<span>Jelly.js</span>
+<span>Built with Three.js</span>
+
+<a
+  href="https://github.com/joaoTYSM/three.js"
+  target="_blank"
+  rel="noopener"
+>
+  Source
+</a>
+
+</div>
+
+</footer>
+
+
 <script type="importmap">
-{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"
+  }
+}
 </script>
+
+
 <script type="module">
-import * as THREE from 'three';
-import { mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
 
-/* ---------- geometry builders ---------- */
-const _p = new THREE.Vector3(), _i = new THREE.Vector3(), _n = new THREE.Vector3();
+import * as THREE from "three";
+
+
+/* =========================================================
+   GEOMETRY
+========================================================= */
+
 function roundedBox(){
-  const W=2.4,H=2.1,D=2.2,R=.45,g=new THREE.BoxGeometry(W,H,D,22,22,22),pos=g.attributes.position;
-  const core=new THREE.Vector3(W/2-R,H/2-R,D/2-R),lim=core.clone().negate();
-  for(let k=0;k<pos.count;k++){_p.fromBufferAttribute(pos,k);_i.copy(_p).clamp(lim,core);_n.copy(_p).sub(_i).normalize();_p.copy(_i).addScaledVector(_n,R);pos.setXYZ(k,_p.x,_p.y,_p.z)}
+
+  const g =
+    new THREE.BoxGeometry(
+      2.4,
+      2.15,
+      2.25,
+      26,
+      26,
+      26
+    );
+
+  const p =
+    g.attributes.position;
+
+  const half =
+    new THREE.Vector3(
+      1.2,
+      1.075,
+      1.125
+    );
+
+  const radius = .42;
+
+  const inner =
+    new THREE.Vector3(
+      half.x-radius,
+      half.y-radius,
+      half.z-radius
+    );
+
+  const min =
+    inner.clone().multiplyScalar(-1);
+
+  const a =
+    new THREE.Vector3();
+
+  const b =
+    new THREE.Vector3();
+
+  for(let i=0;i<p.count;i++){
+
+    a.fromBufferAttribute(p,i);
+
+    b.copy(a).clamp(
+      min,
+      inner
+    );
+
+    const d =
+      a.clone().sub(b);
+
+    if(d.lengthSq()>0){
+
+      d.normalize()
+       .multiplyScalar(radius);
+
+      a.copy(b).add(d);
+
+    }
+
+    p.setXYZ(
+      i,
+      a.x,
+      a.y,
+      a.z
+    );
+  }
+
+  g.computeVertexNormals();
+
   return g;
 }
-const ball=()=>new THREE.SphereGeometry(1.25,40,26);
-function ext(shape,depth,curve){const g=new THREE.ExtrudeGeometry(shape,{depth,bevelEnabled:true,bevelThickness:.14,bevelSize:.14,bevelSegments:3,curveSegments:curve});g.center();return g}
-function star(){const s=new THREE.Shape();for(let k=0;k<10;k++){const r=k%2?.62:1.4,a=k/10*Math.PI*2-Math.PI/2;k?s.lineTo(Math.cos(a)*r,Math.sin(a)*r):s.moveTo(Math.cos(a)*r,Math.sin(a)*r)}s.closePath();return ext(s,.7,6)}
-function heart(){const s=new THREE.Shape();s.moveTo(.5,.5);s.bezierCurveTo(.5,.5,.4,0,0,0);s.bezierCurveTo(-.6,0,-.6,.7,-.6,.7);s.bezierCurveTo(-.6,1.1,-.3,1.54,.5,1.9);s.bezierCurveTo(1.2,1.54,1.6,1.1,1.6,.7);s.bezierCurveTo(1.6,.7,1.6,0,1,0);s.bezierCurveTo(.7,0,.5,.5,.5,.5);const g=ext(s,.8,12);g.scale(.8,.8,.8);return g}
-const capsule=()=>new THREE.CapsuleGeometry(.85,1,12,24);
-const torus=()=>new THREE.TorusGeometry(.9,.42,20,44);
-function blob(){const g=new THREE.SphereGeometry(1.2,40,26),pos=g.attributes.position;for(let k=0;k<pos.count;k++){_p.fromBufferAttribute(pos,k);_p.multiplyScalar(1+Math.sin(_p.x*2.1+1.7)*Math.cos(_p.y*2.7-1.7)*Math.sin(_p.z*1.9+1.7)*.14);pos.setXYZ(k,_p.x,_p.y,_p.z)}return g}
-const BUILD={cube:roundedBox,box:roundedBox,sphere:ball,ball,circle:ball,star,heart,capsule,pill:capsule,torus,donut:torus,blob};
-const PRESETS=Object.keys(BUILD);
 
-function makeEye(color=0x453a33,thread=0xf2e6cf){
-  const g=new THREE.Group(),m=new THREE.MeshStandardMaterial({color,roughness:.3,metalness:.1}),t=new THREE.MeshStandardMaterial({color:thread,roughness:.85});
-  const disk=new THREE.CylinderGeometry(.22,.22,.06,32).rotateX(Math.PI/2),rim=new THREE.TorusGeometry(.19,.014,6,32),bar=new THREE.BoxGeometry(.2,.018,.012);
-  g.add(new THREE.Mesh(disk,m));const r=new THREE.Mesh(rim,m);r.position.z=.032;g.add(r);
-  for(const a of[Math.PI/4,-Math.PI/4]){const b=new THREE.Mesh(bar,t);b.rotation.z=a;b.position.z=.038;g.add(b)}
+
+function sphere(){
+
+  return new THREE.SphereGeometry(
+    1.25,
+    56,
+    40
+  );
+
+}
+
+
+function blob(){
+
+  const g =
+    new THREE.SphereGeometry(
+      1.25,
+      56,
+      40
+    );
+
+  const p =
+    g.attributes.position;
+
+  const v =
+    new THREE.Vector3();
+
+  for(let i=0;i<p.count;i++){
+
+    v.fromBufferAttribute(p,i);
+
+    const wave =
+      1 +
+      Math.sin(v.x*2.4) *
+      Math.cos(v.y*2.1) *
+      Math.sin(v.z*2.7) *
+      .09;
+
+    v.multiplyScalar(wave);
+
+    p.setXYZ(
+      i,
+      v.x,
+      v.y,
+      v.z
+    );
+
+  }
+
+  g.computeVertexNormals();
+
   return g;
 }
 
-/* ---------- Jelly (condensed port) ---------- */
-const DEF={preset:'cube',size:1,rotation:0,autoRotate:false,floating:true,firmness:38,damping:28,wobble:70,speed:100,gravity:true,gravityStrength:1,reach:1,squash:{x:1,y:1,z:1},color:0xe00072,roughness:.065,transmission:1,thickness:2.3,ior:1.42,wireframe:false,eyes:false,eyeHeight:.62,eyeBlink:true};
-class Jelly{
-  constructor(o={}){
-    this.o={...DEF,...o};this.o.squash={...DEF.squash,...(o.squash||{})};
-    if(/^pet/.test(this.o.preset)&&o.eyes===undefined)this.o.eyes=true;
-    this.mat=new THREE.MeshPhysicalMaterial({color:this.o.color,roughness:.065,transmission:1,thickness:2.3,ior:1.42,attenuationColor:new THREE.Color(this.o.color),attenuationDistance:1.8,clearcoat:1,clearcoatRoughness:.045,envMapIntensity:1.7});
-    this.mesh=new THREE.Mesh(new THREE.BufferGeometry(),this.mat);this.mesh.frustumCulled=false;this.mesh.userData.jelly=this;
-    this.bounce=0;this.t=0;this.att=[];this.eyeObjs=[];this.base=new THREE.Vector3();
-    this.drag={on:false,moved:false,point:new THREE.Vector3(),target:new THREE.Vector3(),plane:new THREE.Plane()};
-    this.ray=new THREE.Raycaster();this.ptr=new THREE.Vector2();
-    this.build();
+
+function capsule(){
+
+  const g =
+    new THREE.SphereGeometry(
+      1.15,
+      48,
+      36
+    );
+
+  const p =
+    g.attributes.position;
+
+  for(let i=0;i<p.count;i++){
+
+    const y =
+      p.getY(i);
+
+    const x =
+      p.getX(i);
+
+    const z =
+      p.getZ(i);
+
+    const factor =
+      1 +
+      Math.abs(y)*.34;
+
+    p.setXYZ(
+      i,
+      x*.94,
+      y*factor,
+      z*.94
+    );
+
   }
-  key(){const p=this.o.preset;return p==='pet'?'cube':p.replace(/^pet/,'').replace(/^./,c=>c.toLowerCase())}
-  build(){
-    let g=BUILD[this.key()]();g.deleteAttribute('normal');g.deleteAttribute('uv');
-    const m=mergeVertices(g,1e-4);g.dispose();g=m;g.computeVertexNormals();g.computeBoundingBox();g.computeBoundingSphere();
-    const old=this.mesh.geometry;this.mesh.geometry=g;old.dispose();this.geo=g;
-    const pos=g.attributes.position;pos.setUsage(THREE.DynamicDrawUsage);
-    this.rest=new Float32Array(pos.array);this.vel=new Float32Array(pos.array.length);
-    this.r=g.boundingSphere.radius;this.k=1.3/this.r;this.buildEyes();
-  }
-  nearest(t){const p=this.geo.attributes.position;let b=0,bd=1e9;for(let k=0;k<p.count;k++){const d=(p.getX(k)-t.x)**2+(p.getY(k)-t.y)**2+(p.getZ(k)-t.z)**2;if(d<bd){bd=d;b=k}}return b}
-  buildEyes(){
-    for(const e of this.eyeObjs)e.removeFromParent();this.att=[];this.eyeObjs=[];
-    if(!this.o.eyes)return;
-    const b=this.geo.boundingBox,w=b.max.x-b.min.x,h=b.max.y-b.min.y;
-    for(let k=0;k<2;k++){
-      const idx=this.nearest(new THREE.Vector3((k-.5)*w*.34,b.min.y+h*this.o.eyeHeight,b.max.z));
-      const e=makeEye();const s=this.r/1.3;e.userData.s=s;e.scale.setScalar(s);
-      this.mesh.add(e);this.att.push({e,idx});this.eyeObjs.push(e);
-    }
-  }
-  set(opts){
-    const pp=this.o.preset,pe=this.o.eyes;
-    if(opts.squash)opts.squash={...this.o.squash,...opts.squash};
-    Object.assign(this.o,opts);
-    if(opts.preset!==undefined&&opts.preset!==pp){if(opts.eyes===undefined)this.o.eyes=/^pet/.test(opts.preset)||this.o.eyes;this.build()}
-    else if(opts.eyes!==undefined&&opts.eyes!==pe)this.buildEyes();
-    return this;
-  }
-  crush(axis='y',a=1){a=THREE.MathUtils.clamp(a,.05,4);const l=1/Math.sqrt(a),s=this.o.squash;s.x=s.y=s.z=l;s[axis]=a;return this}
-  applyForce(dir,{strength=1}={}){const d=new THREE.Vector3(...dir).normalize();for(let k=0;k<this.vel.length;k+=3){this.vel[k]+=d.x*strength;this.vel[k+1]+=d.y*strength;this.vel[k+2]+=d.z*strength}return this}
-  impulse(s=.8){this.bounce=Math.max(this.bounce,s);return this}
-  reset(){this.o.squash={x:1,y:1,z:1};this.vel.fill(0);this.bounce=0;this.drag.on=false;return this}
-  bind(dom,cam){
-    this.dom=dom;this.cam=cam;
-    const upd=e=>{const r=dom.getBoundingClientRect();this.ptr.set((e.clientX-r.left)/r.width*2-1,-((e.clientY-r.top)/r.height)*2+1);this.ray.setFromCamera(this.ptr,cam)};
-    const w=new THREE.Vector3();
-    dom.addEventListener('pointerdown',e=>{
-      if(e.button!==0)return;upd(e);const hit=this.ray.intersectObject(this.mesh,false)[0];if(!hit)return;
-      const d=this.drag;d.on=true;d.moved=false;d.point.copy(this.mesh.worldToLocal(hit.point.clone()));d.target.copy(d.point);
-      d.plane.setFromNormalAndCoplanarPoint(cam.getWorldDirection(new THREE.Vector3()),hit.point);d.world=hit.point.clone();
-      dom.setPointerCapture?.(e.pointerId);e.stopImmediatePropagation();
-    },{capture:true});
-    dom.addEventListener('pointermove',e=>{
-      upd(e);const d=this.drag;
-      if(!d.on){if(!dom._grab)dom._grab=new Set();const over=this.ray.intersectObject(this.mesh,false).length>0;over?dom._grab.add(this):dom._grab.delete(this);dom.style.cursor=dom._grab.size?'grab':'';return}
-      if(!this.ray.ray.intersectPlane(d.plane,w))return;d.moved=true;
-      this.mesh.updateWorldMatrix(true,false);
-      const pull=this.mesh.worldToLocal(w.clone()).sub(d.point).clampLength(0,this.r*.95*this.o.reach);
-      d.target.copy(d.point).add(pull);
-    });
-    const up=()=>{const d=this.drag;if(!d.on)return;if(!d.moved)this.bounce=.65;d.on=false;dom.style.cursor=''};
-    dom.addEventListener('pointerup',up);dom.addEventListener('pointercancel',up);
-    return this;
-  }
-  update(dt,now){
-    const o=this.o,pos=this.geo.attributes.position,rest=this.rest,vel=this.vel,sq=o.squash,d=this.drag;
-    dt=Math.min(dt,.05);const step=dt*o.speed/100;this.t+=step;
-    this.mesh.scale.setScalar(o.size*this.k);
-    this.mesh.position.y=o.floating?Math.sin(this.t*1.8)*.12:0;
-    if(o.autoRotate&&!d.on)this.mesh.rotation.y+=step*.5;
-    const m=this.mat;m.color.set(o.color);m.attenuationColor.set(o.color).lerp(new THREE.Color(0xffffff),.25);m.wireframe=o.wireframe;
-    const stiff=35+o.firmness*1.15,fr=2.3+o.damping*.11,damp=Math.exp(-fr*step);
-    this.bounce*=Math.exp(-step*3.3);
-    const idle=Math.sin(this.t*2.3)*.035*o.wobble/100*this.r/1.3,imp=Math.sin(this.t*14)*this.bounce;
-    const dx0=d.target.x-d.point.x,dy0=d.target.y-d.point.y,dz0=d.target.z-d.point.z;
-    const dl=Math.hypot(dx0,dy0,dz0),rad=(.18+22*.018)*this.r*this.r/1.7,fall=rad*rad/(1+dl*.35/this.r)*1.6;
-    const sag=o.gravity?-o.gravityStrength*.22*this.r/1.3:0;
-    for(let k=0;k<pos.count;k++){
-      const j=k*3,x=rest[j]*sq.x,y=rest[j+1]*sq.y,z=rest[j+2]*sq.z;
-      let w=0;if(d.on){const a=x-d.point.x,b=y-d.point.y,c=z-d.point.z;w=Math.exp(-(a*a+b*b+c*c)/fall)}
-      const tx=x*(1+imp*.2)+Math.sin(y*2+this.t*2)*idle+dx0*w,ty=y*(1-imp*.24)+dy0*w+sag,tz=z*(1+imp*.18)+dz0*w;
-      const px=pos.array[j],py=pos.array[j+1],pz=pos.array[j+2];
-      const vx=(vel[j]+(tx-px)*stiff*step)*damp,vy=(vel[j+1]+(ty-py)*stiff*step)*damp,vz=(vel[j+2]+(tz-pz)*stiff*step)*damp;
-      vel[j]=vx;vel[j+1]=vy;vel[j+2]=vz;pos.array[j]=px+vx*step;pos.array[j+1]=py+vy*step;pos.array[j+2]=pz+vz*step;
-    }
-    pos.needsUpdate=true;this.geo.computeVertexNormals();this.geo.computeBoundingSphere();
-    /* eyes glued to surface */
-    const nrm=this.geo.attributes.normal,ph=(now/1000)%4.3,bl=o.eyeBlink&&ph>3.95?Math.max(.06,Math.abs((ph-3.95)/.35*2-1)):1;
-    for(const a of this.att){
-      _n.fromBufferAttribute(nrm,a.idx);
-      a.e.position.set(pos.getX(a.idx)+_n.x*.03,pos.getY(a.idx)+_n.y*.03,pos.getZ(a.idx)+_n.z*.03);
-      a.e.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1),_n);
-      const s=a.e.userData.s;a.e.scale.set(s,s*bl,s);
-    }
-  }
+
+  g.computeVertexNormals();
+
+  return g;
 }
 
-/* ---------- stage helper ---------- */
-function stage(box,{fov=40,z=5.2}={}){
-  const canvas=box.querySelector('canvas');
-  const renderer=new THREE.WebGLRenderer({canvas,antialias:true});
-  renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.toneMapping=THREE.ACESFilmicToneMapping;
-  const scene=new THREE.Scene();scene.background=new THREE.Color(0x120d22);
-  const env=new THREE.Scene();
-  env.add(new THREE.Mesh(new THREE.BoxGeometry(20,20,20),new THREE.MeshBasicMaterial({color:0x2a1f4a,side:THREE.BackSide})));
-  for(const [x,y,zz,c] of[[0,9,0,0xffffff],[8,2,4,0xffd9ee],[-8,3,3,0xcfe0ff],[0,2,9,0xffffff]]){const mm=new THREE.MeshBasicMaterial({color:new THREE.Color(c).multiplyScalar(6),side:THREE.DoubleSide});const p=new THREE.Mesh(new THREE.PlaneGeometry(7,3),mm);p.position.set(x,y,zz);p.lookAt(0,0,0);env.add(p)}
-  scene.environment=new THREE.PMREMGenerator(renderer).fromScene(env,.04).texture;
-  const cam=new THREE.PerspectiveCamera(fov,1,.1,100);cam.position.set(0,0,z);
-  const api={renderer,scene,cam,onResize:null};
-  const fit=()=>{const w=box.clientWidth,h=box.clientHeight;renderer.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();api.onResize&&api.onResize(w/h)};
-  new ResizeObserver(fit).observe(box);fit();return api;
+
+function torus(){
+
+  return new THREE.TorusGeometry(
+    .95,
+    .40,
+    30,
+    64
+  );
+
 }
 
-try{
-const clock=new THREE.Clock();
 
-/* ---------- hero ---------- */
-const H=stage(document.getElementById('hero'),{z:5.4});
-const hero=new Jelly({preset:'petBlob',color:0xe00072});
-H.scene.add(hero.mesh);hero.bind(H.renderer.domElement,H.cam);
+function star(){
 
-const $=id=>document.getElementById(id);
-const COLORS=[0xe00072,0x7c3aed,0x06b6d4,0x22c55e,0xfacc15,0xf97316];
-$('presets').innerHTML='';
-for(const p of['cube','sphere','star','heart','capsule','torus','blob','petCube','petSphere','petStar','petHeart','petBlob']){
-  const b=document.createElement('button');b.textContent=p;if(p==='petBlob')b.className='on';
-  b.onclick=()=>{hero.set({preset:p});[...$('presets').children].forEach(c=>c.classList.toggle('on',c===b))};$('presets').append(b);
-}
-for(const c of COLORS){
-  const b=document.createElement('button');b.className='sw'+(c===COLORS[0]?' on':'');b.style.background='#'+c.toString(16).padStart(6,'0');b.setAttribute('aria-label','color');
-  b.onclick=()=>{hero.set({color:c});[...$('colors').children].forEach(x=>x.classList.toggle('on',x===b))};$('colors').append(b);
-}
-for(const [k,l,min,max,st] of[['firmness','Firmness',0,100,1],['damping','Damping',0,100,1],['wobble','Idle wobble',0,300,1],['gravityStrength','Gravity',0,3,.05],['size','Size',.5,1.4,.01],['reach','Pull reach',.3,2,.05]]){
-  const r=document.createElement('label');r.className='row';
-  r.innerHTML=`<span>${l}</span><input type="range" min="${min}" max="${max}" step="${st}" value="${hero.o[k]}"><output>${hero.o[k]}</output>`;
-  const inp=r.querySelector('input'),out=r.querySelector('output');
-  inp.oninput=()=>{out.textContent=inp.value;hero.set({[k]:+inp.value})};$('sliders').append(r);
-}
-for(const [k,l] of[['eyes','Eyes'],['floating','Floating'],['autoRotate','Auto-rotate'],['wireframe','Wireframe']]){
-  const b=document.createElement('button');b.textContent=l;b.className=hero.o[k]?'on':'';
-  b.onclick=()=>{hero.set({[k]:!hero.o[k]});b.classList.toggle('on',hero.o[k])};$('toggles').append(b);
-}
-$('toggles').children[0].classList.add('on');
-const ACT={'Impulse':()=>hero.impulse(1.2),'Squash':()=>hero.crush('y',.45),'Stretch':()=>hero.crush('y',1.6),'Normal':()=>hero.crush('y',1),'Kick':()=>hero.applyForce([1,.4,0],{strength:2.5}),'Reset':()=>hero.reset()};
-for(const k in ACT){const b=document.createElement('button');b.textContent=k;b.onclick=ACT[k];$('actions').append(b)}
+  const shape =
+    new THREE.Shape();
 
-/* ---------- gallery ---------- */
-const G=stage($('gal'),{fov:40,z:9});
-const items=[['petCube',0xe00072],['petSphere',0x7c3aed],['petStar',0xfacc15],['petHeart',0xf43f5e],['petBlob',0x22c55e],['petCapsule',0x06b6d4],['torus',0xf97316],['cube',0x3b82f6]];
-const gj=items.map(([p,c])=>{const j=new Jelly({preset:p,color:c,size:.62});G.scene.add(j.mesh);j.bind(G.renderer.domElement,G.cam);j.holder=j.mesh;return j});
-const GAP=2.6;
-G.onResize=asp=>{
-  const cols=asp>1.25?4:2,rows=Math.ceil(items.length/cols),t=Math.tan(THREE.MathUtils.degToRad(20));
-  G.cam.position.z=Math.max(rows*GAP/2/t,cols*GAP/2/(t*asp))+1;
-  gj.forEach((j,k)=>{j.px=((k%cols)-(cols-1)/2)*GAP;j.py=((rows-1)/2-Math.floor(k/cols))*GAP});
+  const count = 10;
+
+  for(let i=0;i<count;i++){
+
+    const radius =
+      i%2===0
+        ? 1.35
+        : .62;
+
+    const angle =
+      i/count*Math.PI*2 -
+      Math.PI/2;
+
+    const x =
+      Math.cos(angle)*radius;
+
+    const y =
+      Math.sin(angle)*radius;
+
+    if(i===0)
+      shape.moveTo(x,y);
+    else
+      shape.lineTo(x,y);
+
+  }
+
+  shape.closePath();
+
+  const g =
+    new THREE.ExtrudeGeometry(
+      shape,
+      {
+        depth:.75,
+        bevelEnabled:true,
+        bevelThickness:.13,
+        bevelSize:.13,
+        bevelSegments:5,
+        curveSegments:16
+      }
+    );
+
+  g.center();
+
+  return g;
+}
+
+
+function heart(){
+
+  const shape =
+    new THREE.Shape();
+
+  shape.moveTo(0,.3);
+
+  shape.bezierCurveTo(
+    -.9,-.2,
+    -1.45,.55,
+    -1.05,1.15
+  );
+
+  shape.bezierCurveTo(
+    -.7,1.7,
+    0,1.55,
+    0,1.15
+  );
+
+  shape.bezierCurveTo(
+    0,1.55,
+    .7,1.7,
+    1.05,1.15
+  );
+
+  shape.bezierCurveTo(
+    1.45,.55,
+    .9,-.2,
+    0,.3
+  );
+
+  const g =
+    new THREE.ExtrudeGeometry(
+      shape,
+      {
+        depth:.72,
+        bevelEnabled:true,
+        bevelThickness:.13,
+        bevelSize:.13,
+        bevelSegments:5,
+        curveSegments:18
+      }
+    );
+
+  g.center();
+
+  g.scale.set(
+    .78,
+    .78,
+    .78
+  );
+
+  return g;
+}
+
+
+const BUILDERS = {
+  cube:roundedBox,
+  box:roundedBox,
+  sphere,
+  blob,
+  star,
+  heart,
+  capsule,
+  torus
 };
-G.onResize(G.cam.aspect);
 
-/* ---------- loop ---------- */
-renderLoop();
-function renderLoop(){
-  requestAnimationFrame(renderLoop);
-  const dt=clock.getDelta(),now=performance.now();
-  hero.update(dt,now);
-  for(const j of gj){j.update(dt,now);j.mesh.position.x=j.px;j.mesh.position.y=j.py+j.mesh.position.y}
-  H.renderer.render(H.scene,H.cam);G.renderer.render(G.scene,G.cam);
+
+/* =========================================================
+   EYES
+========================================================= */
+
+function createEye(){
+
+  const group =
+    new THREE.Group();
+
+  const white =
+    new THREE.MeshStandardMaterial({
+      color:0xf0f6fc,
+      roughness:.35
+    });
+
+  const black =
+    new THREE.MeshStandardMaterial({
+      color:0x171b22,
+      roughness:.25
+    });
+
+  const eye =
+    new THREE.Mesh(
+      new THREE.SphereGeometry(
+        .19,
+        24,
+        16
+      ),
+      white
+    );
+
+  const pupil =
+    new THREE.Mesh(
+      new THREE.SphereGeometry(
+        .095,
+        20,
+        14
+      ),
+      black
+    );
+
+  pupil.position.z=.17;
+
+  group.add(eye);
+  group.add(pupil);
+
+  return group;
 }
-}catch(e){console.error(e);document.getElementById('err').style.display='block'}
+
+
+/* =========================================================
+   JELLY
+========================================================= */
+
+const DEFAULTS = {
+
+  preset:"blob",
+
+  color:0xe00072,
+
+  size:1,
+
+  firmness:30,
+
+  damping:16,
+
+  wobble:60,
+
+  gravity:false,
+
+  gravityStrength:1,
+
+  reach:1.7,
+
+  elasticity:2,
+
+  pullRadius:1.45,
+
+  floating:true,
+
+  eyes:true,
+
+  autoRotate:false,
+
+  wireframe:false
+};
+
+
+class Jelly{
+
+  constructor(options={}){
+
+    this.o={
+      ...DEFAULTS,
+      ...options
+    };
+
+    this.mesh =
+      new THREE.Mesh();
+
+    this.material =
+      new THREE.MeshPhysicalMaterial({
+
+        color:this.o.color,
+
+        roughness:.1,
+
+        metalness:0,
+
+        transmission:.25,
+
+        thickness:1.5,
+
+        ior:1.4,
+
+        clearcoat:.4,
+
+        clearcoatRoughness:.15
+
+      });
+
+    this.mesh.material =
+      this.material;
+
+    this.velocity =
+      new Float32Array(0);
+
+    this.rest =
+      new Float32Array(0);
+
+    this.position =
+      null;
+
+    this.eyes = [];
+
+    this.drag = {
+
+      active:false,
+
+      grab:
+        new THREE.Vector3(),
+
+      target:
+        new THREE.Vector3(),
+
+      pull:
+        new THREE.Vector3(),
+
+      amount:0
+
+    };
+
+    this.raycaster =
+      new THREE.Raycaster();
+
+    this.pointer =
+      new THREE.Vector2();
+
+    this.dragPlane =
+      new THREE.Plane();
+
+    this.worldPoint =
+      new THREE.Vector3();
+
+    this.localPoint =
+      new THREE.Vector3();
+
+    this.radius=1;
+
+    this.build();
+
+  }
+
+
+  shapeName(){
+
+    let name =
+      this.o.preset;
+
+    if(name.startsWith("pet"))
+      name=name.substring(3);
+
+    return name.toLowerCase();
+
+  }
+
+
+  build(){
+
+    const builder =
+      BUILDERS[
+        this.shapeName()
+      ] || BUILDERS.blob;
+
+    const geometry =
+      builder();
+
+    geometry.computeBoundingBox();
+    geometry.computeBoundingSphere();
+    geometry.computeVertexNormals();
+
+    this.mesh.geometry =
+      geometry;
+
+    this.position =
+      geometry.attributes.position;
+
+    this.position.setUsage(
+      THREE.DynamicDrawUsage
+    );
+
+    this.rest =
+      new Float32Array(
+        this.position.array
+      );
+
+    this.velocity =
+      new Float32Array(
+        this.rest.length
+      );
+
+    this.radius =
+      geometry.boundingSphere.radius;
+
+    this.createEyes();
+
+    this.updateMaterial();
+
+  }
+
+
+  updateMaterial(){
+
+    this.material.color.set(
+      this.o.color
+    );
+
+    this.material.wireframe =
+      this.o.wireframe;
+
+  }
+
+
+  set(values={}){
+
+    const oldPreset =
+      this.o.preset;
+
+    Object.assign(
+      this.o,
+      values
+    );
+
+    if(
+      values.preset &&
+      values.preset!==oldPreset
+    ){
+
+      this.build();
+
+    }
+
+    if(
+      values.eyes!==undefined
+    ){
+
+      this.createEyes();
+
+    }
+
+    this.updateMaterial();
+
+    return this;
+
+  }
+
+
+  createEyes(){
+
+    for(
+      const eye of this.eyes
+    ){
+
+      this.mesh.remove(
+        eye.object
+      );
+
+    }
+
+    this.eyes=[];
+
+    if(!this.o.eyes)
+      return;
+
+    const geometry =
+      this.mesh.geometry;
+
+    const position =
+      geometry.attributes.position;
+
+    const bounds =
+      geometry.boundingBox;
+
+    const width =
+      bounds.max.x -
+      bounds.min.x;
+
+    const height =
+      bounds.max.y -
+      bounds.min.y;
+
+    for(
+      const side of [-1,1]
+    ){
+
+      let best=0;
+      let bestDistance=Infinity;
+
+      const wantedX =
+        side*width*.17;
+
+      const wantedY =
+        bounds.min.y+
+        height*.23;
+
+      const wantedZ =
+        bounds.max.z;
+
+      for(
+        let i=0;
+        i<position.count;
+        i++
+      ){
+
+        const dx =
+          position.getX(i)-wantedX;
+
+        const dy =
+          position.getY(i)-wantedY;
+
+        const dz =
+          position.getZ(i)-wantedZ;
+
+        const distance =
+          dx*dx+
+          dy*dy+
+          dz*dz;
+
+        if(
+          distance<bestDistance
+        ){
+
+          bestDistance=
+            distance;
+
+          best=i;
+
+        }
+
+      }
+
+      const eye =
+        createEye();
+
+      eye.scale.setScalar(
+        this.radius*.9
+      );
+
+      this.mesh.add(eye);
+
+      this.eyes.push({
+        object:eye,
+        vertex:best
+      });
+
+    }
+
+  }
+
+
+  bind(canvas,camera){
+
+    this.canvas=canvas;
+    this.camera=camera;
+
+    canvas.addEventListener(
+      "pointerdown",
+      event=>{
+
+        const rect =
+          canvas.getBoundingClientRect();
+
+        this.pointer.x =
+          ((event.clientX-rect.left)/
+          rect.width)*2-1;
+
+        this.pointer.y =
+          -((event.clientY-rect.top)/
+          rect.height)*2+1;
+
+        this.raycaster.setFromCamera(
+          this.pointer,
+          camera
+        );
+
+        const hit =
+          this.raycaster.intersectObject(
+            this.mesh,
+            false
+          )[0];
+
+        if(!hit)
+          return;
+
+        this.mesh.updateWorldMatrix(
+          true,
+          false
+        );
+
+        this.drag.active=true;
+
+        this.drag.grab.copy(
+          this.mesh.worldToLocal(
+            hit.point.clone()
+          )
+        );
+
+        this.drag.target.copy(
+          this.drag.grab
+        );
+
+        camera.getWorldDirection(
+          this.localPoint
+        );
+
+        this.dragPlane.setFromNormalAndCoplanarPoint(
+          this.localPoint,
+          hit.point
+        );
+
+        canvas.setPointerCapture?.(
+          event.pointerId
+        );
+
+        event.preventDefault();
+
+      },
+      {passive:false}
+    );
+
+
+    canvas.addEventListener(
+      "pointermove",
+      event=>{
+
+        if(!this.drag.active)
+          return;
+
+        const rect =
+          canvas.getBoundingClientRect();
+
+        this.pointer.x =
+          ((event.clientX-rect.left)/
+          rect.width)*2-1;
+
+        this.pointer.y =
+          -((event.clientY-rect.top)/
+          rect.height)*2+1;
+
+        this.raycaster.setFromCamera(
+          this.pointer,
+          camera
+        );
+
+        if(
+          !this.raycaster.ray.intersectPlane(
+            this.dragPlane,
+            this.worldPoint
+          )
+        )
+          return;
+
+        const local =
+          this.mesh.worldToLocal(
+            this.worldPoint.clone()
+          );
+
+        this.drag.pull.copy(
+          local
+        ).sub(
+          this.drag.grab
+        );
+
+        const maximum =
+          this.radius*this.o.reach;
+
+        this.drag.pull.clampLength(
+          0,
+          maximum
+        );
+
+        this.drag.target.copy(
+          this.drag.grab
+        ).add(
+          this.drag.pull
+        );
+
+        this.drag.amount =
+          Math.min(
+            1.5,
+            this.drag.pull.length()/
+            this.radius
+          );
+
+        event.preventDefault();
+
+      },
+      {passive:false}
+    );
+
+
+    const release=()=>{
+      this.drag.active=false;
+    };
+
+    canvas.addEventListener(
+      "pointerup",
+      release
+    );
+
+    canvas.addEventListener(
+      "pointercancel",
+      release
+    );
+
+    canvas.addEventListener(
+      "pointerleave",
+      ()=>{
+        if(
+          this.drag.active &&
+          !canvas.hasPointerCapture?.(
+            event?.pointerId
+          )
+        ){
+          this.drag.active=false;
+        }
+      }
+    );
+
+    return this;
+
+  }
+
+
+  impulse(strength=1){
+
+    for(
+      let i=0;
+      i<this.velocity.length;
+      i+=3
+    ){
+
+      this.velocity[i]+=
+        this.rest[i]*
+        strength*.35;
+
+      this.velocity[i+1]+=
+        this.rest[i+1]*
+        strength*.35;
+
+      this.velocity[i+2]+=
+        this.rest[i+2]*
+        strength*.35;
+
+    }
+
+  }
+
+
+  squash(amount=.7){
+
+    for(
+      let i=1;
+      i<this.velocity.length;
+      i+=3
+    ){
+
+      this.velocity[i]+=
+        this.rest[i]*
+        (amount-1)*
+        1.5;
+
+    }
+
+  }
+
+
+  stretch(amount=1.4){
+
+    for(
+      let i=1;
+      i<this.velocity.length;
+      i+=3
+    ){
+
+      this.velocity[i]+=
+        this.rest[i]*
+        (amount-1)*
+        1.5;
+
+    }
+
+  }
+
+
+  kick(){
+
+    for(
+      let i=0;
+      i<this.velocity.length;
+      i+=3
+    ){
+
+      this.velocity[i]+=.65;
+      this.velocity[i+1]+=.22;
+
+    }
+
+  }
+
+
+  reset(){
+
+    this.velocity.fill(0);
+
+    this.position.array.set(
+      this.rest
+    );
+
+    this.position.needsUpdate=true;
+
+    this.mesh.geometry.computeVertexNormals();
+
+    this.drag.active=false;
+
+  }
+
+
+  update(dt){
+
+    dt=Math.min(
+      dt,
+      .033
+    );
+
+    const now =
+      performance.now()*.001;
+
+    const stiffness =
+      26+
+      this.o.firmness*1.15;
+
+    const damping =
+      3+
+      this.o.damping*.16;
+
+    const influenceRadius =
+      this.radius*
+      this.o.pullRadius;
+
+    const pos =
+      this.position.array;
+
+    const vel =
+      this.velocity;
+
+    for(
+      let i=0;
+      i<this.position.count;
+      i++
+    ){
+
+      const j=i*3;
+
+      const rx=this.rest[j];
+      const ry=this.rest[j+1];
+      const rz=this.rest[j+2];
+
+      let tx=rx;
+      let ty=ry;
+      let tz=rz;
+
+
+      /* IDLE WOBBLE */
+
+      if(this.o.floating){
+
+        const wobble=
+          this.o.wobble/100;
+
+        tx+=
+          Math.sin(
+            now*1.7+
+            ry*2.2
+          )*
+          .025*
+          wobble;
+
+        ty+=
+          Math.sin(
+            now*1.45+
+            rx*2
+          )*
+          .018*
+          wobble;
+
+        tz+=
+          Math.cos(
+            now*1.55+
+            rz*2
+          )*
+          .025*
+          wobble;
+
+      }
+
+
+      /* DRAG */
+
+      if(this.drag.active){
+
+        const dx=
+          rx-
+          this.drag.grab.x;
+
+        const dy=
+          ry-
+          this.drag.grab.y;
+
+        const dz=
+          rz-
+          this.drag.grab.z;
+
+        const distance=
+          Math.sqrt(
+            dx*dx+
+            dy*dy+
+            dz*dz
+          );
+
+        let influence=
+          1-
+          distance/
+          influenceRadius;
+
+        influence=
+          Math.max(
+            0,
+            Math.min(
+              1,
+              influence
+            )
+          );
+
+        influence=
+          influence*
+          influence*
+          (3-2*influence);
+
+
+        /*
+          Extra elasticity.
+
+          The center of the pull follows the finger,
+          while the surrounding vertices follow with
+          progressively smaller displacement.
+        */
+
+        const factor=
+          influence*
+          this.o.elasticity;
+
+        tx+=
+          this.drag.pull.x*
+          factor;
+
+        ty+=
+          this.drag.pull.y*
+          factor;
+
+        tz+=
+          this.drag.pull.z*
+          factor;
+
+
+        /*
+          Volume compensation.
+          Pulling in one direction slightly compresses
+          the other axes instead of simply scaling the
+          entire object.
+        */
+
+        const pullLength=
+          this.drag.pull.length()/
+          Math.max(
+            this.radius,
+            .0001
+          );
+
+        const compression=
+          Math.min(
+            .28,
+            pullLength*
+            influence*
+            .16
+          );
+
+        tx*=
+          1-compression;
+
+        tz*=
+          1-compression;
+
+      }
+
+
+      /* GRAVITY */
+
+      if(this.o.gravity){
+
+        ty-=
+          this.o.gravityStrength*
+          .045;
+
+      }
+
+
+      const cx=pos[j];
+      const cy=pos[j+1];
+      const cz=pos[j+2];
+
+
+      /* SPRING */
+
+      const fx=
+        (tx-cx)*
+        stiffness;
+
+      const fy=
+        (ty-cy)*
+        stiffness;
+
+      const fz=
+        (tz-cz)*
+        stiffness;
+
+
+      vel[j]+=
+        fx*
+        dt;
+
+      vel[j+1]+=
+        fy*
+        dt;
+
+      vel[j+2]+=
+        fz*
+        dt;
+
+
+      const dampingFactor=
+        Math.exp(
+          -damping*
+          dt
+        );
+
+      vel[j]*=
+        dampingFactor;
+
+      vel[j+1]*=
+        dampingFactor;
+
+      vel[j+2]*=
+        dampingFactor;
+
+
+      pos[j]+=
+        vel[j]*
+        dt;
+
+      pos[j+1]+=
+        vel[j+1]*
+        dt;
+
+      pos[j+2]+=
+        vel[j+2]*
+        dt;
+
+    }
+
+
+    this.position.needsUpdate=true;
+
+    this.mesh.geometry.computeVertexNormals();
+
+    this.updateEyes();
+
+    this.mesh.scale.setScalar(
+      this.o.size
+    );
+
+
+    if(
+      this.o.autoRotate &&
+      !this.drag.active
+    ){
+
+      this.mesh.rotation.y+=
+        dt*.55;
+
+    }
+
+  }
+
+
+  updateEyes(){
+
+    if(!this.o.eyes)
+      return;
+
+    const position=
+      this.position;
+
+    const normals=
+      this.mesh.geometry.attributes.normal;
+
+    const forward=
+      new THREE.Vector3(
+        0,
+        0,
+        1
+      );
+
+    const normal=
+      new THREE.Vector3();
+
+
+    for(
+      const eye of this.eyes
+    ){
+
+      const i=
+        eye.vertex;
+
+      eye.object.position.set(
+        position.getX(i),
+        position.getY(i),
+        position.getZ(i)
+      );
+
+      normal.set(
+        normals.getX(i),
+        normals.getY(i),
+        normals.getZ(i)
+      ).normalize();
+
+      eye.object.quaternion.setFromUnitVectors(
+        forward,
+        normal
+      );
+
+    }
+
+  }
+
+}
+
+
+/* =========================================================
+   SCENE
+========================================================= */
+
+function createScene(
+  canvas,
+  container,
+  cameraDistance
+){
+
+  const renderer =
+    new THREE.WebGLRenderer({
+      canvas,
+      antialias:true,
+      powerPreference:"high-performance"
+    });
+
+  renderer.setPixelRatio(
+    Math.min(
+      window.devicePixelRatio||1,
+      2
+    )
+  );
+
+  renderer.outputColorSpace=
+    THREE.SRGBColorSpace;
+
+  renderer.toneMapping=
+    THREE.ACESFilmicToneMapping;
+
+  renderer.toneMappingExposure=
+    1.15;
+
+  const scene=
+    new THREE.Scene();
+
+  scene.background=
+    new THREE.Color(
+      0x0d1117
+    );
+
+  const camera=
+    new THREE.PerspectiveCamera(
+      40,
+      1,
+      .1,
+      100
+    );
+
+  camera.position.z=
+    cameraDistance;
+
+
+  const hemi=
+    new THREE.HemisphereLight(
+      0xffffff,
+      0x161b22,
+      2.4
+    );
+
+  scene.add(hemi);
+
+
+  const key=
+    new THREE.DirectionalLight(
+      0xffffff,
+      4
+    );
+
+  key.position.set(
+    4,
+    6,
+    7
+  );
+
+  scene.add(key);
+
+
+  const fill=
+    new THREE.DirectionalLight(
+      0x7aa2ff,
+      1.5
+    );
+
+  fill.position.set(
+    -5,
+    2,
+    4
+  );
+
+  scene.add(fill);
+
+
+  function resize(){
+
+    const width=
+      Math.max(
+        1,
+        container.clientWidth
+      );
+
+    const height=
+      Math.max(
+        1,
+        container.clientHeight
+      );
+
+    renderer.setSize(
+      width,
+      height,
+      false
+    );
+
+    camera.aspect=
+      width/height;
+
+    camera.updateProjectionMatrix();
+
+  }
+
+
+  const observer=
+    new ResizeObserver(
+      resize
+    );
+
+  observer.observe(
+    container
+  );
+
+  resize();
+
+
+  return {
+    renderer,
+    scene,
+    camera
+  };
+
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+const heroContainer=
+  document.getElementById(
+    "hero-stage"
+  );
+
+const heroCanvas=
+  document.getElementById(
+    "hero-canvas"
+  );
+
+const loading=
+  document.getElementById(
+    "loading"
+  );
+
+
+const heroScene=
+  createScene(
+    heroCanvas,
+    heroContainer,
+    5.3
+  );
+
+
+const hero=
+  new Jelly({
+
+    preset:"petBlob",
+
+    color:0xe00072,
+
+    eyes:true,
+
+    elasticity:2.1,
+
+    pullRadius:1.45,
+
+    reach:1.7,
+
+    firmness:30,
+
+    damping:16,
+
+    wobble:60
+
+  });
+
+
+heroScene.scene.add(
+  hero.mesh
+);
+
+
+hero.bind(
+  heroCanvas,
+  heroScene.camera
+);
+
+
+loading.classList.add(
+  "hidden"
+);
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+function button(
+  text,
+  callback,
+  active=false
+){
+
+  const b=
+    document.createElement(
+      "button"
+    );
+
+  b.type="button";
+  b.className="btn";
+  b.textContent=text;
+
+  if(active)
+    b.classList.add("active");
+
+  b.addEventListener(
+    "click",
+    callback
+  );
+
+  return b;
+
+}
+
+
+/* PRESETS */
+
+const presetBox=
+  document.getElementById(
+    "presets"
+  );
+
+const presetNames=[
+  "cube",
+  "sphere",
+  "blob",
+  "star",
+  "heart",
+  "capsule",
+  "torus"
+];
+
+const presetButtons=
+  new Map();
+
+
+for(
+  const name of presetNames
+){
+
+  const b=
+    button(
+      name,
+      ()=>{
+        hero.set({
+          preset:name,
+          eyes:true
+        });
+
+        presetButtons.forEach(
+          x=>x.classList.remove(
+            "active"
+          )
+        );
+
+        b.classList.add(
+          "active"
+        );
+      },
+      name==="blob"
+    );
+
+  presetButtons.set(
+    name,
+    b
+  );
+
+  presetBox.append(b);
+
+}
+
+
+/* COLORS */
+
+const colorBox=
+  document.getElementById(
+    "colors"
+  );
+
+const colorList=[
+  0xe00072,
+  0x2f81f7,
+  0x3fb950,
+  0xd29922,
+  0xf85149,
+  0xa371f7,
+  0x06b6d4,
+  0xf0f6fc
+];
+
+for(
+  let i=0;
+  i<colorList.length;
+  i++
+){
+
+  const color=
+    colorList[i];
+
+  const b=
+    document.createElement(
+      "button"
+    );
+
+  b.type="button";
+  b.className="color";
+
+  b.style.backgroundColor=
+    "#"+
+    color.toString(16)
+      .padStart(6,"0");
+
+  if(i===0)
+    b.classList.add("active");
+
+  b.addEventListener(
+    "click",
+    ()=>{
+
+      hero.set({
+        color
+      });
+
+      colorBox
+        .querySelectorAll(".color")
+        .forEach(
+          x=>x.classList.remove(
+            "active"
+          )
+        );
+
+      b.classList.add(
+        "active"
+      );
+
+    }
+  );
+
+  colorBox.append(b);
+
+}
+
+
+/* PHYSICS */
+
+const physics=
+  document.getElementById(
+    "physics"
+  );
+
+const sliderData=[
+
+  ["firmness","Firmness",0,80,1],
+
+  ["damping","Damping",0,60,1],
+
+  ["wobble","Wobble",0,150,1],
+
+  ["gravityStrength","Gravity",0,3,.05],
+
+  ["size","Size",.5,1.5,.01],
+
+  ["reach","Pull reach",.3,2.5,.05],
+
+  ["elasticity","Elasticity",.5,3.5,.05],
+
+  ["pullRadius","Pull radius",.4,2.5,.05]
+
+];
+
+
+for(
+  const [
+    key,
+    label,
+    min,
+    max,
+    step
+  ] of sliderData
+){
+
+  const row=
+    document.createElement(
+      "div"
+    );
+
+  row.className="slider";
+
+  const labelEl=
+    document.createElement(
+      "label"
+    );
+
+  labelEl.textContent=
+    label;
+
+  const input=
+    document.createElement(
+      "input"
+    );
+
+  input.type="range";
+  input.min=min;
+  input.max=max;
+  input.step=step;
+  input.value=
+    hero.o[key];
+
+  const output=
+    document.createElement(
+      "output"
+    );
+
+  output.textContent=
+    hero.o[key];
+
+  input.addEventListener(
+    "input",
+    ()=>{
+
+      const value=
+        Number(input.value);
+
+      output.textContent=
+        value;
+
+      hero.set({
+        [key]:value
+      });
+
+    }
+  );
+
+  row.append(
+    labelEl,
+    input,
+    output
+  );
+
+  physics.append(row);
+
+}
+
+
+/* OPTIONS */
+
+const optionBox=
+  document.getElementById(
+    "options"
+  );
+
+const optionData=[
+
+  ["eyes","Eyes"],
+
+  ["floating","Floating"],
+
+  ["autoRotate","Auto rotate"],
+
+  ["wireframe","Wireframe"],
+
+  ["gravity","Gravity"]
+
+];
+
+
+for(
+  const [
+    key,
+    label
+  ] of optionData
+){
+
+  const b=
+    button(
+      label,
+      ()=>{
+
+        hero.o[key]=
+          !hero.o[key];
+
+        b.classList.toggle(
+          "active",
+          hero.o[key]
+        );
+
+        if(
+          key==="eyes"
+        ){
+
+          hero.createEyes();
+
+        }
+
+        hero.updateMaterial();
+
+      },
+      hero.o[key]
+    );
+
+  optionBox.append(b);
+
+}
+
+
+/* ACTIONS */
+
+const actionBox=
+  document.getElementById(
+    "actions"
+  );
+
+
+actionBox.append(
+
+  button(
+    "Impulse",
+    ()=>{
+      hero.impulse(1.4);
+    }
+  ),
+
+  button(
+    "Squash",
+    ()=>{
+      hero.squash(.65);
+    }
+  ),
+
+  button(
+    "Stretch",
+    ()=>{
+      hero.stretch(1.45);
+    }
+  ),
+
+  button(
+    "Kick",
+    ()=>{
+      hero.kick();
+    }
+  ),
+
+  button(
+    "Reset",
+    ()=>{
+      hero.reset();
+    }
+  )
+
+);
+
+
+/* =========================================================
+   GALLERY
+========================================================= */
+
+const galleryContainer=
+  document.getElementById(
+    "gallery-stage"
+  );
+
+const galleryCanvas=
+  document.getElementById(
+    "gallery-canvas"
+  );
+
+
+const galleryScene=
+  createScene(
+    galleryCanvas,
+    galleryContainer,
+    9
+  );
+
+
+const galleryData=[
+
+  ["cube",0xe00072],
+
+  ["sphere",0x2f81f7],
+
+  ["star",0xd29922],
+
+  ["heart",0xf85149],
+
+  ["blob",0x3fb950],
+
+  ["capsule",0xa371f7],
+
+  ["torus",0x06b6d4],
+
+  ["cube",0x8b949e]
+
+];
+
+
+const galleryJellies=[];
+
+
+for(
+  const [
+    preset,
+    color
+  ] of galleryData
+){
+
+  const jelly=
+    new Jelly({
+
+      preset,
+
+      color,
+
+      eyes:true,
+
+      size:.56,
+
+      elasticity:1.8,
+
+      pullRadius:1.4,
+
+      reach:1.6,
+
+      firmness:28,
+
+      damping:17,
+
+      wobble:45,
+
+      floating:true
+
+    });
+
+
+  galleryScene.scene.add(
+    jelly.mesh
+  );
+
+
+  jelly.bind(
+    galleryCanvas,
+    galleryScene.camera
+  );
+
+
+  galleryJellies.push(
+    jelly
+  );
+
+}
+
+
+function layoutGallery(){
+
+  const width=
+    galleryContainer.clientWidth;
+
+  let columns;
+
+  if(width>=1000)
+    columns=4;
+  else if(width>=650)
+    columns=3;
+  else
+    columns=2;
+
+  const gap=
+    columns===2
+      ? 2.35
+      : 2.5;
+
+  const rows=
+    Math.ceil(
+      galleryJellies.length/
+      columns
+    );
+
+  galleryJellies.forEach(
+    (jelly,index)=>{
+
+      const column=
+        index%columns;
+
+      const row=
+        Math.floor(
+          index/columns
+        );
+
+      jelly.mesh.position.x=
+        (
+          column-
+          (columns-1)/2
+        )*gap;
+
+      jelly.mesh.position.y=
+        (
+          (rows-1)/2-
+          row
+        )*gap;
+
+    }
+  );
+
+  galleryScene.camera.position.z=
+    columns===2
+      ? 8
+      : columns===3
+        ? 8.8
+        : 9.5;
+
+}
+
+
+layoutGallery();
+
+
+window.addEventListener(
+  "resize",
+  layoutGallery
+);
+
+
+/* =========================================================
+   LOOP
+========================================================= */
+
+const clock=
+  new THREE.Clock();
+
+
+function animate(){
+
+  requestAnimationFrame(
+    animate
+  );
+
+  const dt=
+    clock.getDelta();
+
+  hero.update(dt);
+
+  for(
+    const jelly of galleryJellies
+  ){
+
+    jelly.update(dt);
+
+  }
+
+  heroScene.renderer.render(
+    heroScene.scene,
+    heroScene.camera
+  );
+
+  galleryScene.renderer.render(
+    galleryScene.scene,
+    galleryScene.camera
+  );
+
+}
+
+
+animate();
+
 </script>
+
 </body>
 </html>
