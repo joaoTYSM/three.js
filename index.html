@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>tree.js — README</title>
+
+  <link
+    rel="icon"
+    type="image/png"
+    href="https://raw.githubusercontent.com/joaoTYSM/three.js/refs/heads/main/icon.png"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown.min.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css"
+    id="highlightTheme"
+  >
+
+  <style>
+    :root {
+      color-scheme: dark;
+
+      --bg: #0d1117;
+      --bg-secondary: #161b22;
+      --bg-tertiary: #21262d;
+
+      --surface: rgba(22, 27, 34, 0.82);
+      --surface-solid: #161b22;
+
+      --border: #30363d;
+      --border-soft: rgba(240, 246, 252, 0.1);
+
+      --text: #f0f6fc;
+      --text-secondary: #8b949e;
+
+      --accent: #58a6ff;
+      --accent-hover: #79c0ff;
+
+      --code-bg: #161b22;
+
+      --shadow:
+        0 16px 50px rgba(0, 0, 0, 0.35);
+
+      --header-height: 68px;
+    }
+
+    html.light {
+      color-scheme: light;
+
+      --bg: #f6f8fa;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #f0f3f6;
+
+      --surface: rgba(255, 255, 255, 0.84);
+      --surface-solid: #ffffff;
+
+      --border: #d0d7de;
+      --border-soft: rgba(27, 31, 36, 0.12);
+
+      --text: #1f2328;
+      --text-secondary: #656d76;
+
+      --accent: #0969da;
+      --accent-hover: #0550ae;
+
+      --code-bg: #f6f8fa;
+
+      --shadow:
+        0 16px 50px rgba(27, 31, 36, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      background:
+        radial-gradient(
+          circle at 50% -20%,
+          rgba(88, 166, 255, 0.08),
+          transparent 38%
+        ),
+        var(--bg);
+
+      color: var(--text);
+
+      font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      transition:
+        background-color 0.25s ease,
+        color 0.25s ease;
+    }
+
+    a {
+      color: var(--accent);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+
+      height: var(--header-height);
+
+      border-bottom: 1px solid var(--border);
+
+      background:
+        color-mix(
+          in srgb,
+          var(--bg-secondary) 88%,
+          transparent
+        );
+
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+
+      display: flex;
+      align-items: center;
+    }
+
+    .topbar-inner {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 18px;
+    }
+
+    .brand {
+      min-width: 0;
+
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+
+      border-radius: 9px;
+
+      object-fit: cover;
+
+      border: 1px solid var(--border);
+
+      box-shadow:
+        0 5px 18px rgba(0, 0, 0, 0.2);
+    }
+
+    .brand-text {
+      min-width: 0;
+    }
+
+    .brand-title {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .brand-subtitle {
+      margin-top: 2px;
+
+      color: var(--text-secondary);
+
+      font-size: 12px;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .button {
+      appearance: none;
+
+      height: 38px;
+
+      padding: 0 13px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+
+      border: 1px solid var(--border);
+
+      border-radius: 8px;
+
+      background: var(--surface-solid);
+
+      color: var(--text);
+
+      font: inherit;
+      font-size: 13px;
+      font-weight: 600;
+
+      cursor: pointer;
+
+      text-decoration: none;
+
+      transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        transform 0.15s ease;
+    }
+
+    .button:hover {
+      background: var(--bg-tertiary);
+      border-color: var(--text-secondary);
+    }
+
+    .button:active {
+      transform: translateY(1px);
+    }
+
+    .button-icon {
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .container {
+      width: min(1000px, calc(100% - 32px));
+
+      margin:
+        0 auto;
+
+      padding:
+        54px 0 90px;
+    }
+
+    .readme-card {
+      overflow: hidden;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 14px;
+
+      background: var(--surface);
+
+      box-shadow: var(--shadow);
+
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .readme-header {
+      min-height: 66px;
+
+      padding:
+        14px 20px;
+
+      border-bottom:
+        1px solid var(--border);
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 12px;
+    }
+
+    .repository {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+
+      min-width: 0;
+    }
+
+    .repository-icon {
+      width: 20px;
+      height: 20px;
+      opacity: 0.9;
+    }
+
+    .repository-name {
+      font-size: 14px;
+      font-weight: 600;
+
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .repository-owner {
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+
+    .status {
+      color: var(--text-secondary);
+      font-size: 12px;
+
+      white-space: nowrap;
+    }
+
+    .markdown-body {
+      padding: 42px 50px;
+
+      background: transparent;
+
+      color: var(--text);
+
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    .markdown-body h1,
+    .markdown-body h2,
+    .markdown-body h3,
+    .markdown-body h4,
+    .markdown-body h5,
+    .markdown-body h6 {
+      color: var(--text);
+      border-bottom-color: var(--border);
+    }
+
+    .markdown-body h1 {
+      font-size: 2.1em;
+    }
+
+    .markdown-body h2 {
+      font-size: 1.65em;
+    }
+
+    .markdown-body h3 {
+      font-size: 1.35em;
+    }
+
+    .markdown-body p,
+    .markdown-body li {
+      color: var(--text);
+    }
+
+    .markdown-body blockquote {
+      color: var(--text-secondary);
+      border-left-color: var(--border);
+    }
+
+    .markdown-body code {
+      background: var(--bg-tertiary);
+      color: var(--text);
+
+      border-radius: 5px;
+
+      padding:
+        0.15em 0.35em;
+    }
+
+    .markdown-body pre {
+      position: relative;
+
+      background: var(--code-bg);
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 10px;
+
+      box-shadow:
+        inset 0 1px rgba(255, 255, 255, 0.02);
+    }
+
+    .markdown-body pre code {
+      background: transparent;
+      padding: 0;
+    }
+
+    .markdown-body table {
+      display: block;
+      width: 100%;
+      overflow: auto;
+    }
+
+    .markdown-body table th,
+    .markdown-body table td {
+      border-color: var(--border);
+    }
+
+    .markdown-body table tr {
+      background: transparent;
+      border-color: var(--border);
+    }
+
+    .markdown-body table tr:nth-child(2n) {
+      background: var(--bg-tertiary);
+    }
+
+    .markdown-body hr {
+      background-color: var(--border);
+    }
+
+    .markdown-body img {
+      max-width: 100%;
+      height: auto;
+
+      border-radius: 8px;
+    }
+
+    .markdown-body .task-list-item {
+      list-style-type: none;
+    }
+
+    .markdown-body input[type="checkbox"] {
+      margin-right: 7px;
+      accent-color: var(--accent);
+    }
+
+    .markdown-body details {
+      margin: 14px 0;
+
+      padding:
+        12px 16px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 8px;
+
+      background: var(--bg-secondary);
+    }
+
+    .markdown-body details > summary {
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .markdown-body kbd {
+      padding:
+        3px 6px;
+
+      border:
+        1px solid var(--border);
+
+      border-bottom-width: 2px;
+
+      border-radius: 5px;
+
+      background: var(--bg-tertiary);
+
+      color: var(--text);
+
+      font-family:
+        "JetBrains Mono",
+        monospace;
+
+      font-size: 0.85em;
+    }
+
+    .markdown-body .markdown-alert {
+      margin-bottom: 16px;
+
+      padding:
+        10px 16px;
+
+      border-left:
+        4px solid var(--accent);
+
+      border-radius: 6px;
+
+      background: var(--bg-tertiary);
+    }
+
+    .markdown-body .markdown-alert-title {
+      margin-bottom: 5px;
+
+      font-weight: 700;
+    }
+
+    .markdown-body .markdown-alert-note {
+      border-left-color: #4493f8;
+    }
+
+    .markdown-body .markdown-alert-tip {
+      border-left-color: #3fb950;
+    }
+
+    .markdown-body .markdown-alert-important {
+      border-left-color: #a371f7;
+    }
+
+    .markdown-body .markdown-alert-warning {
+      border-left-color: #d29922;
+    }
+
+    .markdown-body .markdown-alert-caution {
+      border-left-color: #f85149;
+    }
+
+    .code-wrapper {
+      position: relative;
+    }
+
+    .copy-code {
+      position: absolute;
+
+      top: 8px;
+      right: 8px;
+
+      z-index: 5;
+
+      height: 30px;
+      padding: 0 9px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 6px;
+
+      background:
+        color-mix(
+          in srgb,
+          var(--bg-secondary) 92%,
+          transparent
+        );
+
+      color: var(--text-secondary);
+
+      font:
+        12px
+        "Inter",
+        sans-serif;
+
+      cursor: pointer;
+
+      opacity: 0;
+
+      transition:
+        opacity 0.15s ease,
+        color 0.15s ease,
+        background 0.15s ease;
+    }
+
+    .code-wrapper:hover .copy-code {
+      opacity: 1;
+    }
+
+    .copy-code:hover {
+      color: var(--text);
+      background: var(--bg-tertiary);
+    }
+
+    .loading {
+      min-height: 350px;
+
+      display: flex;
+      flex-direction: column;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 14px;
+
+      color: var(--text-secondary);
+    }
+
+    .spinner {
+      width: 28px;
+      height: 28px;
+
+      border:
+        3px solid var(--border);
+
+      border-top-color:
+        var(--accent);
+
+      border-radius: 50%;
+
+      animation:
+        spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .error {
+      padding: 50px;
+
+      text-align: center;
+    }
+
+    .error-title {
+      margin-bottom: 8px;
+
+      color: var(--text);
+
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .error-message {
+      max-width: 600px;
+      margin: 0 auto;
+
+      color: var(--text-secondary);
+
+      line-height: 1.6;
+    }
+
+    .footer {
+      padding:
+        28px 0;
+
+      text-align: center;
+
+      color: var(--text-secondary);
+
+      font-size: 12px;
+    }
+
+    .footer a {
+      color: var(--text-secondary);
+    }
+
+    .footer a:hover {
+      color: var(--accent);
+    }
+
+    @media (max-width: 700px) {
+      :root {
+        --header-height: 60px;
+      }
+
+      .topbar-inner {
+        width: calc(100% - 20px);
+      }
+
+      .brand-icon {
+        width: 34px;
+        height: 34px;
+      }
+
+      .brand-subtitle {
+        display: none;
+      }
+
+      .button-label {
+        display: none;
+      }
+
+      .button {
+        width: 38px;
+        padding: 0;
+      }
+
+      .container {
+        width: 100%;
+
+        padding:
+          16px 0 50px;
+      }
+
+      .readme-card {
+        border-left: 0;
+        border-right: 0;
+
+        border-radius: 0;
+      }
+
+      .readme-header {
+        padding:
+          12px 16px;
+      }
+
+      .markdown-body {
+        padding:
+          28px 20px;
+
+        font-size: 15px;
+      }
+
+      .markdown-body h1 {
+        font-size: 1.75em;
+      }
+
+      .markdown-body h2 {
+        font-size: 1.45em;
+      }
+
+      .markdown-body pre {
+        border-radius: 7px;
+
+        margin-left: -5px;
+        margin-right: -5px;
+      }
+
+      .status {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+
+      <a
+        class="brand"
+        href="https://github.com/joaoTYSM/three.js"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+
+        <img
+          class="brand-icon"
+          src="https://raw.githubusercontent.com/joaoTYSM/three.js/refs/heads/main/icon.png"
+          alt="tree.js"
+        >
+
+        <div class="brand-text">
+          <div class="brand-title">
+            tree.js
+          </div>
+
+          <div class="brand-subtitle">
+            joaoTYSM / three.js
+          </div>
+        </div>
+
+      </a>
+
+      <div class="actions">
+
+        <a
+          class="button"
+          href="https://github.com/joaoTYSM/three.js"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Open repository"
+          title="Open repository"
+        >
+          <span class="button-icon">↗</span>
+          <span class="button-label">GitHub</span>
+        </a>
+
+        <button
+          class="button"
+          id="themeButton"
+          type="button"
+          aria-label="Toggle theme"
+          title="Toggle theme"
+        >
+          <span
+            class="button-icon"
+            id="themeIcon"
+          >☀</span>
+
+          <span class="button-label">
+            Theme
+          </span>
+        </button>
+
+      </div>
+
+    </div>
+  </header>
+
+  <main class="container">
+
+    <article class="readme-card">
+
+      <div class="readme-header">
+
+        <div class="repository">
+
+          <svg
+            class="repository-icon"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              d="M8 0C3.58 0 0 3.64 0 8.13c0 3.59 2.29 6.63 5.47 7.7.4.08.55-.18.55-.39
+              0-.19-.01-.82-.01-1.49-2.01.45-2.53-.5-2.69-.96-.09-.24-.48-.96-.82-1.15-.28-.15-.68-.52
+              -.01-.53.63-.01 1.08.59 1.23.84.72 1.24 1.87.89 2.33.68.07-.53.28-.89.51-1.09-1.78-.21-3.64-.91
+              -3.64-4.02 0-.89.31-1.62.82-2.19-.08-.21-.36-1.04.08-2.16 0 0 .67-.22 2.2.84A7.44 7.44 0 0 1
+              8 3.99c.68 0 1.36.09 2 .27 1.53-1.06 2.2-.84 2.2-.84.44 1.12.16 1.95.08 2.16.51.57.82 1.3.82
+              2.19 0 3.12-1.87 3.81-3.65 4.02.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.47.55.39
+              C13.71 14.76 16 11.72 16 8.13 16 3.64 12.42 0 8 0Z"
+            />
+          </svg>
+
+          <span class="repository-name">
+            <span class="repository-owner">
+              joaoTYSM /
+            </span>
+            three.js
+          </span>
+
+        </div>
+
+        <span
+          class="status"
+          id="status"
+        >
+          Loading README…
+        </span>
+
+      </div>
+
+      <div
+        id="content"
+        class="markdown-body"
+      >
+
+        <div class="loading">
+
+          <div class="spinner"></div>
+
+          <span>
+            Loading README…
+          </span>
+
+        </div>
+
+      </div>
+
+    </article>
+
+    <footer class="footer">
+      Rendered from
+      <a
+        href="https://github.com/joaoTYSM/three.js/blob/main/README.md"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        README.md
+      </a>
+      · GitHub Flavored Markdown
+    </footer>
+
+  </main>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/marked@15.0.7/marked.min.js"
+  ></script>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/dompurify@3.2.4/dist/purify.min.js"
+  ></script>
+
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"
+  ></script>
+
+  <script>
+    const README_URL =
+      "https://raw.githubusercontent.com/joaoTYSM/three.js/refs/heads/main/README.md";
+
+    const REPOSITORY_URL =
+      "https://github.com/joaoTYSM/three.js";
+
+    const REPOSITORY_RAW =
+      "https://raw.githubusercontent.com/joaoTYSM/three.js/refs/heads/main/";
+
+    const content =
+      document.getElementById("content");
+
+    const status =
+      document.getElementById("status");
+
+    const themeButton =
+      document.getElementById("themeButton");
+
+    const themeIcon =
+      document.getElementById("themeIcon");
+
+    const highlightTheme =
+      document.getElementById("highlightTheme");
+
+    function getSavedTheme() {
+      return localStorage.getItem("tree-theme");
+    }
+
+    function getSystemTheme() {
+      return window.matchMedia(
+        "(prefers-color-scheme: light)"
+      ).matches
+        ? "light"
+        : "dark";
+    }
+
+    function setTheme(theme) {
+      const isLight =
+        theme === "light";
+
+      document.documentElement.classList.toggle(
+        "light",
+        isLight
+      );
+
+      themeIcon.textContent =
+        isLight ? "☾" : "☀";
+
+      themeButton.title =
+        isLight
+          ? "Switch to dark mode"
+          : "Switch to light mode";
+
+      themeButton.setAttribute(
+        "aria-label",
+        themeButton.title
+      );
+
+      highlightTheme.href =
+        isLight
+          ? "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github.min.css"
+          : "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css";
+
+      localStorage.setItem(
+        "tree-theme",
+        theme
+      );
+    }
+
+    function toggleTheme() {
+      const isLight =
+        document.documentElement.classList.contains(
+          "light"
+        );
+
+      setTheme(
+        isLight
+          ? "dark"
+          : "light"
+      );
+    }
+
+    themeButton.addEventListener(
+      "click",
+      toggleTheme
+    );
+
+    setTheme(
+      getSavedTheme() ||
+      getSystemTheme()
+    );
+
+    marked.setOptions({
+      gfm: true,
+      breaks: false,
+      pedantic: false
+    });
+
+    function escapeHtml(value) {
+      const div =
+        document.createElement("div");
+
+      div.textContent = value;
+
+      return div.innerHTML;
+    }
+
+    function preprocessGitHubAlerts(markdown) {
+      const lines =
+        markdown.split("\n");
+
+      const result = [];
+
+      let i = 0;
+
+      while (i < lines.length) {
+
+        const match =
+          lines[i].match(
+            /^>\s*\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\s*$/
+          );
+
+        if (!match) {
+          result.push(lines[i]);
+          i++;
+          continue;
+        }
+
+        const type =
+          match[1].toLowerCase();
+
+        const title =
+          type.charAt(0).toUpperCase() +
+          type.slice(1);
+
+        const alertLines = [];
+
+        i++;
+
+        while (
+          i < lines.length &&
+          (
+            lines[i].startsWith(">") ||
+            lines[i].trim() === ""
+          )
+        ) {
+          let line =
+            lines[i];
+
+          if (line.startsWith(">")) {
+            line =
+              line.replace(
+                /^>\s?/,
+                ""
+              );
+          }
+
+          alertLines.push(line);
+
+          i++;
+        }
+
+        result.push(
+          `<div class="markdown-alert markdown-alert-${type}">
+            <div class="markdown-alert-title">${title}</div>
+            ${marked.parse(
+              alertLines.join("\n")
+            )}
+          </div>`
+        );
+      }
+
+      return result.join("\n");
+    }
+
+    function resolveRelativeUrl(
+      url,
+      type = "link"
+    ) {
+      if (!url) {
+        return url;
+      }
+
+      if (
+        url.startsWith("#") ||
+        url.startsWith("data:") ||
+        url.startsWith("mailto:") ||
+        url.startsWith("tel:") ||
+        /^[a-z][a-z0-9+.-]*:/i.test(url)
+      ) {
+        return url;
+      }
+
+      if (url.startsWith("//")) {
+        return url;
+      }
+
+      if (type === "image") {
+        return new URL(
+          url,
+          REPOSITORY_RAW
+        ).href;
+      }
+
+      return new URL(
+        url,
+        REPOSITORY_URL + "/blob/main/"
+      ).href;
+    }
+
+    function fixRelativeUrls(root) {
+      root
+        .querySelectorAll("img")
+        .forEach(img => {
+          const src =
+            img.getAttribute("src");
+
+          if (src) {
+            img.src =
+              resolveRelativeUrl(
+                src,
+                "image"
+              );
+          }
+
+          if (!img.alt) {
+            img.alt = "README image";
+          }
+
+          img.loading = "lazy";
+        });
+
+      root
+        .querySelectorAll("a")
+        .forEach(anchor => {
+          const href =
+            anchor.getAttribute("href");
+
+          if (!href) {
+            return;
+          }
+
+          if (
+            href.startsWith("#")
+          ) {
+            return;
+          }
+
+          anchor.href =
+            resolveRelativeUrl(
+              href,
+              "link"
+            );
+
+          anchor.target =
+            "_blank";
+
+          anchor.rel =
+            "noopener noreferrer";
+        });
+    }
+
+    function addCodeCopyButtons(root) {
+      root
+        .querySelectorAll("pre")
+        .forEach(pre => {
+
+          if (
+            pre.parentElement.classList.contains(
+              "code-wrapper"
+            )
+          ) {
+            return;
+          }
+
+          const wrapper =
+            document.createElement(
+              "div"
+            );
+
+          wrapper.className =
+            "code-wrapper";
+
+          pre.parentNode.insertBefore(
+            wrapper,
+            pre
+          );
+
+          wrapper.appendChild(
+            pre
+          );
+
+          const button =
+            document.createElement(
+              "button"
+            );
+
+          button.type =
+            "button";
+
+          button.className =
+            "copy-code";
+
+          button.textContent =
+            "Copy";
+
+          button.addEventListener(
+            "click",
+            async () => {
+
+              const code =
+                pre.querySelector("code");
+
+              const text =
+                code
+                  ? code.textContent
+                  : pre.textContent;
+
+              try {
+                await navigator.clipboard.writeText(
+                  text
+                );
+
+                button.textContent =
+                  "Copied";
+
+                setTimeout(() => {
+                  button.textContent =
+                    "Copy";
+                }, 1300);
+
+              } catch {
+                button.textContent =
+                  "Failed";
+
+                setTimeout(() => {
+                  button.textContent =
+                    "Copy";
+                }, 1300);
+              }
+            }
+          );
+
+          wrapper.appendChild(
+            button
+          );
+        });
+    }
+
+    function highlightCode(root) {
+      root
+        .querySelectorAll(
+          "pre code"
+        )
+        .forEach(block => {
+
+          if (
+            block.className
+              .includes("language-")
+          ) {
+            hljs.highlightElement(
+              block
+            );
+
+            return;
+          }
+
+          try {
+            hljs.highlightElement(
+              block
+            );
+          } catch {
+          }
+        });
+    }
+
+    function setupAnchors(root) {
+      root
+        .querySelectorAll(
+          "h1,h2,h3,h4,h5,h6"
+        )
+        .forEach(heading => {
+
+          if (!heading.id) {
+            heading.id =
+              heading.textContent
+                .trim()
+                .toLowerCase()
+                .replace(
+                  /[^\p{L}\p{N}\s-]/gu,
+                  ""
+                )
+                .replace(
+                  /\s+/g,
+                  "-"
+                );
+          }
+        });
+    }
+
+    async function loadREADME() {
+      try {
+
+        status.textContent =
+          "Fetching README…";
+
+        const response =
+          await fetch(
+            README_URL,
+            {
+              cache: "no-cache"
+            }
+          );
+
+        if (!response.ok) {
+          throw new Error(
+            `HTTP ${response.status}`
+          );
+        }
+
+        const markdown =
+          await response.text();
+
+        if (!markdown.trim()) {
+          throw new Error(
+            "The README is empty."
+          );
+        }
+
+        status.textContent =
+          "Rendering README…";
+
+        const processed =
+          preprocessGitHubAlerts(
+            markdown
+          );
+
+        const rawHTML =
+          marked.parse(
+            processed
+          );
+
+        const safeHTML =
+          DOMPurify.sanitize(
+            rawHTML,
+            {
+              USE_PROFILES: {
+                html: true
+              },
+
+              ADD_TAGS: [
+                "details",
+                "summary",
+                "kbd",
+                "sub",
+                "sup",
+                "ins",
+                "picture",
+                "source"
+              ],
+
+              ADD_ATTR: [
+                "target",
+                "rel",
+                "loading",
+                "open",
+                "align",
+                "colspan",
+                "rowspan",
+                "width",
+                "height"
+              ]
+            }
+          );
+
+        content.innerHTML =
+          safeHTML;
+
+        fixRelativeUrls(
+          content
+        );
+
+        setupAnchors(
+          content
+        );
+
+        highlightCode(
+          content
+        );
+
+        addCodeCopyButtons(
+          content
+        );
+
+        status.textContent =
+          "README.md";
+
+      } catch (error) {
+
+        console.error(
+          error
+        );
+
+        status.textContent =
+          "Failed to load";
+
+        content.innerHTML = `
+          <div class="error">
+
+            <div class="error-title">
+              Unable to load README
+            </div>
+
+            <p class="error-message">
+              ${escapeHtml(
+                error.message ||
+                "An unknown error occurred."
+              )}
+            </p>
+
+            <br>
+
+            <a
+              class="button"
+              href="${README_URL}"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open raw README
+            </a>
+
+          </div>
+        `;
+      }
+    }
+
+    loadREADME();
+  </script>
+
+</body>
+</html>
