@@ -3,39 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>jelly.js — joaoTYSM/tree.js</title>
+  <title>joaoTYSM/tree.js - jelly.js</title>
   <style>
+    /* STREAMING_CHUNK: Definindo Design Tokens do GitHub (Primer) */
     :root {
-      --gh-bg: #0d1117;
-      --gh-bg-subtle: #161b22;
-      --gh-bg-inset: #010409;
-      --gh-border: #30363d;
-      --gh-border-subtle: #21262d;
-      --gh-fg: #c9d1d9;
-      --gh-fg-muted: #8b949e;
-      --gh-fg-subtle: #6e7681;
-      --gh-accent: #58a6ff;
-      --gh-green: #3fb950;
-      --gh-pink: #e00072;
+      --color-bg-default: #0d1117;
+      --color-bg-overlay: #161b22;
+      --color-bg-subtle: #161b22;
+      --color-bg-inset: #010409;
+      --color-border-default: #30363d;
+      --color-border-muted: #21262d;
+      --color-fg-default: #e6edf3;
+      --color-fg-muted: #848d97;
+      --color-fg-subtle: #6e7681;
+      --color-accent-fg: #2f81f7;
+      --color-accent-emphasis: #1f6feb;
+      --color-success-fg: #3fb950;
+      --color-success-emphasis: #238636;
+      --color-btn-bg: #21262d;
+      --color-btn-border: rgba(240, 246, 252, 0.1);
+      --color-btn-hover-bg: #30363d;
+      --color-btn-primary-bg: #238636;
+      --color-btn-primary-hover-bg: #2ea043;
+      
       --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
       --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
     }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; overflow: hidden; }
     body {
       font-family: var(--font-sans);
-      background: var(--gh-bg);
-      color: var(--gh-fg);
+      background: var(--color-bg-default);
+      color: var(--color-fg-default);
       font-size: 14px;
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ── Header ─────────────────────────────────────── */
+    /* STREAMING_CHUNK: Header com estilo de repositório GitHub */
     .gh-header {
-      height: 48px;
-      background: var(--gh-bg-subtle);
-      border-bottom: 1px solid var(--gh-border);
+      height: 56px;
+      background: var(--color-bg-inset);
+      border-bottom: 1px solid var(--color-border-default);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -46,80 +56,74 @@
     .gh-header-left {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
       min-width: 0;
       flex: 1;
     }
-    .gh-mark {
-      width: 28px;
-      height: 28px;
-      flex-shrink: 0;
-      fill: var(--gh-fg);
+    .gh-header-left svg {
+      fill: var(--color-fg-default);
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
     }
     .gh-breadcrumb {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       font-size: 14px;
       min-width: 0;
       overflow: hidden;
     }
     .gh-breadcrumb a {
-      color: var(--gh-accent);
+      color: var(--color-accent-fg);
       text-decoration: none;
-      font-weight: 600;
       white-space: nowrap;
     }
     .gh-breadcrumb a:hover { text-decoration: underline; }
-    .gh-breadcrumb .gh-sep { color: var(--gh-fg-subtle); }
+    .gh-breadcrumb .gh-sep { color: var(--color-fg-muted); padding: 0 2px; }
     .gh-breadcrumb .gh-current {
-      color: var(--gh-fg);
+      color: var(--color-fg-default);
       font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .gh-header-right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
     .gh-badge {
       font-family: var(--font-mono);
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: 100px;
-      background: var(--gh-bg);
-      border: 1px solid var(--gh-border);
-      color: var(--gh-fg-muted);
+      font-size: 12px;
+      padding: 2px 7px;
+      border-radius: 2em;
+      background: var(--color-bg-subtle);
+      border: 1px solid var(--color-border-default);
+      color: var(--color-fg-muted);
     }
     .gh-toggle {
       display: none;
       width: 32px;
       height: 32px;
-      border: 1px solid var(--gh-border);
-      background: var(--gh-bg);
+      border: 1px solid var(--color-btn-border);
+      background: var(--color-btn-bg);
       border-radius: 6px;
-      color: var(--gh-fg);
+      color: var(--color-fg-default);
       cursor: pointer;
       align-items: center;
       justify-content: center;
       padding: 0;
-      font-size: 16px;
+      transition: 0.2s;
     }
-    .gh-toggle:hover { background: var(--gh-border-subtle); }
+    .gh-toggle:hover { background: var(--color-btn-hover-bg); }
 
-    /* ── Layout ─────────────────────────────────────── */
+    /* STREAMING_CHUNK: Layout Principal e Canvas */
     .gh-main {
-      display: grid;
-      grid-template-columns: 1fr 320px;
-      height: calc(100vh - 48px);
+      display: flex;
+      height: calc(100vh - 56px);
       position: relative;
     }
     .gh-canvas-wrap {
+      flex: 1;
       position: relative;
       overflow: hidden;
-      background: var(--gh-bg);
+      background: var(--color-bg-default);
     }
     .gh-canvas-wrap canvas {
       display: block;
@@ -135,149 +139,155 @@
       z-index: 5;
     }
     .gh-overlay-badge {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--gh-green);
-      background: rgba(22, 27, 34, 0.8);
-      padding: 4px 10px;
-      border-radius: 100px;
-      border: 1px solid var(--gh-border);
-      backdrop-filter: blur(8px);
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-success-fg);
+      background: var(--color-bg-overlay);
+      padding: 4px 12px;
+      border-radius: 2em;
+      border: 1px solid var(--color-border-default);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
     .gh-overlay-badge::before {
       content: '';
-      display: inline-block;
-      width: 6px;
-      height: 6px;
+      display: block;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      background: var(--gh-green);
-      margin-right: 6px;
-      vertical-align: middle;
+      background: var(--color-success-emphasis);
+      box-shadow: 0 0 0 2px rgba(35, 134, 54, 0.3);
       animation: pulse 2s ease-in-out infinite;
     }
-    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
 
-    /* ── Sidebar ────────────────────────────────────── */
+    /* STREAMING_CHUNK: Sidebar (Painel de Propriedades) */
     .gh-sidebar {
-      background: var(--gh-bg-subtle);
-      border-left: 1px solid var(--gh-border);
+      width: 320px;
+      background: var(--color-bg-default);
+      border-left: 1px solid var(--color-border-default);
       overflow-y: auto;
       overflow-x: hidden;
       display: flex;
       flex-direction: column;
       scrollbar-width: thin;
-      scrollbar-color: var(--gh-border) transparent;
+      scrollbar-color: var(--color-border-default) transparent;
+      flex-shrink: 0;
     }
     .gh-sidebar::-webkit-scrollbar { width: 6px; }
-    .gh-sidebar::-webkit-scrollbar-thumb { background: var(--gh-border); border-radius: 3px; }
+    .gh-sidebar::-webkit-scrollbar-thumb { background: var(--color-border-default); border-radius: 3px; }
 
     .gh-sidebar-header {
       position: sticky;
       top: 0;
-      background: var(--gh-bg-subtle);
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--gh-border);
+      background: var(--color-bg-default);
+      padding: 16px;
+      border-bottom: 1px solid var(--color-border-default);
       display: flex;
       align-items: center;
       justify-content: space-between;
       z-index: 10;
     }
     .gh-sidebar-header h2 {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 600;
-      color: var(--gh-fg);
+      color: var(--color-fg-default);
     }
     .gh-sidebar-close {
       display: none;
       background: none;
       border: none;
-      color: var(--gh-fg-muted);
+      color: var(--color-fg-muted);
       cursor: pointer;
-      font-size: 22px;
+      font-size: 20px;
       line-height: 1;
-      padding: 0 4px;
+      padding: 4px;
+      border-radius: 4px;
     }
-    .gh-sidebar-close:hover { color: var(--gh-fg); }
+    .gh-sidebar-close:hover { 
+      background: var(--color-bg-subtle);
+      color: var(--color-fg-default); 
+    }
 
     .gh-section {
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--gh-border-subtle);
+      padding: 16px;
+      border-bottom: 1px solid var(--color-border-default);
     }
     .gh-section:last-child { border-bottom: none; }
     .gh-section-title {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 600;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      color: var(--gh-fg-muted);
-      margin-bottom: 10px;
+      color: var(--color-fg-default);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    /* Sliders */
-    .gh-slider { margin-bottom: 12px; }
+    /* STREAMING_CHUNK: Controles de Formulário (Sliders, Selects, Toggles) */
+    .gh-slider { margin-bottom: 16px; }
     .gh-slider:last-child { margin-bottom: 0; }
     .gh-slider-label {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
       font-size: 12px;
+      color: var(--color-fg-muted);
     }
-    .gh-slider-label span:first-child { color: var(--gh-fg); }
     .gh-slider-label .gh-val {
       font-family: var(--font-mono);
       font-size: 11px;
-      color: var(--gh-accent);
+      color: var(--color-fg-default);
+      background: var(--color-bg-subtle);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid var(--color-border-default);
     }
     .gh-slider input[type="range"] {
       width: 100%;
       height: 4px;
       -webkit-appearance: none;
       appearance: none;
-      background: var(--gh-border);
+      background: var(--color-border-default);
       border-radius: 2px;
       outline: none;
       cursor: pointer;
     }
     .gh-slider input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 14px;
-      height: 14px;
+      width: 16px;
+      height: 16px;
       border-radius: 50%;
-      background: var(--gh-accent);
-      border: 2px solid var(--gh-bg-subtle);
+      background: var(--color-accent-fg);
+      border: 2px solid var(--color-bg-default);
       cursor: grab;
+      box-shadow: 0 0 0 1px var(--color-border-default);
       transition: transform 0.1s;
     }
-    .gh-slider input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+    .gh-slider input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.1); }
     .gh-slider input[type="range"]::-webkit-slider-thumb:active { cursor: grabbing; }
-    .gh-slider input[type="range"]::-moz-range-thumb {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: var(--gh-accent);
-      border: 2px solid var(--gh-bg-subtle);
-      cursor: grab;
-    }
 
-    /* Toggles */
+    /* Switches estilo GitHub */
     .gh-toggle-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 5px 0;
-      font-size: 12px;
+      padding: 8px 0;
+      font-size: 13px;
       cursor: pointer;
       user-select: none;
+      color: var(--color-fg-default);
     }
-    .gh-toggle-row:hover { color: var(--gh-accent); }
+    .gh-toggle-row:hover { color: var(--color-accent-fg); }
     .gh-toggle-row input { display: none; }
     .gh-switch {
-      width: 34px;
-      height: 20px;
-      background: var(--gh-border);
+      width: 32px;
+      height: 18px;
+      background: var(--color-border-default);
       border-radius: 10px;
       position: relative;
       transition: background 0.2s;
@@ -288,123 +298,128 @@
       position: absolute;
       top: 2px;
       left: 2px;
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
       border-radius: 50%;
-      background: var(--gh-fg-muted);
-      transition: all 0.2s;
+      background: var(--color-fg-muted);
+      transition: all 0.2s cubic-bezier(0.3, 1.5, 0.7, 1);
     }
-    .gh-toggle-row input:checked + .gh-switch { background: var(--gh-accent); }
+    .gh-toggle-row input:checked + .gh-switch { background: var(--color-success-emphasis); }
     .gh-toggle-row input:checked + .gh-switch::after {
       left: 16px;
       background: #fff;
     }
 
-    /* Select */
+    /* Selects */
     .gh-select {
       width: 100%;
-      padding: 6px 10px;
-      background: var(--gh-bg);
-      border: 1px solid var(--gh-border);
+      padding: 5px 12px;
+      background: var(--color-bg-subtle);
+      border: 1px solid var(--color-border-default);
       border-radius: 6px;
-      color: var(--gh-fg);
-      font-size: 12px;
+      color: var(--color-fg-default);
+      font-size: 13px;
       font-family: var(--font-sans);
       outline: none;
       cursor: pointer;
       appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238b949e'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 16 16'%3E%3Cpath fill='%23848d97' d='M4.427 7.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 7H4.604a.25.25 0 00-.177.427z'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: right 10px center;
+      background-position: right 8px center;
       padding-right: 28px;
+      transition: 0.2s;
     }
-    .gh-select:focus { border-color: var(--gh-accent); box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.15); }
-    .gh-select option { background: var(--gh-bg-subtle); color: var(--gh-fg); }
+    .gh-select:focus { border-color: var(--color-accent-fg); box-shadow: 0 0 0 3px rgba(47, 129, 247, 0.3); }
+    .gh-select option { background: var(--color-bg-default); color: var(--color-fg-default); }
 
-    /* Color */
+    /* Inputs de Cor */
     .gh-color-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 4px 0;
-      font-size: 12px;
+      padding: 6px 0;
+      font-size: 13px;
     }
     .gh-color-row input[type="color"] {
-      width: 36px;
-      height: 22px;
-      border: 1px solid var(--gh-border);
+      width: 24px;
+      height: 24px;
+      border: 1px solid var(--color-border-default);
       border-radius: 4px;
       background: transparent;
       cursor: pointer;
       padding: 0;
     }
-    .gh-color-row input[type="color"]::-webkit-color-swatch-wrapper { padding: 2px; }
+    .gh-color-row input[type="color"]::-webkit-color-swatch-wrapper { padding: 1px; }
     .gh-color-row input[type="color"]::-webkit-color-swatch { border: none; border-radius: 2px; }
 
-    /* Buttons */
-    .gh-btn-row { display: flex; gap: 6px; margin-top: 8px; }
+    /* Botões */
+    .gh-btn-row { display: flex; gap: 8px; margin-top: 8px; }
     .gh-btn {
       flex: 1;
-      padding: 6px 10px;
-      background: var(--gh-border-subtle);
-      border: 1px solid var(--gh-border);
+      padding: 5px 16px;
+      background: var(--color-btn-bg);
+      border: 1px solid var(--color-btn-border);
       border-radius: 6px;
-      color: var(--gh-fg);
-      font-size: 11px;
+      color: var(--color-fg-default);
+      font-size: 13px;
       font-weight: 500;
+      font-family: var(--font-sans);
       cursor: pointer;
-      transition: background 0.15s, border-color 0.15s;
+      transition: 0.2s;
       white-space: nowrap;
     }
-    .gh-btn:hover { background: var(--gh-border); border-color: var(--gh-fg-subtle); }
-    .gh-btn:active { transform: translateY(1px); }
-    .gh-btn.accent { background: var(--gh-pink); border-color: var(--gh-pink); color: #fff; }
-    .gh-btn.accent:hover { background: #c80064; border-color: #c80064; }
-    .gh-btn.green { background: var(--gh-green); border-color: var(--gh-green); color: #0d1117; }
-    .gh-btn.green:hover { background: #34a853; border-color: #34a853; }
+    .gh-btn:hover { background: var(--color-btn-hover-bg); border-color: var(--color-fg-muted); }
+    .gh-btn:active { transform: scale(0.98); }
+    
+    .gh-btn.primary {
+      background: var(--color-btn-primary-bg);
+      border-color: rgba(240,246,252,0.1);
+      color: #fff;
+    }
+    .gh-btn.primary:hover { background: var(--color-btn-primary-hover-bg); }
 
-    .gh-divider {
-      height: 1px;
-      background: var(--gh-border-subtle);
-      margin: 10px 0;
+    /* STREAMING_CHUNK: Responsividade Avançada (Off-canvas menu) */
+    .gh-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(1, 4, 9, 0.8);
+      z-index: 90;
+      backdrop-filter: blur(2px);
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
-    /* ── Responsive ─────────────────────────────────── */
-    @media (max-width: 1024px) {
-      .gh-main { grid-template-columns: 1fr 280px; }
+    @media (max-width: 900px) {
+      .gh-sidebar { width: 280px; }
     }
+
     @media (max-width: 768px) {
-      .gh-header { height: 44px; padding: 0 12px; }
-      .gh-mark { width: 22px; height: 22px; }
-      .gh-breadcrumb { font-size: 12px; gap: 4px; }
+      .gh-header { padding: 0 12px; }
+      .gh-header-left svg { width: 20px; height: 20px; }
+      .gh-breadcrumb { font-size: 13px; }
       .gh-badge { display: none; }
       .gh-toggle { display: inline-flex; }
-      .gh-main {
-        grid-template-columns: 1fr;
-        height: calc(100vh - 44px);
-      }
+      
       .gh-sidebar {
         position: fixed;
-        left: 0;
+        top: 0;
         right: 0;
         bottom: 0;
-        top: auto;
-        max-height: 72vh;
-        border-left: none;
-        border-top: 1px solid var(--gh-border);
-        border-radius: 14px 14px 0 0;
-        transform: translateY(100%);
+        width: 320px;
+        max-width: 85vw;
+        border-left: 1px solid var(--color-border-default);
+        transform: translateX(100%);
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.5);
         z-index: 100;
-        padding-bottom: env(safe-area-inset-bottom, 0);
+        box-shadow: -8px 0 24px rgba(0,0,0,0.5);
       }
-      .gh-sidebar.open { transform: translateY(0); }
-      .gh-sidebar-header { border-radius: 14px 14px 0 0; }
+      .gh-sidebar.open { transform: translateX(0); }
       .gh-sidebar-close { display: block; }
-      .gh-overlay-badge { font-size: 9px; padding: 3px 8px; }
+      .gh-backdrop.open { display: block; opacity: 1; }
     }
-    @media (max-width: 360px) {
+
+    @media (max-width: 480px) {
       .gh-breadcrumb a:nth-of-type(1),
       .gh-breadcrumb .gh-sep:nth-of-type(1) { display: none; }
     }
@@ -412,9 +427,10 @@
 </head>
 <body>
 
+  <!-- STREAMING_CHUNK: Estrutura HTML -->
   <header class="gh-header">
     <div class="gh-header-left">
-      <svg class="gh-mark" viewBox="0 0 16 16" aria-hidden="true">
+      <svg viewBox="0 0 16 16" aria-hidden="true">
         <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
       </svg>
       <nav class="gh-breadcrumb" aria-label="Breadcrumb">
@@ -427,21 +443,28 @@
     </div>
     <div class="gh-header-right">
       <span class="gh-badge">v2.3</span>
-      <button class="gh-toggle" id="gh-toggle" aria-label="Toggle controls">☰</button>
+      <button class="gh-toggle" id="gh-toggle" aria-label="Toggle controls">
+        <svg aria-hidden="true" height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path fill-rule="evenodd" d="M1 2.75A.75.75 0 011.75 2h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 2.75zm0 5A.75.75 0 011.75 7h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 7.75zM1.75 12a.75.75 0 100 1.5h12.5a.75.75 0 100-1.5H1.75z"></path></svg>
+      </button>
     </div>
   </header>
 
   <main class="gh-main">
     <div class="gh-canvas-wrap" id="canvas-wrap">
       <div class="gh-overlay">
-        <div class="gh-overlay-badge">Live preview</div>
+        <div class="gh-overlay-badge">Live Preview</div>
       </div>
     </div>
 
+    <!-- Backdrop for mobile sidebar -->
+    <div class="gh-backdrop" id="gh-backdrop"></div>
+
     <aside class="gh-sidebar" id="gh-sidebar">
       <div class="gh-sidebar-header">
-        <h2>The Specimen</h2>
-        <button class="gh-sidebar-close" id="gh-sidebar-close" aria-label="Close">×</button>
+        <h2>Properties</h2>
+        <button class="gh-sidebar-close" id="gh-sidebar-close" aria-label="Close">
+          <svg aria-hidden="true" height="16" viewBox="0 0 16 16" width="16" fill="currentColor"><path fill-rule="evenodd" d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 11-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z"></path></svg>
+        </button>
       </div>
 
       <div class="gh-section">
@@ -485,11 +508,12 @@
           <div class="gh-slider-label"><span>Speed</span><span class="gh-val" id="v-speed">100</span></div>
           <input type="range" id="r-speed" min="10" max="150" value="100">
         </div>
-        <div class="gh-divider"></div>
-        <label class="gh-toggle-row">Gravity <input type="checkbox" id="t-gravity" checked><span class="gh-switch"></span></label>
+        
+        <label class="gh-toggle-row" style="margin-top: 12px;">Gravity <input type="checkbox" id="t-gravity" checked><span class="gh-switch"></span></label>
         <label class="gh-toggle-row">Grounded <input type="checkbox" id="t-grounded"><span class="gh-switch"></span></label>
         <label class="gh-toggle-row">Floating <input type="checkbox" id="t-floating" checked><span class="gh-switch"></span></label>
-        <div class="gh-slider" style="margin-top: 10px;">
+        
+        <div class="gh-slider" style="margin-top: 12px;">
           <div class="gh-slider-label"><span>Gravity strength</span><span class="gh-val" id="v-gravityStrength">1.0</span></div>
           <input type="range" id="r-gravityStrength" min="0" max="5" step="0.1" value="1">
         </div>
@@ -497,9 +521,9 @@
 
       <div class="gh-section">
         <div class="gh-section-title">Material</div>
-        <div class="gh-color-row"><span>Color</span><input type="color" id="c-color" value="#e00072"></div>
+        <div class="gh-color-row"><span>Color</span><input type="color" id="c-color" value="#2f81f7"></div>
         <div class="gh-color-row"><span>Clear color</span><input type="color" id="c-clearColor" value="#ffffff"></div>
-        <div class="gh-slider">
+        <div class="gh-slider" style="margin-top: 8px;">
           <div class="gh-slider-label"><span>Saturation</span><span class="gh-val" id="v-saturation">100</span></div>
           <input type="range" id="r-saturation" min="0" max="100" value="100">
         </div>
@@ -515,7 +539,7 @@
           <div class="gh-slider-label"><span>Reflections</span><span class="gh-val" id="v-reflections">48</span></div>
           <input type="range" id="r-reflections" min="0" max="100" value="48">
         </div>
-        <label class="gh-toggle-row">Speckle texture <input type="checkbox" id="t-texture"><span class="gh-switch"></span></label>
+        <label class="gh-toggle-row" style="margin-top: 8px;">Speckle texture <input type="checkbox" id="t-texture"><span class="gh-switch"></span></label>
         <label class="gh-toggle-row">Wireframe <input type="checkbox" id="t-wireframe"><span class="gh-switch"></span></label>
       </div>
 
@@ -523,9 +547,9 @@
         <div class="gh-section-title">Eyes</div>
         <label class="gh-toggle-row">Show eyes <input type="checkbox" id="t-eyes" checked><span class="gh-switch"></span></label>
         <label class="gh-toggle-row">Blink <input type="checkbox" id="t-blink" checked><span class="gh-switch"></span></label>
-        <div class="gh-color-row"><span>Button color</span><input type="color" id="c-eyeColor" value="#453a33"></div>
-        <div class="gh-color-row"><span>Thread color</span><input type="color" id="c-eyeThread" value="#f2e6cf"></div>
-        <div class="gh-slider">
+        <div class="gh-color-row" style="margin-top: 8px;"><span>Button color</span><input type="color" id="c-eyeColor" value="#161b22"></div>
+        <div class="gh-color-row"><span>Thread color</span><input type="color" id="c-eyeThread" value="#c9d1d9"></div>
+        <div class="gh-slider" style="margin-top: 12px;">
           <div class="gh-slider-label"><span>Eye spacing</span><span class="gh-val" id="v-eyeSpacing">auto</span></div>
           <input type="range" id="r-eyeSpacing" min="0" max="2" step="0.05" value="0">
         </div>
@@ -543,7 +567,7 @@
           <option value="camera">Camera only</option>
           <option value="none">None</option>
         </select>
-        <div class="gh-slider" style="margin-top: 10px;">
+        <div class="gh-slider" style="margin-top: 16px;">
           <div class="gh-slider-label"><span>Pull radius</span><span class="gh-val" id="v-pullRadius">22</span></div>
           <input type="range" id="r-pullRadius" min="0" max="100" value="22">
         </div>
@@ -556,12 +580,12 @@
       <div class="gh-section">
         <div class="gh-section-title">Actions</div>
         <div class="gh-btn-row">
-          <button class="gh-btn accent" id="btn-wobble">Wobble</button>
+          <button class="gh-btn primary" id="btn-wobble">Wobble</button>
           <button class="gh-btn" id="btn-crush">Crush Y</button>
         </div>
         <div class="gh-btn-row">
           <button class="gh-btn" id="btn-stretch">Stretch Y</button>
-          <button class="gh-btn green" id="btn-force">Force</button>
+          <button class="gh-btn" id="btn-force">Force</button>
         </div>
         <div class="gh-btn-row">
           <button class="gh-btn" id="btn-poke">Poke top</button>
@@ -575,6 +599,7 @@
     </aside>
   </main>
 
+  <!-- STREAMING_CHUNK: Import Maps & Scripts -->
   <script type="importmap">
     {
       "imports": {
@@ -585,14 +610,16 @@
   </script>
 
   <script type="module">
+    /* STREAMING_CHUNK: Inicializando Three.js e Jelly.js */
     import * as THREE from 'three';
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-    import { Jelly } from 'https://cdn.jsdelivr.net/gh/joaoTYSM/three.js@main/jelly/source.js';
+    import { Jelly } from 'https://cdn.jsdelivr.net/gh/joaoTYSM/three.js@main/jelly/three.js';
 
     const container = document.getElementById('canvas-wrap');
 
     const scene = new THREE.Scene();
+    // GitHub background cor 
     scene.background = new THREE.Color(0x0d1117);
 
     const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
@@ -635,7 +662,7 @@
       gravityStrength: 1,
       eyes: true,
       eyeBlink: true,
-      color: 0xe00072,
+      color: 0x2f81f7, // GitHub blue
       clearColor: 0xffffff,
       transmission: 1,
       reflections: 48,
@@ -653,7 +680,7 @@
     controls.maxDistance = 20;
     controls.update();
 
-    /* ── Responsive resize ─────────────────────────── */
+    /* STREAMING_CHUNK: Listeners Responsivos e Lógica da UI */
     function resize() {
       const rect = container.getBoundingClientRect();
       const w = Math.max(1, rect.width);
@@ -668,7 +695,6 @@
     ro.observe(container);
     resize();
 
-    /* ── GUI ───────────────────────────────────────── */
     const $ = (id) => document.getElementById(id);
 
     $('preset-select').addEventListener('change', (e) => {
@@ -709,14 +735,8 @@
       $('v-eyeSpacing').textContent = raw === 0 ? 'auto' : raw.toFixed(2);
     });
 
-    $('c-color').addEventListener('input', (e) => jelly.set({ color: e.target.value }));
-    $('c-clearColor').addEventListener('input', (e) => jelly.set({ clearColor: e.target.value }));
-    $('c-eyeColor').addEventListener('input', (e) => {
-      jelly.set({ eyes: true, eyeColor: e.target.value });
-    });
-    $('c-eyeThread').addEventListener('input', (e) => {
-      jelly.set({ eyes: true, eyeThread: e.target.value });
-    });
+    $('c-color').addEventListener('input', (e) => jelly.set({ color: e.target.value }));$('c-clearColor').addEventListener('input', (e) => jelly.set({ clearColor: e.target.value }));
+    $('c-eyeColor').addEventListener('input', (e) => jelly.set({ eyes: true, eyeColor: e.target.value }));$('c-eyeThread').addEventListener('input', (e) => jelly.set({ eyes: true, eyeThread: e.target.value }));
 
     const bindToggle = (id, key, onChange) => {
       const t = $(`t-${id}`);
@@ -745,15 +765,12 @@
     });
 
     $('btn-wobble').addEventListener('click', () => jelly.impulse(0.8));
-    $('btn-crush').addEventListener('click', () => jelly.crush('y', 0.45));
-    $('btn-stretch').addEventListener('click', () => jelly.crush('y', 1.6));
-    $('btn-force').addEventListener('click', () => jelly.applyForce([1, 0.3, 0], { strength: 2.5 }));
-    $('btn-poke').addEventListener('click', () => {
+    $('btn-crush').addEventListener('click', () => jelly.crush('y', 0.45));$('btn-stretch').addEventListener('click', () => jelly.crush('y', 1.6));
+    $('btn-force').addEventListener('click', () => jelly.applyForce([1, 0.3, 0], { strength: 2.5 }));$('btn-poke').addEventListener('click', () => {
       const box = jelly._geometry.boundingBox;
       jelly.poke([0, box.max.y, 0], { strength: 3, radius: 0.8 });
     });
-    $('btn-reset').addEventListener('click', () => jelly.reset());
-    $('btn-pause').addEventListener('click', () => {
+    $('btn-reset').addEventListener('click', () => jelly.reset());$('btn-pause').addEventListener('click', () => {
       jelly.toggle();
       $('btn-pause').textContent = jelly.options.paused ? 'Resume' : 'Pause';
     });
@@ -763,12 +780,24 @@
       $('btn-rotate').textContent = next ? 'Stop' : 'Auto-rotate';
     });
 
-    /* ── Mobile sidebar toggle ─────────────────────── */
+    /* STREAMING_CHUNK: Comportamento do Menu Lateral Mobile (Off-Canvas) */
     const sidebar = $('gh-sidebar');
-    $('gh-toggle').addEventListener('click', () => sidebar.classList.toggle('open'));
-    $('gh-sidebar-close').addEventListener('click', () => sidebar.classList.remove('open'));
+    const backdrop = $('gh-backdrop');
+    
+    function toggleSidebar() {
+      const isOpen = sidebar.classList.toggle('open');
+      backdrop.classList.toggle('open', isOpen);
+    }
+    
+    function closeSidebar() {
+      sidebar.classList.remove('open');
+      backdrop.classList.remove('open');
+    }
 
-    /* ── Render loop ───────────────────────────────── */
+    $('gh-toggle').addEventListener('click', toggleSidebar);$('gh-sidebar-close').addEventListener('click', closeSidebar);
+    backdrop.addEventListener('click', closeSidebar);
+
+    /* STREAMING_CHUNK: Loop de Renderização e Sincronização Inicial */
     const clock = new THREE.Clock();
 
     function animate() {
@@ -780,22 +809,17 @@
     }
     animate();
 
-    /* ── Initial sync ──────────────────────────────── */
     $('v-firmness').textContent = jelly.options.firmness;
     $('v-damping').textContent = jelly.options.damping;
     $('v-wobble').textContent = jelly.options.wobble;
     $('v-speed').textContent = jelly.options.speed;
-    $('v-gravityStrength').textContent = jelly.options.gravityStrength.toFixed(1);
-    $('v-saturation').textContent = jelly.options.saturation;
+    $('v-gravityStrength').textContent = jelly.options.gravityStrength.toFixed(1);$('v-saturation').textContent = jelly.options.saturation;
     $('v-transmission').textContent = jelly.options.transmission.toFixed(2);
-    $('v-roughness').textContent = jelly.options.roughness.toFixed(3);
-    $('v-reflections').textContent = jelly.options.reflections;
+    $('v-roughness').textContent = jelly.options.roughness.toFixed(3);$('v-reflections').textContent = jelly.options.reflections;
     $('v-pullRadius').textContent = jelly.options.pullRadius;
     $('v-stretch').textContent = jelly.options.stretch;
-    $('v-eyeHeight').textContent = jelly.options.eyeHeight.toFixed(2);
-    $('v-eyeSpacing').textContent = 'auto';
-    $('preset-select').value = 'petCube';
-    $('interaction-select').value = 'pull';
+    $('v-eyeHeight').textContent = jelly.options.eyeHeight.toFixed(2);$('v-eyeSpacing').textContent = 'auto';
+    $('preset-select').value = 'petCube';$('interaction-select').value = 'pull';
   </script>
 </body>
 </html>
