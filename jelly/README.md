@@ -21,7 +21,7 @@ A lightweight JavaScript library for creating interactive, deformable and custom
 <br>
 
 [![GitHub](https://img.shields.io/badge/GitHub-joaoTYSM%2Ftree.js-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/joaoTYSM/three.js)
-[![Three.js](https://img.shields.io/badge/Three.js-0.160.0-black?style=flat-square&logo=threedotjs&logoColor=white)](https://threejs.org/)
+[![Three.js](https://img.shields.io/badge/jsdeliver-black?style=flat-square&logo=javascript&logoColor=white)](https://cdn.jsdelivr.net/gh/joaoTYSM/three.js@main/jelly/main.js)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 [![Discord](https://img.shields.io/badge/Discord-RCXKUtYhpp-5865F2?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/RCXKUtYhpp)
 
