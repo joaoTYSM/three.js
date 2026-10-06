@@ -21,7 +21,7 @@ A lightweight JavaScript library for creating interactive, deformable and custom
 <br>
 
 [![GitHub](https://img.shields.io/badge/GitHub-joaoTYSM%2Ftree.js-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/joaoTYSM/three.js)
-[![Three.js](https://img.shields.io/badge/jsdeliver-black?style=flat-square&logo=javascript&logoColor=white)](https://cdn.jsdelivr.net/gh/joaoTYSM/three.js@main/jelly/main.js)
+[![Three.js](https://img.shields.io/badge/jsdeliver-black?style=flat-square&logo=javascript&logoColor=white)](https://cdn.jsdelivr.net/gh/joaoTYSM/three.js@main/jelly/source.js)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 [![Discord](https://img.shields.io/badge/Discord-RCXKUtYhpp-5865F2?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/RCXKUtYhpp)
 
@@ -102,5 +102,5 @@ You can load `jelly.js` directly from the GitHub repository.
 </script>
 
 <script type="module">
-  import Jelly from "https://raw.githubusercontent.com/joaoTYSM/three.js/refs/heads/main/jelly/three.js";
+  import Jelly from "https://cdn.jsdelivr.net/gh/joaoTYSM/three.js@main/jelly/source.js";
 </script>
