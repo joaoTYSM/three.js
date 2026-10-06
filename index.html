@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>tree.js</title>
+  <title>three.js</title>
 
   <link
     rel="icon"
@@ -14,13 +14,17 @@
 
   <link
     rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown.min.css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown-dark.min.css"
   >
 
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css"
-    id="highlightTheme"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css"
   >
 
   <style>
@@ -29,21 +33,11 @@
 
       --bg: #0d1117;
       --text: #f0f6fc;
+      --muted: #8b949e;
       --border: #30363d;
       --surface: #161b22;
-      --button-bg: #161b22;
-      --button-hover: #21262d;
-    }
-
-    html.light {
-      color-scheme: light;
-
-      --bg: #ffffff;
-      --text: #1f2328;
-      --border: #d0d7de;
-      --surface: #f6f8fa;
-      --button-bg: #ffffff;
-      --button-hover: #f3f4f6;
+      --surface-hover: #21262d;
+      --link: #f0f6fc;
     }
 
     * {
@@ -52,58 +46,19 @@
 
     html {
       scroll-behavior: smooth;
+      background: var(--bg);
     }
 
     body {
       margin: 0;
       min-height: 100vh;
+
       background: var(--bg);
       color: var(--text);
 
       transition:
         background-color .25s ease,
         color .25s ease;
-    }
-
-    #themeButton {
-      position: fixed;
-      top: 18px;
-      right: 18px;
-      z-index: 1000;
-
-      width: 42px;
-      height: 42px;
-      padding: 0;
-
-      border: 1px solid var(--border);
-      border-radius: 10px;
-
-      background: var(--button-bg);
-      color: var(--text);
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      cursor: pointer;
-      font-size: 18px;
-
-      box-shadow:
-        0 6px 24px rgba(0, 0, 0, .25);
-
-      transition:
-        background .15s ease,
-        border-color .15s ease,
-        transform .15s ease;
-    }
-
-    #themeButton:hover {
-      background: var(--button-hover);
-      border-color: #8b949e;
-    }
-
-    #themeButton:active {
-      transform: scale(.94);
     }
 
     .markdown-body {
@@ -121,17 +76,46 @@
     .markdown-body h4,
     .markdown-body h5,
     .markdown-body h6 {
-      color: var(--text);
+      color: var(--text) !important;
       border-bottom-color: var(--border);
     }
 
+    .markdown-body h1 a,
+    .markdown-body h2 a,
+    .markdown-body h3 a,
+    .markdown-body h4 a,
+    .markdown-body h5 a,
+    .markdown-body h6 a {
+      color: var(--text) !important;
+      text-decoration: none;
+    }
+
+    .markdown-body h1 a:hover,
+    .markdown-body h2 a:hover,
+    .markdown-body h3 a:hover,
+    .markdown-body h4 a:hover,
+    .markdown-body h5 a:hover,
+    .markdown-body h6 a:hover {
+      color: #ffffff !important;
+    }
+
     .markdown-body p,
-    .markdown-body li {
+    .markdown-body li,
+    .markdown-body strong,
+    .markdown-body em {
       color: var(--text);
     }
 
+    .markdown-body a {
+      color: var(--link);
+    }
+
+    .markdown-body a:hover {
+      color: #ffffff;
+    }
+
     .markdown-body blockquote {
-      color: #8b949e;
+      color: var(--muted);
       border-left-color: var(--border);
     }
 
@@ -165,14 +149,20 @@
     }
 
     .markdown-body pre {
+      position: relative;
+
+      padding: 16px;
+
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 9px;
-      position: relative;
+
+      overflow-x: auto;
     }
 
     .markdown-body pre code {
       background: transparent;
+      color: inherit;
     }
 
     .markdown-body img {
@@ -184,10 +174,9 @@
       margin: 14px 0;
       padding: 12px 16px;
 
+      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 8px;
-
-      background: var(--surface);
     }
 
     .markdown-body details > summary {
@@ -202,7 +191,28 @@
     }
 
     .markdown-body input[type="checkbox"] {
-      accent-color: #2f81f7;
+      accent-color: #8b949e;
+    }
+
+    .markdown-body .task-list-item {
+      list-style-type: none;
+    }
+
+    .markdown-body .task-list-item input {
+      margin-right: 7px;
+    }
+
+    .markdown-body .footnotes {
+      color: var(--muted);
+      font-size: .9em;
+    }
+
+    .markdown-body .footnote-ref {
+      text-decoration: none;
+    }
+
+    .markdown-body .footnote-backref {
+      text-decoration: none;
     }
 
     .code-wrapper {
@@ -211,8 +221,10 @@
 
     .copy-code {
       position: absolute;
+
       top: 8px;
       right: 8px;
+
       z-index: 5;
 
       height: 30px;
@@ -222,7 +234,7 @@
       border-radius: 6px;
 
       background: var(--surface);
-      color: #8b949e;
+      color: var(--muted);
 
       cursor: pointer;
 
@@ -246,8 +258,62 @@
     }
 
     .copy-code:hover {
+      background: var(--surface-hover);
       color: var(--text);
-      background: var(--button-hover);
+    }
+
+    .github-alert {
+      margin: 16px 0;
+      padding: 12px 16px;
+
+      border-left: 4px solid var(--border);
+      border-radius: 6px;
+
+      background: var(--surface);
+    }
+
+    .github-alert-title {
+      margin-bottom: 6px;
+
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .github-alert-note {
+      border-left-color: #58a6ff;
+    }
+
+    .github-alert-tip {
+      border-left-color: #3fb950;
+    }
+
+    .github-alert-important {
+      border-left-color: #a371f7;
+    }
+
+    .github-alert-warning {
+      border-left-color: #d29922;
+    }
+
+    .github-alert-caution {
+      border-left-color: #f85149;
+    }
+
+    .mermaid {
+      margin: 20px 0;
+      padding: 16px;
+
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+
+      overflow-x: auto;
+    }
+
+    .math-block {
+      margin: 18px 0;
+      overflow-x: auto;
+      text-align: center;
     }
 
     #loading {
@@ -263,7 +329,7 @@
       height: 26px;
 
       border: 3px solid var(--border);
-      border-top-color: #58a6ff;
+      border-top-color: #8b949e;
 
       border-radius: 50%;
 
@@ -278,14 +344,10 @@
     }
 
     @media (max-width: 700px) {
-      #themeButton {
-        top: 12px;
-        right: 12px;
-      }
-
       .markdown-body {
         width: calc(100% - 28px);
         padding: 50px 0 50px;
+
         font-size: 15px;
       }
 
@@ -299,15 +361,6 @@
 
 <body>
 
-  <button
-    id="themeButton"
-    type="button"
-    aria-label="Toggle theme"
-    title="Toggle theme"
-  >
-    ☀
-  </button>
-
   <main
     id="content"
     class="markdown-body"
@@ -318,7 +371,7 @@
   </main>
 
   <script
-    src="https://cdn.jsdelivr.net/npm/marked@15.0.7/marked.min.js"
+    src="https://cdn.jsdelivr.net/npm/marked@15.0.7/lib/marked.umd.js"
   ></script>
 
   <script
@@ -327,6 +380,14 @@
 
   <script
     src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"
+  ></script>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"
+  ></script>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.min.js"
   ></script>
 
   <script>
@@ -342,81 +403,27 @@
     const content =
       document.getElementById("content");
 
-    const themeButton =
-      document.getElementById("themeButton");
-
-    const highlightTheme =
-      document.getElementById("highlightTheme");
-
-    function getSystemTheme() {
-      return window.matchMedia(
-        "(prefers-color-scheme: light)"
-      ).matches
-        ? "light"
-        : "dark";
-    }
-
-    function setTheme(theme) {
-      const light =
-        theme === "light";
-
-      document.documentElement.classList.toggle(
-        "light",
-        light
-      );
-
-      themeButton.textContent =
-        light ? "☾" : "☀";
-
-      themeButton.title =
-        light
-          ? "Dark mode"
-          : "Light mode";
-
-      themeButton.setAttribute(
-        "aria-label",
-        themeButton.title
-      );
-
-      highlightTheme.href =
-        light
-          ? "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github.min.css"
-          : "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark.min.css";
-
-      localStorage.setItem(
-        "tree-theme",
-        theme
-      );
-    }
-
-    function toggleTheme() {
-      const light =
-        document.documentElement.classList.contains(
-          "light"
-        );
-
-      setTheme(
-        light
-          ? "dark"
-          : "light"
-      );
-    }
-
-    themeButton.addEventListener(
-      "click",
-      toggleTheme
-    );
-
-    setTheme(
-      localStorage.getItem("tree-theme") ||
-      getSystemTheme()
-    );
-
     marked.setOptions({
       gfm: true,
       breaks: false,
       pedantic: false
     });
+
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: "dark",
+      securityLevel: "strict"
+    });
+
+    function slugify(text) {
+      return text
+        .toLowerCase()
+        .trim()
+        .replace(/<[^>]*>/g, "")
+        .replace(/[^\w\s-]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-");
+    }
 
     function resolveURL(url, type) {
       if (!url) {
@@ -491,10 +498,51 @@
         });
     }
 
+    function addHeadingIDs(root) {
+      const used = new Set();
+
+      root
+        .querySelectorAll(
+          "h1, h2, h3, h4, h5, h6"
+        )
+        .forEach(heading => {
+
+          let id =
+            slugify(
+              heading.textContent
+            );
+
+          if (!id) {
+            return;
+          }
+
+          const original = id;
+          let count = 2;
+
+          while (used.has(id)) {
+            id =
+              original +
+              "-" +
+              count++;
+          }
+
+          used.add(id);
+          heading.id = id;
+        });
+    }
+
     function addCopyButtons(root) {
       root
         .querySelectorAll("pre")
         .forEach(pre => {
+
+          if (
+            pre.parentElement.classList.contains(
+              "code-wrapper"
+            )
+          ) {
+            return;
+          }
 
           const wrapper =
             document.createElement("div");
@@ -531,6 +579,7 @@
                   : pre.textContent;
 
               try {
+
                 await navigator.clipboard.writeText(
                   text
                 );
@@ -547,6 +596,7 @@
                 );
 
               } catch {
+
                 button.textContent =
                   "Failed";
 
@@ -569,14 +619,317 @@
       root
         .querySelectorAll("pre code")
         .forEach(code => {
+
+          if (
+            code.classList.contains(
+              "language-mermaid"
+            )
+          ) {
+            return;
+          }
+
           try {
             hljs.highlightElement(code);
           } catch {}
         });
     }
 
+    function renderMermaid(root) {
+      const blocks =
+        root.querySelectorAll(
+          "pre code.language-mermaid"
+        );
+
+      blocks.forEach((code, index) => {
+
+        const container =
+          document.createElement("div");
+
+        container.className =
+          "mermaid";
+
+        container.textContent =
+          code.textContent;
+
+        code.parentElement.replaceWith(
+          container
+        );
+      });
+
+      if (blocks.length) {
+        mermaid.run({
+          nodes:
+            root.querySelectorAll(
+              ".mermaid"
+            )
+        });
+      }
+    }
+
+    function renderMath(root) {
+      root
+        .querySelectorAll(
+          "code.language-math"
+        )
+        .forEach(code => {
+
+          const expression =
+            code.textContent;
+
+          const container =
+            document.createElement("span");
+
+          try {
+            katex.render(
+              expression,
+              container,
+              {
+                throwOnError: false,
+                displayMode: true
+              }
+            );
+
+            container.className =
+              "math-block";
+
+            code.parentElement.replaceWith(
+              container
+            );
+
+          } catch {}
+        });
+    }
+
+    function renderInlineMath(root) {
+      const walker =
+        document.createTreeWalker(
+          root,
+          NodeFilter.SHOW_TEXT
+        );
+
+      const nodes = [];
+
+      while (walker.nextNode()) {
+        const node =
+          walker.currentNode;
+
+        if (
+          node.parentElement &&
+          !node.parentElement.closest(
+            "pre, code, script, style"
+          )
+        ) {
+          nodes.push(node);
+        }
+      }
+
+      nodes.forEach(node => {
+
+        const text =
+          node.nodeValue;
+
+        if (!text.includes("$")) {
+          return;
+        }
+
+        const regex =
+          /\$([^$\n]+)\$/g;
+
+        if (!regex.test(text)) {
+          return;
+        }
+
+        regex.lastIndex = 0;
+
+        const fragment =
+          document.createDocumentFragment();
+
+        let last = 0;
+        let match;
+
+        while (
+          (match = regex.exec(text))
+        ) {
+
+          fragment.appendChild(
+            document.createTextNode(
+              text.slice(
+                last,
+                match.index
+              )
+            )
+          );
+
+          const span =
+            document.createElement("span");
+
+          try {
+
+            katex.render(
+              match[1],
+              span,
+              {
+                throwOnError: false,
+                displayMode: false
+              }
+            );
+
+            fragment.appendChild(span);
+
+          } catch {
+
+            fragment.appendChild(
+              document.createTextNode(
+                match[0]
+              )
+            );
+          }
+
+          last =
+            regex.lastIndex;
+        }
+
+        fragment.appendChild(
+          document.createTextNode(
+            text.slice(last)
+          )
+        );
+
+        node.parentNode.replaceChild(
+          fragment,
+          node
+        );
+      });
+    }
+
+    function processAlerts(root) {
+      root
+        .querySelectorAll("blockquote")
+        .forEach(blockquote => {
+
+          const first =
+            blockquote.querySelector(
+              "p"
+            );
+
+          if (!first) {
+            return;
+          }
+
+          const text =
+            first.textContent.trim();
+
+          const match =
+            text.match(
+              /^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\s*/i
+            );
+
+          if (!match) {
+            return;
+          }
+
+          const type =
+            match[1].toLowerCase();
+
+          const alert =
+            document.createElement("div");
+
+          alert.className =
+            "github-alert github-alert-" +
+            type;
+
+          const title =
+            document.createElement("div");
+
+          title.className =
+            "github-alert-title";
+
+          title.textContent =
+            type.charAt(0).toUpperCase() +
+            type.slice(1);
+
+          alert.appendChild(title);
+
+          while (
+            blockquote.firstChild
+          ) {
+
+            const child =
+              blockquote.firstChild;
+
+            if (
+              child === first
+            ) {
+
+              const clone =
+                first.cloneNode(true);
+
+              clone.textContent =
+                clone.textContent
+                  .replace(
+                    /^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\s*/i,
+                    ""
+                  );
+
+              alert.appendChild(
+                clone
+              );
+
+            } else {
+
+              alert.appendChild(
+                child
+              );
+            }
+          }
+
+          blockquote.replaceWith(
+            alert
+          );
+        });
+    }
+
+    function sanitizeMarkdown(html) {
+      return DOMPurify.sanitize(
+        html,
+        {
+          USE_PROFILES: {
+            html: true
+          },
+
+          ADD_TAGS: [
+            "details",
+            "summary",
+            "kbd",
+            "sub",
+            "sup",
+            "ins",
+            "del",
+            "picture",
+            "source"
+          ],
+
+          ADD_ATTR: [
+            "target",
+            "rel",
+            "loading",
+            "open",
+            "align",
+            "colspan",
+            "rowspan",
+            "width",
+            "height",
+            "start",
+            "reversed",
+            "type"
+          ]
+        }
+      );
+    }
+
     async function loadREADME() {
       try {
+
         const response =
           await fetch(
             README_URL,
@@ -595,53 +948,57 @@
           await response.text();
 
         const html =
-          marked.parse(markdown);
-
-        const safe =
-          DOMPurify.sanitize(
-            html,
-            {
-              USE_PROFILES: {
-                html: true
-              },
-
-              ADD_TAGS: [
-                "details",
-                "summary",
-                "kbd",
-                "sub",
-                "sup",
-                "ins",
-                "del",
-                "picture",
-                "source"
-              ],
-
-              ADD_ATTR: [
-                "target",
-                "rel",
-                "loading",
-                "open",
-                "align",
-                "colspan",
-                "rowspan",
-                "width",
-                "height"
-              ]
-            }
+          marked.parse(
+            markdown
           );
 
-        content.innerHTML = safe;
+        const safe =
+          sanitizeMarkdown(
+            html
+          );
 
-        fixURLs(content);
-        highlight(content);
-        addCopyButtons(content);
+        content.innerHTML =
+          safe;
+
+        fixURLs(
+          content
+        );
+
+        addHeadingIDs(
+          content
+        );
+
+        processAlerts(
+          content
+        );
+
+        renderMath(
+          content
+        );
+
+        renderInlineMath(
+          content
+        );
+
+        highlight(
+          content
+        );
+
+        renderMermaid(
+          content
+        );
+
+        addCopyButtons(
+          content
+        );
 
       } catch (error) {
 
         content.innerHTML = `
+          <h1>Failed to load README</h1>
+
           <p>
-            Failed to load README.
+            The README could not be loaded.
           </p>
 
           <p>
@@ -655,7 +1012,9 @@
           </p>
         `;
 
-        console.error(error);
+        console.error(
+          error
+        );
       }
     }
 
@@ -664,5 +1023,3 @@
 
 </body>
 </html>
-
-©joaoTYSM
