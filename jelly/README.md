@@ -73,7 +73,7 @@ to customize the appearance and behavior of the jelly.
 
 <div align="center">
 
-<a href="https://github.com/joaoTYSM/three.js">
+<a href="https://joaotysm.github.io/three.js/jelly/">
 
 <img src="https://img.shields.io/badge/OPEN_LIVE_DEMO-ffffff?style=for-the-badge&logo=googlechrome&logoColor=ffffff&labelColor=000000">
 
