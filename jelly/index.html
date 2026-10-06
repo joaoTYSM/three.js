@@ -2,441 +2,578 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jelly.js — Showcase</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>jelly.js — joaoTYSM/tree.js</title>
   <style>
     :root {
-      --bg: #0f0f12;
-      --panel: rgba(22, 22, 28, 0.92);
-      --border: rgba(255, 255, 255, 0.08);
-      --text: #e8e8ec;
-      --muted: #7a7a88;
-      --accent: #e00072;
-      --accent2: #00c9a7;
+      --gh-bg: #0d1117;
+      --gh-bg-subtle: #161b22;
+      --gh-bg-inset: #010409;
+      --gh-border: #30363d;
+      --gh-border-subtle: #21262d;
+      --gh-fg: #c9d1d9;
+      --gh-fg-muted: #8b949e;
+      --gh-fg-subtle: #6e7681;
+      --gh-accent: #58a6ff;
+      --gh-green: #3fb950;
+      --gh-pink: #e00072;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+      --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; overflow: hidden; }
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-      overflow: hidden;
-      height: 100vh;
-    }
-    canvas { display: block; }
-
-    .gui {
-      position: fixed;
-      top: 28px;
-      right: 28px;
-      bottom: 28px;
-      width: 280px;
-      z-index: 200;
-      background: var(--panel);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow-y: auto;
-      overflow-x: hidden;
-      padding: 0;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(255,255,255,0.12) transparent;
-      font-size: 11px;
-    }
-    .gui::-webkit-scrollbar { width: 4px; }
-    .gui::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 2px; }
-
-    .gui-header {
-      padding: 16px 18px 12px;
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      background: var(--panel);
-      backdrop-filter: blur(24px);
-      z-index: 10;
-    }
-    .gui-header h2 {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--text);
+      font-family: var(--font-sans);
+      background: var(--gh-bg);
+      color: var(--gh-fg);
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
     }
 
-    .gui-section {
-      padding: 12px 18px;
-      border-bottom: 1px solid var(--border);
-    }
-    .gui-section:last-child { border-bottom: none; }
-
-    .gui-section-title {
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: 1.8px;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-
-    .gui-row {
+    /* ── Header ─────────────────────────────────────── */
+    .gh-header {
+      height: 48px;
+      background: var(--gh-bg-subtle);
+      border-bottom: 1px solid var(--gh-border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 8px;
-      gap: 8px;
+      padding: 0 16px;
+      position: relative;
+      z-index: 50;
     }
-    .gui-row:last-child { margin-bottom: 0; }
-    .gui-row label {
-      font-size: 11px;
-      color: var(--text);
+    .gh-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
       flex: 1;
+    }
+    .gh-mark {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+      fill: var(--gh-fg);
+    }
+    .gh-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .gh-breadcrumb a {
+      color: var(--gh-accent);
+      text-decoration: none;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .gh-breadcrumb a:hover { text-decoration: underline; }
+    .gh-breadcrumb .gh-sep { color: var(--gh-fg-subtle); }
+    .gh-breadcrumb .gh-current {
+      color: var(--gh-fg);
+      font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .gui-row .val {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      color: var(--accent);
-      min-width: 42px;
-      text-align: right;
-    }
-    .gui-row input[type="range"] {
-      width: 100%;
-      height: 3px;
-      -webkit-appearance: none;
-      appearance: none;
-      background: rgba(255,255,255,0.1);
-      border-radius: 2px;
-      outline: none;
-      margin: 2px 0;
-    }
-    .gui-row input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      background: var(--accent);
-      cursor: pointer;
-      border: none;
-    }
-    .gui-row input[type="range"]::-moz-range-thumb {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-      background: var(--accent);
-      cursor: pointer;
-      border: none;
-    }
-
-    .gui-slider-group { margin-bottom: 10px; }
-    .gui-slider-group .slider-label {
+    .gh-header-right {
       display: flex;
-      justify-content: space-between;
-      margin-bottom: 3px;
+      align-items: center;
+      gap: 8px;
     }
-    .gui-slider-group .slider-label span {
-      font-size: 10px;
-      color: var(--text);
+    .gh-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 100px;
+      background: var(--gh-bg);
+      border: 1px solid var(--gh-border);
+      color: var(--gh-fg-muted);
     }
-    .gui-slider-group .slider-label .val {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      color: var(--accent);
+    .gh-toggle {
+      display: none;
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--gh-border);
+      background: var(--gh-bg);
+      border-radius: 6px;
+      color: var(--gh-fg);
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      font-size: 16px;
     }
+    .gh-toggle:hover { background: var(--gh-border-subtle); }
 
-    .gui-toggle {
+    /* ── Layout ─────────────────────────────────────── */
+    .gh-main {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      height: calc(100vh - 48px);
+      position: relative;
+    }
+    .gh-canvas-wrap {
+      position: relative;
+      overflow: hidden;
+      background: var(--gh-bg);
+    }
+    .gh-canvas-wrap canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      touch-action: none;
+    }
+    .gh-overlay {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      pointer-events: none;
+      z-index: 5;
+    }
+    .gh-overlay-badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gh-green);
+      background: rgba(22, 27, 34, 0.8);
+      padding: 4px 10px;
+      border-radius: 100px;
+      border: 1px solid var(--gh-border);
+      backdrop-filter: blur(8px);
+    }
+    .gh-overlay-badge::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gh-green);
+      margin-right: 6px;
+      vertical-align: middle;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    /* ── Sidebar ────────────────────────────────────── */
+    .gh-sidebar {
+      background: var(--gh-bg-subtle);
+      border-left: 1px solid var(--gh-border);
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      scrollbar-width: thin;
+      scrollbar-color: var(--gh-border) transparent;
+    }
+    .gh-sidebar::-webkit-scrollbar { width: 6px; }
+    .gh-sidebar::-webkit-scrollbar-thumb { background: var(--gh-border); border-radius: 3px; }
+
+    .gh-sidebar-header {
+      position: sticky;
+      top: 0;
+      background: var(--gh-bg-subtle);
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--gh-border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 8px;
+      z-index: 10;
     }
-    .gui-toggle label {
-      font-size: 11px;
-      color: var(--text);
+    .gh-sidebar-header h2 {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gh-fg);
     }
-    .gui-toggle input[type="checkbox"] {
-      appearance: none;
-      width: 30px;
-      height: 16px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 8px;
-      position: relative;
+    .gh-sidebar-close {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--gh-fg-muted);
       cursor: pointer;
+      font-size: 22px;
+      line-height: 1;
+      padding: 0 4px;
+    }
+    .gh-sidebar-close:hover { color: var(--gh-fg); }
+
+    .gh-section {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--gh-border-subtle);
+    }
+    .gh-section:last-child { border-bottom: none; }
+    .gh-section-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--gh-fg-muted);
+      margin-bottom: 10px;
+    }
+
+    /* Sliders */
+    .gh-slider { margin-bottom: 12px; }
+    .gh-slider:last-child { margin-bottom: 0; }
+    .gh-slider-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 4px;
+      font-size: 12px;
+    }
+    .gh-slider-label span:first-child { color: var(--gh-fg); }
+    .gh-slider-label .gh-val {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--gh-accent);
+    }
+    .gh-slider input[type="range"] {
+      width: 100%;
+      height: 4px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: var(--gh-border);
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+    }
+    .gh-slider input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--gh-accent);
+      border: 2px solid var(--gh-bg-subtle);
+      cursor: grab;
+      transition: transform 0.1s;
+    }
+    .gh-slider input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+    .gh-slider input[type="range"]::-webkit-slider-thumb:active { cursor: grabbing; }
+    .gh-slider input[type="range"]::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--gh-accent);
+      border: 2px solid var(--gh-bg-subtle);
+      cursor: grab;
+    }
+
+    /* Toggles */
+    .gh-toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px 0;
+      font-size: 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .gh-toggle-row:hover { color: var(--gh-accent); }
+    .gh-toggle-row input { display: none; }
+    .gh-switch {
+      width: 34px;
+      height: 20px;
+      background: var(--gh-border);
+      border-radius: 10px;
+      position: relative;
       transition: background 0.2s;
       flex-shrink: 0;
     }
-    .gui-toggle input[type="checkbox"]::after {
+    .gh-switch::after {
       content: '';
       position: absolute;
       top: 2px;
       left: 2px;
-      width: 12px;
-      height: 12px;
+      width: 16px;
+      height: 16px;
       border-radius: 50%;
-      background: #888;
+      background: var(--gh-fg-muted);
       transition: all 0.2s;
     }
-    .gui-toggle input[type="checkbox"]:checked {
-      background: var(--accent);
-    }
-    .gui-toggle input[type="checkbox"]:checked::after {
+    .gh-toggle-row input:checked + .gh-switch { background: var(--gh-accent); }
+    .gh-toggle-row input:checked + .gh-switch::after {
       left: 16px;
       background: #fff;
     }
 
-    .gui-select {
+    /* Select */
+    .gh-select {
       width: 100%;
-      padding: 7px 10px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid var(--border);
+      padding: 6px 10px;
+      background: var(--gh-bg);
+      border: 1px solid var(--gh-border);
       border-radius: 6px;
-      color: var(--text);
-      font-size: 11px;
+      color: var(--gh-fg);
+      font-size: 12px;
+      font-family: var(--font-sans);
       outline: none;
       cursor: pointer;
       appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%237a7a88'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238b949e'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 10px center;
+      padding-right: 28px;
     }
-    .gui-select option { background: #1a1a20; color: var(--text); }
+    .gh-select:focus { border-color: var(--gh-accent); box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.15); }
+    .gh-select option { background: var(--gh-bg-subtle); color: var(--gh-fg); }
 
-    .gui-btn {
-      width: 100%;
-      padding: 8px 12px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      color: var(--text);
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      cursor: pointer;
-      transition: all 0.15s;
-      margin-bottom: 6px;
-      text-align: center;
-    }
-    .gui-btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.15); }
-    .gui-btn:active { transform: scale(0.97); }
-    .gui-btn.accent { background: var(--accent); border-color: var(--accent); color: #fff; }
-    .gui-btn.accent:hover { background: #c80064; }
-    .gui-btn.mint { background: var(--accent2); border-color: var(--accent2); color: #0f0f12; }
-    .gui-btn.mint:hover { background: #00b396; }
-    .gui-btn-row { display: flex; gap: 6px; }
-    .gui-btn-row .gui-btn { flex: 1; }
-
-    .gui-color-row {
+    /* Color */
+    .gh-color-row {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 8px;
+      justify-content: space-between;
+      padding: 4px 0;
+      font-size: 12px;
     }
-    .gui-color-row label { font-size: 10px; color: var(--text); flex: 1; }
-    .gui-color-row input[type="color"] {
-      width: 32px;
-      height: 24px;
-      border: 1px solid var(--border);
+    .gh-color-row input[type="color"] {
+      width: 36px;
+      height: 22px;
+      border: 1px solid var(--gh-border);
       border-radius: 4px;
       background: transparent;
       cursor: pointer;
       padding: 0;
     }
-    .gui-color-row input[type="color"]::-webkit-color-swatch-wrapper { padding: 2px; }
-    .gui-color-row input[type="color"]::-webkit-color-swatch { border: none; border-radius: 2px; }
+    .gh-color-row input[type="color"]::-webkit-color-swatch-wrapper { padding: 2px; }
+    .gh-color-row input[type="color"]::-webkit-color-swatch { border: none; border-radius: 2px; }
 
-    .gui-divider {
+    /* Buttons */
+    .gh-btn-row { display: flex; gap: 6px; margin-top: 8px; }
+    .gh-btn {
+      flex: 1;
+      padding: 6px 10px;
+      background: var(--gh-border-subtle);
+      border: 1px solid var(--gh-border);
+      border-radius: 6px;
+      color: var(--gh-fg);
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+    .gh-btn:hover { background: var(--gh-border); border-color: var(--gh-fg-subtle); }
+    .gh-btn:active { transform: translateY(1px); }
+    .gh-btn.accent { background: var(--gh-pink); border-color: var(--gh-pink); color: #fff; }
+    .gh-btn.accent:hover { background: #c80064; border-color: #c80064; }
+    .gh-btn.green { background: var(--gh-green); border-color: var(--gh-green); color: #0d1117; }
+    .gh-btn.green:hover { background: #34a853; border-color: #34a853; }
+
+    .gh-divider {
       height: 1px;
-      background: var(--border);
+      background: var(--gh-border-subtle);
       margin: 10px 0;
     }
 
-    @media (max-width: 900px) {
-      .gui { width: 240px; right: 16px; top: 16px; bottom: 16px; }
+    /* ── Responsive ─────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .gh-main { grid-template-columns: 1fr 280px; }
     }
-    @media (max-width: 600px) {
-      .gui { width: 200px; right: 10px; top: 10px; bottom: 10px; }
+    @media (max-width: 768px) {
+      .gh-header { height: 44px; padding: 0 12px; }
+      .gh-mark { width: 22px; height: 22px; }
+      .gh-breadcrumb { font-size: 12px; gap: 4px; }
+      .gh-badge { display: none; }
+      .gh-toggle { display: inline-flex; }
+      .gh-main {
+        grid-template-columns: 1fr;
+        height: calc(100vh - 44px);
+      }
+      .gh-sidebar {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: auto;
+        max-height: 72vh;
+        border-left: none;
+        border-top: 1px solid var(--gh-border);
+        border-radius: 14px 14px 0 0;
+        transform: translateY(100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.5);
+        z-index: 100;
+        padding-bottom: env(safe-area-inset-bottom, 0);
+      }
+      .gh-sidebar.open { transform: translateY(0); }
+      .gh-sidebar-header { border-radius: 14px 14px 0 0; }
+      .gh-sidebar-close { display: block; }
+      .gh-overlay-badge { font-size: 9px; padding: 3px 8px; }
+    }
+    @media (max-width: 360px) {
+      .gh-breadcrumb a:nth-of-type(1),
+      .gh-breadcrumb .gh-sep:nth-of-type(1) { display: none; }
     }
   </style>
 </head>
 <body>
 
-  <aside class="gui" id="gui">
-    <div class="gui-header">
-      <h2>The Specimen</h2>
+  <header class="gh-header">
+    <div class="gh-header-left">
+      <svg class="gh-mark" viewBox="0 0 16 16" aria-hidden="true">
+        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+      </svg>
+      <nav class="gh-breadcrumb" aria-label="Breadcrumb">
+        <a href="#">joaoTYSM</a>
+        <span class="gh-sep">/</span>
+        <a href="#">tree.js</a>
+        <span class="gh-sep">/</span>
+        <span class="gh-current">jelly.js</span>
+      </nav>
     </div>
-
-    <div class="gui-section">
-      <div class="gui-section-title">Geometry</div>
-      <select class="gui-select" id="preset-select">
-        <optgroup label="Shapes">
-          <option value="cube">Cube</option>
-          <option value="sphere">Sphere</option>
-          <option value="star">Star</option>
-          <option value="heart">Heart</option>
-          <option value="capsule">Capsule</option>
-          <option value="torus">Torus</option>
-          <option value="blob">Blob</option>
-        </optgroup>
-        <optgroup label="Pets (with eyes)">
-          <option value="petCube" selected>Pet Cube</option>
-          <option value="petSphere">Pet Sphere</option>
-          <option value="petStar">Pet Star</option>
-          <option value="petHeart">Pet Heart</option>
-          <option value="petBlob">Pet Blob</option>
-          <option value="petCapsule">Pet Capsule</option>
-        </optgroup>
-      </select>
+    <div class="gh-header-right">
+      <span class="gh-badge">v2.3</span>
+      <button class="gh-toggle" id="gh-toggle" aria-label="Toggle controls">☰</button>
     </div>
+  </header>
 
-    <div class="gui-section">
-      <div class="gui-section-title">Physics</div>
-
-      <div class="gui-slider-group">
-        <div class="slider-label"><span>Firmness</span><span class="val" id="v-firmness">38</span></div>
-        <input type="range" id="r-firmness" min="0" max="100" value="38">
-      </div>
-      <div class="gui-slider-group">
-        <div class="slider-label"><span>Damping</span><span class="val" id="v-damping">28</span></div>
-        <input type="range" id="r-damping" min="0" max="100" value="28">
-      </div>
-      <div class="gui-slider-group">
-        <div class="slider-label"><span>Wobble</span><span class="val" id="v-wobble">70</span></div>
-        <input type="range" id="r-wobble" min="0" max="100" value="70">
-      </div>
-      <div class="gui-slider-group">
-        <div class="slider-label"><span>Speed</span><span class="val" id="v-speed">100</span></div>
-        <input type="range" id="r-speed" min="10" max="150" value="100">
-      </div>
-
-      <div class="gui-divider"></div>
-
-      <div class="gui-toggle">
-        <label>Gravity</label>
-        <input type="checkbox" id="t-gravity" checked>
-      </div>
-      <div class="gui-toggle">
-        <label>Grounded (floor)</label>
-        <input type="checkbox" id="t-grounded">
-      </div>
-      <div class="gui-toggle">
-        <label>Floating (free)</label>
-        <input type="checkbox" id="t-floating" checked>
-      </div>
-
-      <div class="gui-divider"></div>
-
-      <div class="gui-slider-group">
-        <div class="slider-label"><span>Gravity strength</span><span class="val" id="v-gravityStrength">1.0</span></div>
-        <input type="range" id="r-gravityStrength" min="0" max="5" step="0.1" value="1">
+  <main class="gh-main">
+    <div class="gh-canvas-wrap" id="canvas-wrap">
+      <div class="gh-overlay">
+        <div class="gh-overlay-badge">Live preview</div>
       </div>
     </div>
 
-    <div class="gui-section">
-      <div class="gui-section-title">Material</div>
-
-      <div class="gui-color-row">
-        <label>Color</label>
-        <input type="color" id="c-color" value="#e00072">
-      </div>
-      <div class="gui-color-row">
-        <label>Clear color</label>
-        <input type="color" id="c-clearColor" value="#ffffff">
+    <aside class="gh-sidebar" id="gh-sidebar">
+      <div class="gh-sidebar-header">
+        <h2>The Specimen</h2>
+        <button class="gh-sidebar-close" id="gh-sidebar-close" aria-label="Close">×</button>
       </div>
 
-      <div class="gui-slider-group">
-        <div class="slider-label"><span>Saturation</span><span class="val" id="v-saturation">100</span></div>
-        <input type="range" id="r-saturation" min="0" max="100" value="100">
-      </div>
-      <div class="gui-slider-group">
-        <div class="slider-label"><span>Transmission</span><span class="val" id="v-transmission">1.00</span></div>
-        <input type="range" id="r-transmission" min="0" max="1" step="0.01" value="1">
-      </div>
-      <div class="gui-slider-group">
-        <div class="slider-label"><span>Roughness</span><span class="val" id="v-roughness">0.065</span></div>
-        <input type="range" id="r-roughness" min="0" max="1" step="0.001" value="0.065">
-      </div>
-      <div class="gui-slider-group">
-        <div class="slider-label"><span>Reflections</span><span class="val" id="v-reflections">48</span></div>
-        <input type="range" id="r-reflections" min="0" max="100" value="48">
+      <div class="gh-section">
+        <div class="gh-section-title">Geometry</div>
+        <select class="gh-select" id="preset-select">
+          <optgroup label="Shapes">
+            <option value="cube">Cube</option>
+            <option value="sphere">Sphere</option>
+            <option value="star">Star</option>
+            <option value="heart">Heart</option>
+            <option value="capsule">Capsule</option>
+            <option value="torus">Torus</option>
+            <option value="blob">Blob</option>
+          </optgroup>
+          <optgroup label="Pets (with eyes)">
+            <option value="petCube" selected>Pet Cube</option>
+            <option value="petSphere">Pet Sphere</option>
+            <option value="petStar">Pet Star</option>
+            <option value="petHeart">Pet Heart</option>
+            <option value="petBlob">Pet Blob</option>
+            <option value="petCapsule">Pet Capsule</option>
+          </optgroup>
+        </select>
       </div>
 
-      <div class="gui-toggle">
-        <label>Speckle texture</label>
-        <input type="checkbox" id="t-texture">
+      <div class="gh-section">
+        <div class="gh-section-title">Physics</div>
+        <div class="gh-slider">
+          <div class="gh-slider-label"><span>Firmness</span><span class="gh-val" id="v-firmness">38</span></div>
+          <input type="range" id="r-firmness" min="0" max="100" value="38">
+        </div>
+        <div class="gh-slider">
+          <div class="gh-slider-label"><span>Damping</span><span class="gh-val" id="v-damping">28</span></div>
+          <input type="range" id="r-damping" min="0" max="100" value="28">
+        </div>
+        <div class="gh-slider">
+          <div class="gh-slider-label"><span>Wobble</span><span class="gh-val" id="v-wobble">70</span></div>
+          <input type="range" id="r-wobble" min="0" max="100" value="70">
+        </div>
+        <div class="gh-slider">
+          <div class="gh-slider-label"><span>Speed</span><span class="gh-val" id="v-speed">100</span></div>
+          <input type="range" id="r-speed" min="10" max="150" value="100">
+        </div>
+        <div class="gh-divider"></div>
+        <label class="gh-toggle-row">Gravity <input type="checkbox" id="t-gravity" checked><span class="gh-switch"></span></label>
+        <label class="gh-toggle-row">Grounded <input type="checkbox" id="t-grounded"><span class="gh-switch"></span></label>
+        <label class="gh-toggle-row">Floating <input type="checkbox" id="t-floating" checked><span class="gh-switch"></span></label>
+        <div class="gh-slider" style="margin-top: 10px;">
+          <div class="gh-slider-label"><span>Gravity strength</span><span class="gh-val" id="v-gravityStrength">1.0</span></div>
+          <input type="range" id="r-gravityStrength" min="0" max="5" step="0.1" value="1">
+        </div>
       </div>
-      <div class="gui-toggle">
-        <label>Wireframe</label>
-        <input type="checkbox" id="t-wireframe">
-      </div>
-    </div>
 
-    <div class="gui-section">
-      <div class="gui-section-title">Eyes</div>
-      <div class="gui-toggle">
-        <label>Show eyes</label>
-        <input type="checkbox" id="t-eyes" checked>
+      <div class="gh-section">
+        <div class="gh-section-title">Material</div>
+        <div class="gh-color-row"><span>Color</span><input type="color" id="c-color" value="#e00072"></div>
+        <div class="gh-color-row"><span>Clear color</span><input type="color" id="c-clearColor" value="#ffffff"></div>
+        <div class="gh-slider">
+          <div class="gh-slider-label"><span>Saturation</span><span class="gh-val" id="v-saturation">100</span></div>
+          <input type="range" id="r-saturation" min="0" max="100" value="100">
+        </div>
+        <div class="gh-slider">
+          <div class="gh-slider-label"><span>Transmission</span><span class="gh-val" id="v-transmission">1.00</span></div>
+          <input type="range" id="r-transmission" min="0" max="1" step="0.01" value="1">
+        </div>
+        <div class="gh-slider">
+          <div class="gh-slider-label"><span>Roughness</span><span class="gh-val" id="v-roughness">0.065</span></div>
+          <input type="range" id="r-roughness" min="0" max="1" step="0.001" value="0.065">
+        </div>
+        <div class="gh-slider">
+          <div class="gh-slider-label"><span>Reflections</span><span class="gh-val" id="v-reflections">48</span></div>
+          <input type="range" id="r-reflections" min="0" max="100" value="48">
+        </div>
+        <label class="gh-toggle-row">Speckle texture <input type="checkbox" id="t-texture"><span class="gh-switch"></span></label>
+        <label class="gh-toggle-row">Wireframe <input type="checkbox" id="t-wireframe"><span class="gh-switch"></span></label>
       </div>
-      <div class="gui-toggle">
-        <label>Blink</label>
-        <input type="checkbox" id="t-blink" checked>
-      </div>
-      <div class="gui-color-row">
-        <label>Button color</label>
-        <input type="color" id="c-eyeColor" value="#453a33">
-      </div>
-      <div class="gui-color-row">
-        <label>Thread color</label>
-        <input type="color" id="c-eyeThread" value="#f2e6cf">
-      </div>
-      <div class="gui-slider-group">
-        <div class="slider-label"><span>Eye spacing</span><span class="val" id="v-eyeSpacing">auto</span></div>
-        <input type="range" id="r-eyeSpacing" min="0" max="2" step="0.05" value="0">
-      </div>
-      <div class="gui-slider-group">
-        <div class="slider-label"><span>Eye height</span><span class="val" id="v-eyeHeight">0.62</span></div>
-        <input type="range" id="r-eyeHeight" min="0" max="1" step="0.01" value="0.62">
-      </div>
-    </div>
 
-    <div class="gui-section">
-      <div class="gui-section-title">Interaction</div>
-      <select class="gui-select" id="interaction-select">
-        <option value="pull" selected>Pull (stretch)</option>
-        <option value="move">Move (drag)</option>
-        <option value="camera">Camera only</option>
-        <option value="none">None</option>
-      </select>
-      <div class="gui-slider-group" style="margin-top: 10px;">
-        <div class="slider-label"><span>Pull radius</span><span class="val" id="v-pullRadius">22</span></div>
-        <input type="range" id="r-pullRadius" min="0" max="100" value="22">
+      <div class="gh-section">
+        <div class="gh-section-title">Eyes</div>
+        <label class="gh-toggle-row">Show eyes <input type="checkbox" id="t-eyes" checked><span class="gh-switch"></span></label>
+        <label class="gh-toggle-row">Blink <input type="checkbox" id="t-blink" checked><span class="gh-switch"></span></label>
+        <div class="gh-color-row"><span>Button color</span><input type="color" id="c-eyeColor" value="#453a33"></div>
+        <div class="gh-color-row"><span>Thread color</span><input type="color" id="c-eyeThread" value="#f2e6cf"></div>
+        <div class="gh-slider">
+          <div class="gh-slider-label"><span>Eye spacing</span><span class="gh-val" id="v-eyeSpacing">auto</span></div>
+          <input type="range" id="r-eyeSpacing" min="0" max="2" step="0.05" value="0">
+        </div>
+        <div class="gh-slider">
+          <div class="gh-slider-label"><span>Eye height</span><span class="gh-val" id="v-eyeHeight">0.62</span></div>
+          <input type="range" id="r-eyeHeight" min="0" max="1" step="0.01" value="0.62">
+        </div>
       </div>
-      <div class="gui-slider-group">
-        <div class="slider-label"><span>Max stretch</span><span class="val" id="v-stretch">65</span></div>
-        <input type="range" id="r-stretch" min="0" max="100" value="65">
-      </div>
-    </div>
 
-    <div class="gui-section">
-      <div class="gui-section-title">Actions</div>
-      <div class="gui-btn-row">
-        <button class="gui-btn accent" id="btn-wobble">Wobble</button>
-        <button class="gui-btn" id="btn-crush">Crush Y</button>
+      <div class="gh-section">
+        <div class="gh-section-title">Interaction</div>
+        <select class="gh-select" id="interaction-select">
+          <option value="pull" selected>Pull (stretch)</option>
+          <option value="move">Move (drag)</option>
+          <option value="camera">Camera only</option>
+          <option value="none">None</option>
+        </select>
+        <div class="gh-slider" style="margin-top: 10px;">
+          <div class="gh-slider-label"><span>Pull radius</span><span class="gh-val" id="v-pullRadius">22</span></div>
+          <input type="range" id="r-pullRadius" min="0" max="100" value="22">
+        </div>
+        <div class="gh-slider">
+          <div class="gh-slider-label"><span>Max stretch</span><span class="gh-val" id="v-stretch">65</span></div>
+          <input type="range" id="r-stretch" min="0" max="100" value="65">
+        </div>
       </div>
-      <div class="gui-btn-row">
-        <button class="gui-btn" id="btn-stretch">Stretch Y</button>
-        <button class="gui-btn mint" id="btn-force">Apply force</button>
+
+      <div class="gh-section">
+        <div class="gh-section-title">Actions</div>
+        <div class="gh-btn-row">
+          <button class="gh-btn accent" id="btn-wobble">Wobble</button>
+          <button class="gh-btn" id="btn-crush">Crush Y</button>
+        </div>
+        <div class="gh-btn-row">
+          <button class="gh-btn" id="btn-stretch">Stretch Y</button>
+          <button class="gh-btn green" id="btn-force">Force</button>
+        </div>
+        <div class="gh-btn-row">
+          <button class="gh-btn" id="btn-poke">Poke top</button>
+          <button class="gh-btn" id="btn-reset">Reset</button>
+        </div>
+        <div class="gh-btn-row">
+          <button class="gh-btn" id="btn-pause">Pause</button>
+          <button class="gh-btn" id="btn-rotate">Auto-rotate</button>
+        </div>
       </div>
-      <div class="gui-btn-row">
-        <button class="gui-btn" id="btn-poke">Poke top</button>
-        <button class="gui-btn" id="btn-reset">Reset</button>
-      </div>
-      <div class="gui-btn-row">
-        <button class="gui-btn" id="btn-pause">Pause</button>
-        <button class="gui-btn" id="btn-rotate">Auto-rotate</button>
-      </div>
-    </div>
-  </aside>
+    </aside>
+  </main>
 
   <script type="importmap">
     {
@@ -453,21 +590,22 @@
     import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
     import { Jelly } from 'https://cdn.jsdelivr.net/gh/joaoTYSM/three.js@main/jelly/three.js';
 
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0f0f12);
+    const container = document.getElementById('canvas-wrap');
 
-    const camera = new THREE.PerspectiveCamera(34, window.innerWidth / window.innerHeight, 0.1, 100);
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0d1117);
+
+    const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 100);
     camera.position.set(5.2, 3.6, 7.4);
     camera.lookAt(0, 1.1, 0);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.15;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    document.body.appendChild(renderer.domElement);
+    container.appendChild(renderer.domElement);
 
     const pmrem = new THREE.PMREMGenerator(renderer);
     const room = new RoomEnvironment();
@@ -515,8 +653,23 @@
     controls.maxDistance = 20;
     controls.update();
 
+    /* ── Responsive resize ─────────────────────────── */
+    function resize() {
+      const rect = container.getBoundingClientRect();
+      const w = Math.max(1, rect.width);
+      const h = Math.max(1, rect.height);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h, false);
+      renderer.domElement.style.width = '100%';
+      renderer.domElement.style.height = '100%';
+    }
+    const ro = new ResizeObserver(resize);
+    ro.observe(container);
+    resize();
+
+    /* ── GUI ───────────────────────────────────────── */
     const $ = (id) => document.getElementById(id);
-    const fmt = (v, d = 2) => Number(v).toFixed(d);
 
     $('preset-select').addEventListener('change', (e) => {
       const val = e.target.value;
@@ -525,7 +678,7 @@
       $('t-eyes').checked = hasEyes;
     });
 
-    const slider = (id, key, format, transform) => {
+    const bindSlider = (id, key, format, transform) => {
       const r = $(`r-${id}`);
       const v = $(`v-${id}`);
       r.addEventListener('input', () => {
@@ -536,18 +689,18 @@
       });
     };
 
-    slider('firmness', 'firmness', (v) => v);
-    slider('damping', 'damping', (v) => v);
-    slider('wobble', 'wobble', (v) => v);
-    slider('speed', 'speed', (v) => v);
-    slider('gravityStrength', 'gravityStrength', (v) => v.toFixed(1));
-    slider('saturation', 'saturation', (v) => v);
-    slider('transmission', 'transmission', (v) => v.toFixed(2));
-    slider('roughness', 'roughness', (v) => v.toFixed(3));
-    slider('reflections', 'reflections', (v) => v);
-    slider('pullRadius', 'pullRadius', (v) => v);
-    slider('stretch', 'stretch', (v) => v);
-    slider('eyeHeight', 'eyeHeight', (v) => v.toFixed(2));
+    bindSlider('firmness', 'firmness', (v) => v);
+    bindSlider('damping', 'damping', (v) => v);
+    bindSlider('wobble', 'wobble', (v) => v);
+    bindSlider('speed', 'speed', (v) => v);
+    bindSlider('gravityStrength', 'gravityStrength', (v) => v.toFixed(1));
+    bindSlider('saturation', 'saturation', (v) => v);
+    bindSlider('transmission', 'transmission', (v) => v.toFixed(2));
+    bindSlider('roughness', 'roughness', (v) => v.toFixed(3));
+    bindSlider('reflections', 'reflections', (v) => v);
+    bindSlider('pullRadius', 'pullRadius', (v) => v);
+    bindSlider('stretch', 'stretch', (v) => v);
+    bindSlider('eyeHeight', 'eyeHeight', (v) => v.toFixed(2));
 
     $('r-eyeSpacing').addEventListener('input', () => {
       const raw = parseFloat($('r-eyeSpacing').value);
@@ -559,15 +712,13 @@
     $('c-color').addEventListener('input', (e) => jelly.set({ color: e.target.value }));
     $('c-clearColor').addEventListener('input', (e) => jelly.set({ clearColor: e.target.value }));
     $('c-eyeColor').addEventListener('input', (e) => {
-      jelly.set({ eyeColor: e.target.value });
       jelly.set({ eyes: true, eyeColor: e.target.value });
     });
     $('c-eyeThread').addEventListener('input', (e) => {
-      jelly.set({ eyeThread: e.target.value });
       jelly.set({ eyes: true, eyeThread: e.target.value });
     });
 
-    const toggle = (id, key, onChange) => {
+    const bindToggle = (id, key, onChange) => {
       const t = $(`t-${id}`);
       t.addEventListener('change', () => {
         if (onChange) onChange(t.checked);
@@ -575,21 +726,19 @@
       });
     };
 
-    toggle('gravity', 'gravity');
-    toggle('grounded', 'grounded', (v) => {
+    bindToggle('gravity', 'gravity');
+    bindToggle('grounded', 'grounded', (v) => {
       jelly.set({ grounded: v, floating: !v });
       $('t-floating').checked = !v;
     });
-    toggle('floating', 'floating', (v) => {
+    bindToggle('floating', 'floating', (v) => {
       jelly.set({ floating: v, grounded: !v });
       $('t-grounded').checked = !v;
     });
-    toggle('texture', 'texture');
-    toggle('wireframe', 'wireframe');
-    toggle('blink', 'eyeBlink');
-    toggle('eyes', 'eyes', (v) => {
-      jelly.set({ eyes: v });
-    });
+    bindToggle('texture', 'texture');
+    bindToggle('wireframe', 'wireframe');
+    bindToggle('blink', 'eyeBlink');
+    bindToggle('eyes', 'eyes', (v) => jelly.set({ eyes: v }));
 
     $('interaction-select').addEventListener('change', (e) => {
       jelly.set({ interaction: e.target.value });
@@ -598,9 +747,7 @@
     $('btn-wobble').addEventListener('click', () => jelly.impulse(0.8));
     $('btn-crush').addEventListener('click', () => jelly.crush('y', 0.45));
     $('btn-stretch').addEventListener('click', () => jelly.crush('y', 1.6));
-    $('btn-force').addEventListener('click', () => {
-      jelly.applyForce([1, 0.3, 0], { strength: 2.5 });
-    });
+    $('btn-force').addEventListener('click', () => jelly.applyForce([1, 0.3, 0], { strength: 2.5 }));
     $('btn-poke').addEventListener('click', () => {
       const box = jelly._geometry.boundingBox;
       jelly.poke([0, box.max.y, 0], { strength: 3, radius: 0.8 });
@@ -613,15 +760,15 @@
     $('btn-rotate').addEventListener('click', () => {
       const next = !jelly.options.autoRotate;
       jelly.set({ autoRotate: next });
-      $('btn-rotate').textContent = next ? 'Stop rotate' : 'Auto-rotate';
+      $('btn-rotate').textContent = next ? 'Stop' : 'Auto-rotate';
     });
 
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
+    /* ── Mobile sidebar toggle ─────────────────────── */
+    const sidebar = $('gh-sidebar');
+    $('gh-toggle').addEventListener('click', () => sidebar.classList.toggle('open'));
+    $('gh-sidebar-close').addEventListener('click', () => sidebar.classList.remove('open'));
 
+    /* ── Render loop ───────────────────────────────── */
     const clock = new THREE.Clock();
 
     function animate() {
@@ -631,9 +778,9 @@
       controls.update();
       renderer.render(scene, camera);
     }
-
     animate();
 
+    /* ── Initial sync ──────────────────────────────── */
     $('v-firmness').textContent = jelly.options.firmness;
     $('v-damping').textContent = jelly.options.damping;
     $('v-wobble').textContent = jelly.options.wobble;
@@ -647,16 +794,8 @@
     $('v-stretch').textContent = jelly.options.stretch;
     $('v-eyeHeight').textContent = jelly.options.eyeHeight.toFixed(2);
     $('v-eyeSpacing').textContent = 'auto';
-
     $('preset-select').value = 'petCube';
     $('interaction-select').value = 'pull';
-    $('t-gravity').checked = true;
-    $('t-grounded').checked = false;
-    $('t-floating').checked = true;
-    $('t-eyes').checked = true;
-    $('t-blink').checked = true;
-    $('t-texture').checked = false;
-    $('t-wireframe').checked = false;
   </script>
 </body>
 </html>
