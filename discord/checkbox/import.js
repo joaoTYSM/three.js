@@ -1,7 +1,10 @@
 /*
-  Checkbox reads checkboxes made in HTML/CSS (size, colors, rounded corners, transformations and animations) and redraws them with three.js on the element itself, while maintaining the click and JavaScript functionality..
+  Checkbox discord reads HTML/CSS checkboxes (size, colors, rounded corners,
+  transforms, and animations) and redraws them using three.js over the original element,
+  preserving the original click functionality and JavaScript. Upon import, it automatically
+  processes every `.checkbox` on the page, except those with the `data-css` attribute..
 */
-import * as THREE from 'three';
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
 
 const PAD = 2;
 
@@ -187,7 +190,8 @@ function updateNode(node, parentMatrix, parentOpacity, k, sig) {
   if (Number.isNaN(ox)) ox = w / 2;
   if (Number.isNaN(oy)) oy = h / 2;
 
-  readTransform(cs.transform, m4a);
+  if (node.root) m4a.identity();
+  else readTransform(cs.transform, m4a);
   node.world
     .copy(parentMatrix)
     .multiply(m4b.makeTranslation(x + ox, y + oy, 0))
@@ -260,7 +264,7 @@ class Instance {
     this.ctx = this.canvas.getContext('2d');
 
     if (getComputedStyle(host).position === 'static') host.style.position = 'relative';
-    host.style.visibility = 'hidden';
+    this.shown = false;
     host.appendChild(this.canvas);
   }
 
@@ -306,6 +310,10 @@ class Instance {
     }
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.drawImage(source, 0, 0);
+    if (!this.shown) {
+      this.shown = true;
+      this.host.style.visibility = 'hidden';
+    }
   }
 
   destroy() {
@@ -318,7 +326,14 @@ class Instance {
 }
 
 function tick() {
-  for (const instance of active) instance.render();
+  for (const instance of [...active]) {
+    try {
+      instance.render();
+    } catch (error) {
+      console.error(error);
+      instance.destroy();
+    }
+  }
   frame = active.size ? requestAnimationFrame(tick) : 0;
 }
 
@@ -376,3 +391,9 @@ export function mount(selector = '.checkbox', options = {}) {
 }
 
 export default { mount };
+
+if (!new URL(import.meta.url).searchParams.has('manual')) {
+  const auto = () => mount('.checkbox:not([data-css])');
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', auto);
+  else auto();
+}
