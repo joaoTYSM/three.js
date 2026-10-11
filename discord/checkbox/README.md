@@ -1,156 +1,143 @@
 <div align="center">
 
-# Animated Discord Checkbox
+<img src="preview.svg" alt="Toggle alternando entre desligado e ligado, com o X virando um check" width="320">
 
-**A Discord-inspired animated checkbox recreated with Three.js and WebGL.**
+# Checkbox3D
 
-[![Three.js](https://img.shields.io/badge/Three.js-WebGL-black?style=for-the-badge&logo=threedotjs&logoColor=white)](https://threejs.org/)
-[![JavaScript](https://img.shields.io/badge/JavaScript-ES%20Modules-F7DF1E?style=for-the-badge&logo=javascript&logoColor=222)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![Status](https://img.shields.io/badge/Status-Experimental-orange?style=for-the-badge)](#limitations)
-[![Platform](https://img.shields.io/badge/Platform-Web-5865F2?style=for-the-badge&logo=googlechrome&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web)
+**O checkbox que você já escreveu em CSS, desenhado por three.js.**
 
-[Overview](#-overview) ·
-[Features](#-features) ·
-[Installation](#-installation) ·
-[Usage](#-usage) ·
-[Documentation](#-documentation)
+Lê tamanho, cor, cantos, transformações e animações direto do DOM e reproduz tudo numa cena WebGL.
+Nenhum keyframe reescrito.
+
+[![Licença MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-blue.svg)](LICENSE)
+[![three.js](https://img.shields.io/badge/three.js-%E2%89%A5%20r160-000000.svg)](https://threejs.org)
+[![ES Modules](https://img.shields.io/badge/m%C3%B3dulo-ESM-f7df1e.svg)](#início-rápido)
+[![Sem build](https://img.shields.io/badge/build-n%C3%A3o%20necess%C3%A1rio-43b581.svg)](#início-rápido)
+
+[Início rápido](#início-rápido) · [Como funciona](#como-funciona) · [API](#api) · [Limitações](#limitações)
 
 </div>
 
 ---
 
-## 📌 Overview
+## Por que existe
 
-**Animated Discord Checkbox** is an experimental frontend project inspired by Discord's checkbox animation.
+Animar um toggle em CSS é simples. Levar o mesmo toggle para dentro do three.js costuma significar refazer tudo: geometrias, cores, easing, keyframes, estados.
 
-The project explores recreating the original checkbox appearance using **Three.js and WebGL**, replacing its visible CSS-drawn components with rendered geometry while retaining the original HTML structure.
+O Checkbox3D faz o caminho inverso. O navegador continua sendo a fonte da verdade e o three.js só desenha o resultado. Você mantém o HTML, o CSS e o JavaScript que já tem e ganha um render em WebGL por cima.
 
-The converter automatically detects elements using the `.checkbox` class, reads selected computed styles, and creates a transparent WebGL canvas over each checkbox.
+## Início rápido
 
-The intended visual transition is:
+**1. Seu markup, como já está**
 
-`✕ → − → ✓`
-
-And in reverse:
-
-`✓ → − → ✕`
-
-> [!IMPORTANT]
-> This project is experimental. The current Three.js implementation approximates the original CSS animation and does not reproduce every keyframe pixel-perfectly.
-
-## 🖼️ Preview
-
-<div align="center">
-
-<!-- Replace this placeholder with a real screenshot or GIF. -->
-
-<img src="assets/checkbox-demo.gif" alt="Animated Discord Checkbox demonstration" width="480">
-
-*Animated checkbox inspired by Discord's interface.*
-
+```html
+<div class="checkbox">
+  <div class="knob">
+    <div class="line1"></div>
+    <div class="line2"></div>
+  </div>
 </div>
+```
 
-To display the preview, add a real GIF or screenshot at:
-
-`assets/checkbox-demo.gif`
-
-The image reference above is a placeholder until that file exists in the repository.
-
-## ✨ Features
-
-- **Discord-inspired design** — based on the supplied checkbox styling.
-- **Automatic detection** — finds elements with the `.checkbox` class.
-- **Style sampling** — reads dimensions, border radius, and selected colors.
-- **WebGL rendering** — draws the track, knob, and indicator lines using Three.js.
-- **Responsive dimensions** — uses `ResizeObserver` to react to size changes.
-- **Dynamic discovery** — scans the document for matching checkbox elements.
-- **State observation** — watches the `.checked` and `.unchecked` classes.
-- **No build system required** — uses browser ES modules and a CDN import map.
-- **Original markup compatibility** — retains the existing checkbox structure.
-
-## 📚 Documentation
-
-- [Overview](#-overview)
-- [Preview](#-preview)
-- [Features](#-features)
-- [How It Works](#-how-it-works)
-- [Requirements](#-requirements)
-- [Installation](#-installation)
-- [Usage](#-usage)
-- [HTML Structure](#-html-structure)
-- [Customization](#-customization)
-- [Compatibility](#-compatibility)
-- [Limitations](#-limitations)
-- [Troubleshooting](#-troubleshooting)
-- [Roadmap](#-roadmap)
-- [Contributing](#-contributing)
-- [Credits](#-credits)
-- [License](#-license)
-
-## ⚙️ How It Works
-
-Animated Discord Checkbox follows a straightforward rendering process.
-
-### 1. Element Detection
-
-The script searches the document for elements matching `.checkbox`.
-
-### 2. Style Inspection
-
-It reads selected CSS properties, including dimensions, border radius, and colors.
-
-### 3. Renderer Initialization
-
-A transparent `THREE.WebGLRenderer` canvas is created and positioned over each checkbox.
-
-### 4. Geometry Creation
-
-Three.js meshes recreate the visible components:
-
-- Track
-- Knob
-- First indicator line
-- Second indicator line
-
-### 5. State Observation
-
-A `MutationObserver` watches for changes to the checkbox's CSS classes.
-
-### 6. Responsive Rendering
-
-A `ResizeObserver` updates the rendering dimensions when the checkbox changes size.
-
-### 7. Animation Loop
-
-`requestAnimationFrame` updates the geometry and renders the scene continuously.
-
-For more information, see the official [Three.js documentation](https://threejs.org/docs/).
-
-## 💻 Requirements
-
-Before running the project, ensure that you have:
-
-- A modern browser with ES module support.
-- WebGL 2 support.
-- An internet connection to load Three.js from jsDelivr.
-- HTML elements using the expected checkbox structure.
-- A local HTTP server for reliable development and testing.
-
-## 🚀 Installation
-
-### Step 1 — Create the HTML file
-
-Create an `index.html` file containing the original checkbox markup and CSS.
-
-### Step 2 — Import Three.js
-
-Add the following import map inside the `<head>` section, before the module script:
+**2. Declare o three.js e monte**
 
 ```html
 <script type="importmap">
-{
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"
-  }
-}
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
 </script>
+
+<script type="module">
+  import { mount } from './checkbox3d.js';
+  mount();
+</script>
+```
+
+Todo elemento `.checkbox` da página passa a ser renderizado pelo three.js. O clique, as classes `checked` e `unchecked` e o seu script continuam funcionando sem alteração.
+
+> Módulos ES não carregam via `file://`. Abra a página por um servidor local:
+> `npx serve` ou `python3 -m http.server`.
+
+## Como funciona
+
+```mermaid
+flowchart LR
+  A[CSS e animações no DOM] --> B[getComputedStyle a cada frame]
+  B --> C[Camadas: trilho, bolinha, linhas]
+  C --> D[WebGLRenderer compartilhado]
+  D --> E[Canvas sobre o elemento original]
+```
+
+1. O elemento original fica invisível, mas continua na página: recebe cliques, aplica classes e executa as transições e animações do CSS.
+2. A cada frame, o Checkbox3D percorre a árvore de filhos e lê o valor calculado de cada elemento.
+3. Cada elemento vira uma camada no three.js, desenhada por um shader que gera retângulos arredondados com borda suavizada, em qualquer tamanho e rotação.
+4. Um único `WebGLRenderer` atende todos os checkboxes, o que evita o limite de contextos WebGL do navegador. O resultado é copiado para um canvas posicionado sobre o elemento.
+5. Se nada mudou desde o último frame, nada é desenhado.
+
+Como o valor lido é o que o navegador está calculando naquele instante, tudo o que o CSS faz aparece igual no render: `@keyframes` com várias etapas, `animation-direction: reverse`, `transition` de cor e interrupções no meio do clique.
+
+### O que é lido
+
+| Propriedade | Uso |
+| --- | --- |
+| `width`, `height`, `box-sizing` | Tamanho de cada camada |
+| `background-color`, `opacity` | Cor e transparência, com opacidade acumulada dos pais |
+| `border-*-radius` | Cantos em `px` ou `%`, com a mesma redução proporcional do CSS |
+| `left`, `top` | Posição relativa ao pai |
+| `transform`, `transform-origin` | Rotação, escala e translação, incluindo `matrix3d` |
+| `display: none` | Oculta a camada e todos os filhos |
+
+## API
+
+```js
+const checkboxes = mount(selector, options);
+```
+
+| Parâmetro | Padrão | Descrição |
+| --- | --- | --- |
+| `selector` | `'.checkbox'` | Seletor CSS dos elementos que serão renderizados |
+| `options.observe` | `true` | Monitora o DOM e passa a renderizar checkboxes adicionados depois |
+| `options.pixelRatio` | `devicePixelRatio` | Resolução do canvas. Acompanha também o `zoom` do CSS |
+
+O retorno é um objeto com:
+
+- `instances`: `Map` de elemento para instância ativa
+- `destroy()`: restaura os elementos originais e libera os recursos da GPU
+
+## Limitações
+
+- Só `background-color` é desenhado. Bordas, `box-shadow`, gradientes, imagens e texto não são.
+- Raios em porcentagem são tratados como circulares. Em elementos não quadrados, o CSS desenharia uma elipse.
+- Os filhos são lidos na montagem. Elementos adicionados depois dentro de um checkbox já montado não são acompanhados.
+- O elemento original recebe `visibility: hidden` enquanto o render está ativo. Se a acessibilidade importa no seu caso, adicione um `<input type="checkbox">` real com os atributos ARIA adequados.
+- Requer WebGL2, como o three.js a partir da r160.
+
+## Rodando a demonstração
+
+```bash
+git clone https://github.com/SEU-USUARIO/checkbox3d.git
+cd checkbox3d
+npx serve
+```
+
+Abra o endereço indicado no terminal. O `index.html` é o checkbox original sem nenhuma alteração, apenas com o módulo carregado no final.
+
+## Estrutura
+
+```
+checkbox3d/
+├── assets/
+│   └── preview.svg
+├── checkbox3d.js
+├── index.html
+├── package.json
+├── LICENSE
+└── README.md
+```
+
+## Contribuindo
+
+Issues e pull requests são bem-vindos. Para mudanças maiores, abra primeiro uma issue descrevendo o que você pretende alterar.
+
+## Licença
+
+[MIT](LICENSE)
