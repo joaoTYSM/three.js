@@ -1,106 +1,143 @@
 <div align="center">
 
-<h1 align="center">
-  <img
-    src="https://raw.githubusercontent.com/joaoTYSM/three.js/refs/heads/main/jelly/jelly.png"
-    width="140"
-    alt="jelly.js"
-    align="middle"
-  >
-  <span>jelly.js</span>
-</h1>
+<img src="assets/preview.svg" alt="Toggle alternando entre desligado e ligado, com o X virando um check" width="320">
 
+# Checkbox3D
 
+**O checkbox que você já escreveu em CSS, desenhado por three.js.**
 
+Lê tamanho, cor, cantos, transformações e animações direto do DOM e reproduz tudo numa cena WebGL.
+Nenhum keyframe reescrito.
 
-### Interactive soft-body jelly physics for Three.js
+[![Licença MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-blue.svg)](LICENSE)
+[![three.js](https://img.shields.io/badge/three.js-%E2%89%A5%20r160-000000.svg)](https://threejs.org)
+[![ES Modules](https://img.shields.io/badge/m%C3%B3dulo-ESM-f7df1e.svg)](#início-rápido)
+[![Sem build](https://img.shields.io/badge/build-n%C3%A3o%20necess%C3%A1rio-43b581.svg)](#início-rápido)
 
-A lightweight JavaScript library for creating interactive, deformable and customizable
-3D jelly objects directly in the browser.
-
-<br>
-
-[![GitHub](https://img.shields.io/badge/GitHub-joaoTYSM%2Ftree.js-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/joaoTYSM/three.js)
-[![Three.js](https://img.shields.io/badge/jsdeliver-black?style=flat-square&logo=javascript&logoColor=white)](https://cdn.jsdelivr.net/gh/joaoTYSM/three.js@main/jelly/main.js)
-[![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
-[![Discord](https://img.shields.io/badge/Discord-RCXKUtYhpp-5865F2?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/RCXKUtYhpp)
-
-<br>
-
-<a href="#features">Features</a>
-&nbsp;&nbsp;•&nbsp;&nbsp;
-<a href="#installation">Installation</a>
-&nbsp;&nbsp;•&nbsp;&nbsp;
-<a href="#quick-start">Quick Start</a>
-&nbsp;&nbsp;•&nbsp;&nbsp;
-<a href="#api">API</a>
-&nbsp;&nbsp;•&nbsp;&nbsp;
-<a href="#community">Community</a>
+[Início rápido](#início-rápido) · [Como funciona](#como-funciona) · [API](#api) · [Limitações](#limitações)
 
 </div>
 
 ---
 
-## <img src="https://api.iconify.design/solar/info-circle-linear.svg?color=%23ffffff&width=20&height=20" width="20" height="20" align="absmiddle"> About
+## Por que existe
 
-**jelly.js** is an experimental soft-body 3D jelly system built on top of
-[Three.js](https://threejs.org/).
+Animar um toggle em CSS é simples. Levar o mesmo toggle para dentro do three.js costuma significar refazer tudo: geometrias, cores, easing, keyframes, estados.
 
-It creates a translucent, deformable 3D object that reacts to pointer interaction,
-movement and configurable physical parameters.
+O Checkbox3D faz o caminho inverso. O navegador continua sendo a fonte da verdade e o three.js só desenha o resultado. Você mantém o HTML, o CSS e o JavaScript que já tem e ganha um render em WebGL por cima.
 
-The project is designed to stay simple to integrate while exposing enough controls
-to customize the appearance and behavior of the jelly.
+## Início rápido
 
----
+**1. Seu markup, como já está**
 
-## <img src="https://api.iconify.design/solar/widget-5-linear.svg?color=%23ffffff&width=20&height=20" width="20" height="20" align="absmiddle"> Features
-
-| | |
-|---|---|
-| <img src="https://api.iconify.design/solar/cursor-linear.svg?color=%23ffffff&width=20&height=20" width="20"> **Interactive** | Drag the jelly directly with pointer input. |
-| <img src="https://api.iconify.design/solar:video-frame-play-vertical-broken.svg?color=%23ffffff&width=20&height=20" width="20"> **Soft-body motion** | Deformable geometry with spring-like movement and wobble. |
-| <img src="https://api.iconify.design/solar/tuning-2-linear.svg?color=%23ffffff&width=20&height=20" width="20"> **Customizable** | Adjust firmness, damping, transparency, refraction, reflections and more. |
-| <img src="https://api.iconify.design/solar:pills-3-bold-duotone.svg?color=%23ffffff&width=20&height=20" width="20"> **3D** | Built around the Three.js rendering ecosystem. |
-| <img src="https://api.iconify.design/solar/code-2-linear.svg?color=%23ffffff&width=20&height=20" width="20"> **ES Modules** | Uses modern native JavaScript modules. |
-| <img src="https://api.iconify.design/solar/bolt-linear.svg?color=%23ffffff&width=20&height=20" width="20"> **Browser-based** | Runs directly inside a WebGL-capable browser. |
-| <img src="https://api.iconify.design/solar/refresh-linear.svg?color=%23ffffff&width=20&height=20" width="20"> **Resettable** | Restore the jelly to its original geometry. |
-| <img src="https://api.iconify.design/solar/maximize-linear.svg?color=%23ffffff&width=20&height=20" width="20"> **Responsive** | Automatically adapts the renderer to its container. |
-
----
-
-## <img src="https://api.iconify.design/solar/play-circle-linear.svg?color=%23ffffff&width=20&height=20" width="20" height="20" align="absmiddle"> Live Demo
-
-<div align="center">
-
-<a href="https://github.com/joaoTYSM/three.js">
-
-<img src="https://img.shields.io/badge/OPEN_LIVE_DEMO-ffffff?style=for-the-badge&logo=googlechrome&logoColor=ffffff&labelColor=000000">
-
-</a>
-
+```html
+<div class="checkbox">
+  <div class="knob">
+    <div class="line1"></div>
+    <div class="line2"></div>
+  </div>
 </div>
+```
 
-> A dedicated online demo is being prepared.
-
----
-
-## <img src="https://api.iconify.design/solar-download-linear.svg?color=%23ffffff&width=20&height=20" width="20" height="20" align="absmiddle"> Installation
-
-### CDN
-
-You can load `jelly.js` directly from the GitHub repository.
+**2. Declare o three.js e monte**
 
 ```html
 <script type="importmap">
-{
-  "imports": {
-    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-  }
-}
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
 </script>
 
 <script type="module">
-  import Jelly from "https://raw.githubusercontent.com/joaoTYSM/three.js/refs/heads/main/jelly/three.js";
+  import { mount } from './checkbox3d.js';
+  mount();
 </script>
+```
+
+Todo elemento `.checkbox` da página passa a ser renderizado pelo three.js. O clique, as classes `checked` e `unchecked` e o seu script continuam funcionando sem alteração.
+
+> Módulos ES não carregam via `file://`. Abra a página por um servidor local:
+> `npx serve` ou `python3 -m http.server`.
+
+## Como funciona
+
+```mermaid
+flowchart LR
+  A[CSS e animações no DOM] --> B[getComputedStyle a cada frame]
+  B --> C[Camadas: trilho, bolinha, linhas]
+  C --> D[WebGLRenderer compartilhado]
+  D --> E[Canvas sobre o elemento original]
+```
+
+1. O elemento original fica invisível, mas continua na página: recebe cliques, aplica classes e executa as transições e animações do CSS.
+2. A cada frame, o Checkbox3D percorre a árvore de filhos e lê o valor calculado de cada elemento.
+3. Cada elemento vira uma camada no three.js, desenhada por um shader que gera retângulos arredondados com borda suavizada, em qualquer tamanho e rotação.
+4. Um único `WebGLRenderer` atende todos os checkboxes, o que evita o limite de contextos WebGL do navegador. O resultado é copiado para um canvas posicionado sobre o elemento.
+5. Se nada mudou desde o último frame, nada é desenhado.
+
+Como o valor lido é o que o navegador está calculando naquele instante, tudo o que o CSS faz aparece igual no render: `@keyframes` com várias etapas, `animation-direction: reverse`, `transition` de cor e interrupções no meio do clique.
+
+### O que é lido
+
+| Propriedade | Uso |
+| --- | --- |
+| `width`, `height`, `box-sizing` | Tamanho de cada camada |
+| `background-color`, `opacity` | Cor e transparência, com opacidade acumulada dos pais |
+| `border-*-radius` | Cantos em `px` ou `%`, com a mesma redução proporcional do CSS |
+| `left`, `top` | Posição relativa ao pai |
+| `transform`, `transform-origin` | Rotação, escala e translação, incluindo `matrix3d` |
+| `display: none` | Oculta a camada e todos os filhos |
+
+## API
+
+```js
+const checkboxes = mount(selector, options);
+```
+
+| Parâmetro | Padrão | Descrição |
+| --- | --- | --- |
+| `selector` | `'.checkbox'` | Seletor CSS dos elementos que serão renderizados |
+| `options.observe` | `true` | Monitora o DOM e passa a renderizar checkboxes adicionados depois |
+| `options.pixelRatio` | `devicePixelRatio` | Resolução do canvas. Acompanha também o `zoom` do CSS |
+
+O retorno é um objeto com:
+
+- `instances`: `Map` de elemento para instância ativa
+- `destroy()`: restaura os elementos originais e libera os recursos da GPU
+
+## Limitações
+
+- Só `background-color` é desenhado. Bordas, `box-shadow`, gradientes, imagens e texto não são.
+- Raios em porcentagem são tratados como circulares. Em elementos não quadrados, o CSS desenharia uma elipse.
+- Os filhos são lidos na montagem. Elementos adicionados depois dentro de um checkbox já montado não são acompanhados.
+- O elemento original recebe `visibility: hidden` enquanto o render está ativo. Se a acessibilidade importa no seu caso, adicione um `<input type="checkbox">` real com os atributos ARIA adequados.
+- Requer WebGL2, como o three.js a partir da r160.
+
+## Rodando a demonstração
+
+```bash
+git clone https://github.com/SEU-USUARIO/checkbox3d.git
+cd checkbox3d
+npx serve
+```
+
+Abra o endereço indicado no terminal. O `index.html` é o checkbox original sem nenhuma alteração, apenas com o módulo carregado no final.
+
+## Estrutura
+
+```
+checkbox3d/
+├── assets/
+│   └── preview.svg
+├── checkbox3d.js
+├── index.html
+├── package.json
+├── LICENSE
+└── README.md
+```
+
+## Contribuindo
+
+Issues e pull requests são bem-vindos. Para mudanças maiores, abra primeiro uma issue descrevendo o que você pretende alterar.
+
+## Licença
+
+[MIT](LICENSE)
