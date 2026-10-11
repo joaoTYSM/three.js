@@ -2,7 +2,7 @@
 
 <img src="preview.svg" alt="Toggle alternando entre desligado e ligado, com o X virando um check" width="320">
 
-# Checkbox3D
+# Discord Checkbox
 
 **O checkbox que você já escreveu em CSS, desenhado por three.js.**
 
