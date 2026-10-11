@@ -10,7 +10,7 @@ Lê tamanho, cor, cantos, transformações e animações direto do DOM e reprodu
 Nenhum keyframe reescrito.
 
 [![Licença MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-blue.svg)](LICENSE)
-[![three.js](https://img.shields.io/badge/three.js-r160-000000.svg)](https://threejs.org)
+[![three.js](https://img.shields.io/badge/three.js-r160-000000.svg)](https://discourse.threejs.org/u/joaotysm/)
 [![ES Modules](https://img.shields.io/badge/m%C3%B3dulo-ESM-f7df1e.svg)](#início-rápido)
 [![Sem build](https://img.shields.io/badge/build-n%C3%A3o%20necess%C3%A1rio-43b581.svg)](#início-rápido)
 
